@@ -40,7 +40,7 @@ class ApiErrorsConfig {
           }
 
           for (int i = 0; i < errorList.length; i++) {
-            message = "\n$message${errorList[i]}";
+            message = "$message\n${errorList[i]}";
           }
           return message;
         } catch (error) {
