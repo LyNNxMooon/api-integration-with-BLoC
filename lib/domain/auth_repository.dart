@@ -5,5 +5,5 @@ abstract class AuthRepo {
   Future<RegisterResponse> registerUser(String name, String phone,
       String password, String fcmToken, String confirmPassword);
 
-  Future<UserVO?> getCurrentUser(String token);
+  Future<UserVO> getCurrentUser(String token);
 }

@@ -39,8 +39,8 @@ class ApiErrorsConfig {
             errorList.add(errorResponse.errors.fcmKey![0]);
           }
 
-          for (int i = 0; i <= errorList.length; i++) {
-            message = "$message${errorList[i]}\n";
+          for (int i = 0; i < errorList.length; i++) {
+            message = "\n$message${errorList[i]}";
           }
           return message;
         } catch (error) {

@@ -17,13 +17,14 @@ class AuthCubit extends Cubit<AuthStates> {
   final _hiveModel = HiveModel();
 
   void checkAuth() async {
-    final UserVO? user =
-        await authRepo.getCurrentUser(_hiveModel.getUserToken());
+    try {
+      final UserVO user =
+          await authRepo.getCurrentUser(_hiveModel.getUserToken());
 
-    if (user != null) {
       _currentUser = user;
       emit(Authenticated(user));
-    } else {
+    } catch (error) {
+      emit(AuthError(error.toString()));
       emit(Unauthenticated());
     }
   }
@@ -40,7 +41,7 @@ class AuthCubit extends Cubit<AuthStates> {
       emit(AuthLoading());
 
       final RegisterResponse response = await authRepo.registerUser(
-          name, phone, password, "", confirmPassword);
+          name, phone, password, "fcm token", confirmPassword);
 
       _currentUser = response.data;
       _hiveModel.saveUserToken(response.token);

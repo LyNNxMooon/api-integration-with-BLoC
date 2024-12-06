@@ -4,10 +4,10 @@ import 'package:bloc_api/network/data_agent/data_agent.dart';
 import 'package:bloc_api/network/data_agent/data_agent_impl.dart';
 import 'package:bloc_api/network/response/register_response.dart';
 
-class Model implements AuthRepo {
-  Model._();
-  static final Model _singleton = Model._();
-  factory Model() => _singleton;
+class AuthModel implements AuthRepo {
+  AuthModel._();
+  static final AuthModel _singleton = AuthModel._();
+  factory AuthModel() => _singleton;
 
   final DataAgent _dataAgent = DataAgentImpl();
 
@@ -32,7 +32,7 @@ class Model implements AuthRepo {
   }
 
   @override
-  Future<UserVO?> getCurrentUser(String token) async {
+  Future<UserVO> getCurrentUser(String token) async {
     try {
       return await _dataAgent.getCurrentUser(token);
     } on Exception catch (error) {
