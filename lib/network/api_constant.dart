@@ -3,9 +3,10 @@ const kBaseURL = "https://oneoneshop.hapeyeapp.com/api/v1";
 
 //End Points
 const kEndPointForRegister = "/register";
+const kEndPointForGetCurrentUser = "/customer";
 
 //keys
-
+const kAuthorizationKey = "Authorization";
 const kParamKeyForNewPassword = "password";
 const kParamKeyForConfirmPassword = "password_confirmation";
 const kParamKeyForName = "name";

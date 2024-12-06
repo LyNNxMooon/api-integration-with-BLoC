@@ -12,7 +12,7 @@ class UserVO {
   @JsonKey(name: 'fcm_token_key')
   final String fcm;
   @JsonKey(name: 'is_banned')
-  final String? isBanned;
+  String? isBanned;
   @JsonKey(name: 'created_at')
   final String createdAt;
 

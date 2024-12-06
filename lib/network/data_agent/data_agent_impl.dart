@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert';
-
+import 'package:bloc_api/config/api_errors_config.dart';
+import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/network/api/api.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
-import 'package:bloc_api/network/response/register_error_response.dart';
+
 import 'package:bloc_api/network/response/register_response.dart';
 import 'package:dio/dio.dart';
 
@@ -18,34 +18,33 @@ class DataAgentImpl extends DataAgent {
   static final DataAgentImpl _singleton = DataAgentImpl._();
   factory DataAgentImpl() => _singleton;
 
+  ApiErrorsConfig apiErrorsConfig = ApiErrorsConfig();
+
   @override
   Future<RegisterResponse> registerUserAccount(String name, String phone,
-      String password, String fcm, String confirmPassword) {
-    // TODO: implement registerUserAccount
-    throw UnimplementedError();
+      String password, String fcm, String confirmPassword) async {
+    try {
+      return await _api
+          .registerUser(name, phone, password, fcm, confirmPassword)
+          .asStream()
+          .map((event) => event)
+          .first;
+    } on Exception catch (error) {
+      return Future.error(apiErrorsConfig.throwExceptionForRegister(error));
+    }
   }
 
-  Object throwException(dynamic error) {
-    if (error is DioException) {
-      if (error.type == DioExceptionType.connectionError ||
-          error.type == DioExceptionType.receiveTimeout ||
-          error.type == DioExceptionType.connectionTimeout ||
-          error.type == DioExceptionType.sendTimeout) {
-        return "Unable to connect to the server. Please check your internet connection and try again.";
-      }
-      if (error.response?.data is Map<String, dynamic>) {
-        try {
-          print(error.response?.data);
-
-          final errorResponse = RegisterErrorResponse.fromJson(
-              jsonDecode(error.response.toString()));
-          return errorResponse.message;
-        } catch (error) {
-          return error.toString();
-        }
-      }
-      return error.response.toString();
+  @override
+  Future<UserVO> getCurrentUser(String token) async {
+    try {
+      return await _api
+          .getCurrentUser("Bearer $token")
+          .asStream()
+          .map((event) => event.data)
+          .first;
+    } on Exception catch (error) {
+      return Future.error(
+          apiErrorsConfig.throwExceptionForGetCurrentUser(error));
     }
-    return error.toString();
   }
 }

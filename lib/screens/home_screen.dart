@@ -10,6 +10,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text("H O M E"),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
       ),
     ));
   }

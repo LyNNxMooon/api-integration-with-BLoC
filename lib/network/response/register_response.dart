@@ -6,7 +6,7 @@ part 'register_response.g.dart';
 class RegisterResponse {
   final bool success;
   final String token;
-  final UserVO data;
+  UserVO data;
 
   RegisterResponse(
       {required this.success, required this.token, required this.data});
