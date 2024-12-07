@@ -6,7 +6,6 @@ import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/domain/auth_repository.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 import 'package:bloc_api/network/response/login_register_response.dart';
-import 'package:bloc_api/widgets/success_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,11 +82,8 @@ class AuthCubit extends Cubit<AuthStates> {
       final LogoutResponse response =
           await authRepo.logoutUser(_hiveModel.getUserToken());
 
+      emit(AuthError(response.message));
       emit(Unauthenticated());
-      showDialog(
-        context: context,
-        builder: (context) => SuccessWidget(message: response.message),
-      );
     } catch (error) {
       emit(AuthError(error.toString()));
     }
