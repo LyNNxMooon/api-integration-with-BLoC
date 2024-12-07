@@ -2,6 +2,7 @@ import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/domain/auth_repository.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
 import 'package:bloc_api/network/data_agent/data_agent_impl.dart';
+import 'package:bloc_api/network/response/logout_response.dart';
 import 'package:bloc_api/network/response/register_response.dart';
 
 class AuthModel implements AuthRepo {
@@ -35,6 +36,15 @@ class AuthModel implements AuthRepo {
   Future<UserVO> getCurrentUser(String token) async {
     try {
       return await _dataAgent.getCurrentUser(token);
+    } on Exception catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  @override
+  Future<LogoutResponse> logoutUser(String token) async {
+    try {
+      return await _dataAgent.logoutUser(token);
     } on Exception catch (error) {
       return Future.error(error);
     }

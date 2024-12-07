@@ -1,4 +1,5 @@
 import 'package:bloc_api/network/api_constant.dart';
+import 'package:bloc_api/network/response/logout_response.dart';
 import 'package:bloc_api/network/response/register_response.dart';
 import 'package:bloc_api/network/response/user_response.dart';
 
@@ -28,4 +29,10 @@ abstract class Api {
     'Accept': 'application/json',
   })
   Future<UserResponse> getCurrentUser(@Header(kAuthorizationKey) String token);
+
+  @GET(kEndPointForLogout)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<LogoutResponse> logoutUser(@Header(kAuthorizationKey) String token);
 }

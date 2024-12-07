@@ -2,18 +2,20 @@
 
 // ignore_for_file: unused_element
 
-part of 'user_error_response.dart';
+part of 'logout_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserErrorResponse _$UserErrorResponseFromJson(Map<String, dynamic> json) =>
-    UserErrorResponse(
+LogoutResponse _$LogoutResponseFromJson(Map<String, dynamic> json) =>
+    LogoutResponse(
+      success: json['success'] as bool?,
       message: json['message'] as String,
     );
 
-Map<String, dynamic> _$UserErrorResponseToJson(UserErrorResponse instance) =>
+Map<String, dynamic> _$LogoutResponseToJson(LogoutResponse instance) =>
     <String, dynamic>{
+      'success': instance.success,
       'message': instance.message,
     };

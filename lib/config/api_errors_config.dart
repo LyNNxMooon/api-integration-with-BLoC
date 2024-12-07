@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:bloc_api/network/response/register_error_response.dart';
-import 'package:bloc_api/network/response/user_error_response.dart';
+import 'package:bloc_api/network/response/user_and_logout_error_response.dart';
 import 'package:dio/dio.dart';
 
 class ApiErrorsConfig {
@@ -52,7 +52,7 @@ class ApiErrorsConfig {
     return error.toString();
   }
 
-  Object throwExceptionForGetCurrentUser(dynamic error) {
+  Object throwExceptionForGetCurrentUserAndLogout(dynamic error) {
     if (error is DioException) {
       if (error.type == DioExceptionType.connectionError ||
           error.type == DioExceptionType.receiveTimeout ||
@@ -64,8 +64,8 @@ class ApiErrorsConfig {
         try {
           print(error.response?.data);
 
-          final errorResponse =
-              UserErrorResponse.fromJson(jsonDecode(error.response.toString()));
+          final errorResponse = UserAndLogOutErrorResponse.fromJson(
+              jsonDecode(error.response.toString()));
 
           return errorResponse.message;
         } catch (error) {
