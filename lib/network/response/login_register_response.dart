@@ -1,16 +1,16 @@
 import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'register_response.g.dart';
+part 'login_register_response.g.dart';
 
 @JsonSerializable()
-class RegisterResponse {
+class LoginRegisterResponse {
   final bool success;
   final String token;
   UserVO data;
 
-  RegisterResponse(
+  LoginRegisterResponse(
       {required this.success, required this.token, required this.data});
 
-  factory RegisterResponse.fromJson(Map<String, dynamic> json) =>
-      _$RegisterResponseFromJson(json);
+  factory LoginRegisterResponse.fromJson(Map<String, dynamic> json) =>
+      _$LoginRegisterResponseFromJson(json);
 }

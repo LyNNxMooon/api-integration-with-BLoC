@@ -1,6 +1,6 @@
 import 'package:bloc_api/network/api_constant.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
-import 'package:bloc_api/network/response/register_response.dart';
+import 'package:bloc_api/network/response/login_register_response.dart';
 import 'package:bloc_api/network/response/user_response.dart';
 
 import 'package:retrofit/http.dart';
@@ -16,13 +16,22 @@ abstract class Api {
   @Headers(<String, dynamic>{
     'Accept': 'application/json',
   })
-  Future<RegisterResponse> registerUser(
+  Future<LoginRegisterResponse> registerUser(
     @Field(kParamKeyForName) String name,
     @Field(kParamKeyForPhone) String phone,
-    @Field(kParamKeyForNewPassword) String password,
+    @Field(kParamKeyForPassword) String password,
     @Field(kParamKeyForFcm) String fcm,
     @Field(kParamKeyForConfirmPassword) String confirmPassword,
   );
+
+  @POST(kEndPointForLogin)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<LoginRegisterResponse> loginUser(
+      @Field(kParamKeyForEmailOrPhone) String emailOrPhone,
+      @Field(kParamKeyForPassword) String password,
+      @Field(kParamKeyForFcm) String fcm);
 
   @GET(kEndPointForGetCurrentUser)
   @Headers(<String, dynamic>{

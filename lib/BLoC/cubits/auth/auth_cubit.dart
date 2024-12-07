@@ -5,7 +5,7 @@ import 'package:bloc_api/data/models/hive_model.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/domain/auth_repository.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
-import 'package:bloc_api/network/response/register_response.dart';
+import 'package:bloc_api/network/response/login_register_response.dart';
 import 'package:bloc_api/widgets/success_widget.dart';
 
 import 'package:flutter/material.dart';
@@ -40,12 +40,30 @@ class AuthCubit extends Cubit<AuthStates> {
   //Register user
 
   Future<void> registerUser(String name, String phone, String password,
-      String confirmPassword, BuildContext context) async {
+      String confirmPassword) async {
     try {
       emit(AuthLoading());
 
-      final RegisterResponse response = await authRepo.registerUser(
+      final LoginRegisterResponse response = await authRepo.registerUser(
           name, phone, password, "fcm token", confirmPassword);
+
+      _currentUser = response.data;
+      _hiveModel.saveUserToken(response.token);
+      emit(Authenticated(response.data));
+    } catch (error) {
+      emit(AuthError(error.toString()));
+      emit(Unauthenticated());
+    }
+  }
+
+  //login
+
+  Future<void> loginUser(String emailOrPhone, String password) async {
+    try {
+      emit(AuthLoading());
+
+      final LoginRegisterResponse response =
+          await authRepo.loginUser(emailOrPhone, password, "fcm token");
 
       _currentUser = response.data;
       _hiveModel.saveUserToken(response.token);
@@ -65,12 +83,11 @@ class AuthCubit extends Cubit<AuthStates> {
       final LogoutResponse response =
           await authRepo.logoutUser(_hiveModel.getUserToken());
 
+      emit(Unauthenticated());
       showDialog(
         context: context,
         builder: (context) => SuccessWidget(message: response.message),
       );
-
-      emit(Unauthenticated());
     } catch (error) {
       emit(AuthError(error.toString()));
     }

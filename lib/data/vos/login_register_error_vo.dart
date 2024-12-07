@@ -1,20 +1,22 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'register_error_vo.g.dart';
+part 'login_register_error_vo.g.dart';
 
 @JsonSerializable()
-class RegisterErrorVO {
+class LoginRegisterErrorVO {
+  final List<String>? emailOrPhone;
   final List<String>? name;
   final List<String>? phone;
   final List<String>? password;
   @JsonKey(name: 'fcm_token_key')
   final List<String>? fcmKey;
 
-  RegisterErrorVO(
-      {required this.name,
+  LoginRegisterErrorVO(
+      {required this.emailOrPhone,
+      required this.name,
       required this.phone,
       required this.password,
       required this.fcmKey});
 
-  factory RegisterErrorVO.fromJson(Map<String, dynamic> json) =>
-      _$RegisterErrorVOFromJson(json);
+  factory LoginRegisterErrorVO.fromJson(Map<String, dynamic> json) =>
+      _$LoginRegisterErrorVOFromJson(json);
 }

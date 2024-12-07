@@ -2,20 +2,22 @@
 
 // ignore_for_file: unused_element
 
-part of 'register_response.dart';
+part of 'login_register_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) =>
-    RegisterResponse(
+LoginRegisterResponse _$LoginRegisterResponseFromJson(
+        Map<String, dynamic> json) =>
+    LoginRegisterResponse(
       success: json['success'] as bool,
       token: json['token'] as String,
       data: UserVO.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$RegisterResponseToJson(RegisterResponse instance) =>
+Map<String, dynamic> _$LoginRegisterResponseToJson(
+        LoginRegisterResponse instance) =>
     <String, dynamic>{
       'success': instance.success,
       'token': instance.token,

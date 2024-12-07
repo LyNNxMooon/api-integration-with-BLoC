@@ -1,6 +1,7 @@
 import 'package:bloc_api/BLoC/cubits/auth/auth_cubit.dart';
 import 'package:bloc_api/constants/texts.dart';
 import 'package:bloc_api/utils/enums.dart';
+import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/button_widget.dart';
 import 'package:bloc_api/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -122,27 +123,30 @@ class _RegisterPageState extends State<RegisterPage> {
               CustomButton(
                 name: "Register",
                 function: () => authCubit.registerUser(
-                    _nameController.text,
-                    _phoneController.text,
-                    _passwordController.text,
-                    _confirmPasswordController.text,
-                    context),
+                  _nameController.text,
+                  _phoneController.text,
+                  _passwordController.text,
+                  _confirmPasswordController.text,
+                ),
               ),
               const Gap(60),
-              const Column(
-                children: [
-                  Icon(
-                    Icons.rocket_launch_sharp,
-                    color: kSecondaryColor,
-                    size: 45,
-                  ),
-                  Gap(10),
-                  Center(
-                      child: Text(
-                    "Already have account? Login",
-                    style: TextStyle(fontSize: 12),
-                  ))
-                ],
+              GestureDetector(
+                onTap: () => context.navigateBack(),
+                child: const Column(
+                  children: [
+                    Icon(
+                      Icons.rocket_launch_sharp,
+                      color: kSecondaryColor,
+                      size: 45,
+                    ),
+                    Gap(10),
+                    Center(
+                        child: Text(
+                      "Already have account? Login",
+                      style: TextStyle(fontSize: 12),
+                    ))
+                  ],
+                ),
               ),
               const Gap(60),
             ],

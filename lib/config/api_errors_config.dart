@@ -2,12 +2,12 @@
 
 import 'dart:convert';
 
-import 'package:bloc_api/network/response/register_error_response.dart';
+import 'package:bloc_api/network/response/login_register_error_response.dart';
 import 'package:bloc_api/network/response/user_and_logout_error_response.dart';
 import 'package:dio/dio.dart';
 
 class ApiErrorsConfig {
-  Object throwExceptionForRegister(dynamic error) {
+  Object throwExceptionForLoginRegister(dynamic error) {
     if (error is DioException) {
       if (error.type == DioExceptionType.connectionError ||
           error.type == DioExceptionType.receiveTimeout ||
@@ -19,10 +19,13 @@ class ApiErrorsConfig {
         try {
           print(error.response?.data);
 
-          final errorResponse = RegisterErrorResponse.fromJson(
+          final errorResponse = LoginRegisterErrorResponse.fromJson(
               jsonDecode(error.response.toString()));
           List<String> errorList = <String>[];
           String message = '';
+          if (errorResponse.errors.emailOrPhone != null) {
+            errorList.add(errorResponse.errors.emailOrPhone![0]);
+          }
           if (errorResponse.errors.name != null) {
             errorList.add(errorResponse.errors.name![0]);
           }

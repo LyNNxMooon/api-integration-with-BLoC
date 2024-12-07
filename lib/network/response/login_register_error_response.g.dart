@@ -2,21 +2,22 @@
 
 // ignore_for_file: unused_element
 
-part of 'register_error_response.dart';
+part of 'login_register_error_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-RegisterErrorResponse _$RegisterErrorResponseFromJson(
+LoginRegisterErrorResponse _$LoginRegisterErrorResponseFromJson(
         Map<String, dynamic> json) =>
-    RegisterErrorResponse(
+    LoginRegisterErrorResponse(
       message: json['message'] as String,
-      errors: RegisterErrorVO.fromJson(json['errors'] as Map<String, dynamic>),
+      errors:
+          LoginRegisterErrorVO.fromJson(json['errors'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$RegisterErrorResponseToJson(
-        RegisterErrorResponse instance) =>
+Map<String, dynamic> _$LoginRegisterErrorResponseToJson(
+        LoginRegisterErrorResponse instance) =>
     <String, dynamic>{
       'message': instance.message,
       'errors': instance.errors,

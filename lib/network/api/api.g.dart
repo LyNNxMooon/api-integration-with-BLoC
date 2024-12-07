@@ -26,7 +26,7 @@ class _Api implements Api {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<RegisterResponse> registerUser(
+  Future<LoginRegisterResponse> registerUser(
     String name,
     String phone,
     String password,
@@ -44,7 +44,7 @@ class _Api implements Api {
       'fcm_token_key': fcm,
       'password_confirmation': confirmPassword,
     };
-    final _options = _setStreamType<RegisterResponse>(Options(
+    final _options = _setStreamType<LoginRegisterResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -61,9 +61,51 @@ class _Api implements Api {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late RegisterResponse _value;
+    late LoginRegisterResponse _value;
     try {
-      _value = RegisterResponse.fromJson(_result.data!);
+      _value = LoginRegisterResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<LoginRegisterResponse> loginUser(
+    String emailOrPhone,
+    String password,
+    String fcm,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Accept': 'application/json'};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = {
+      'emailOrPhone': emailOrPhone,
+      'password': password,
+      'fcm_token_key': fcm,
+    };
+    final _options = _setStreamType<LoginRegisterResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/login',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LoginRegisterResponse _value;
+    try {
+      _value = LoginRegisterResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

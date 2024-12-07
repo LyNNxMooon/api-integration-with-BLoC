@@ -2,14 +2,18 @@
 
 // ignore_for_file: unused_element
 
-part of 'register_error_vo.dart';
+part of 'login_register_error_vo.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-RegisterErrorVO _$RegisterErrorVOFromJson(Map<String, dynamic> json) =>
-    RegisterErrorVO(
+LoginRegisterErrorVO _$LoginRegisterErrorVOFromJson(
+        Map<String, dynamic> json) =>
+    LoginRegisterErrorVO(
+      emailOrPhone: (json['emailOrPhone'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       name: (json['name'] as List<dynamic>?)?.map((e) => e as String).toList(),
       phone:
           (json['phone'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -21,8 +25,10 @@ RegisterErrorVO _$RegisterErrorVOFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$RegisterErrorVOToJson(RegisterErrorVO instance) =>
+Map<String, dynamic> _$LoginRegisterErrorVOToJson(
+        LoginRegisterErrorVO instance) =>
     <String, dynamic>{
+      'emailOrPhone': instance.emailOrPhone,
       'name': instance.name,
       'phone': instance.phone,
       'password': instance.password,

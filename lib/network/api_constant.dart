@@ -5,10 +5,12 @@ const kBaseURL = "https://oneoneshop.hapeyeapp.com/api/v1";
 const kEndPointForRegister = "/register";
 const kEndPointForGetCurrentUser = "/customer";
 const kEndPointForLogout = "/logout";
+const kEndPointForLogin = "/login";
 
 //keys
 const kAuthorizationKey = "Authorization";
-const kParamKeyForNewPassword = "password";
+const kParamKeyForEmailOrPhone = "emailOrPhone";
+const kParamKeyForPassword = "password";
 const kParamKeyForConfirmPassword = "password_confirmation";
 const kParamKeyForName = "name";
 const kParamKeyForPhone = "phone";

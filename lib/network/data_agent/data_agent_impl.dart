@@ -6,7 +6,7 @@ import 'package:bloc_api/network/api/api.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 
-import 'package:bloc_api/network/response/register_response.dart';
+import 'package:bloc_api/network/response/login_register_response.dart';
 import 'package:dio/dio.dart';
 
 class DataAgentImpl extends DataAgent {
@@ -22,7 +22,7 @@ class DataAgentImpl extends DataAgent {
   ApiErrorsConfig apiErrorsConfig = ApiErrorsConfig();
 
   @override
-  Future<RegisterResponse> registerUserAccount(String name, String phone,
+  Future<LoginRegisterResponse> registerUserAccount(String name, String phone,
       String password, String fcm, String confirmPassword) async {
     try {
       return await _api
@@ -31,7 +31,8 @@ class DataAgentImpl extends DataAgent {
           .map((event) => event)
           .first;
     } on Exception catch (error) {
-      return Future.error(apiErrorsConfig.throwExceptionForRegister(error));
+      return Future.error(
+          apiErrorsConfig.throwExceptionForLoginRegister(error));
     }
   }
 
@@ -62,6 +63,21 @@ class DataAgentImpl extends DataAgent {
     } on Exception catch (error) {
       return Future.error(
           apiErrorsConfig.throwExceptionForGetCurrentUserAndLogout(error));
+    }
+  }
+
+  @override
+  Future<LoginRegisterResponse> loginUserAccount(
+      String emailOrPhone, String password, String fcm) async {
+    try {
+      return await _api
+          .loginUser(emailOrPhone, password, fcm)
+          .asStream()
+          .map((event) => event)
+          .first;
+    } on Exception catch (error) {
+      return Future.error(
+          apiErrorsConfig.throwExceptionForLoginRegister(error));
     }
   }
 }

@@ -3,7 +3,7 @@ import 'package:bloc_api/domain/auth_repository.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
 import 'package:bloc_api/network/data_agent/data_agent_impl.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
-import 'package:bloc_api/network/response/register_response.dart';
+import 'package:bloc_api/network/response/login_register_response.dart';
 
 class AuthModel implements AuthRepo {
   AuthModel._();
@@ -13,7 +13,7 @@ class AuthModel implements AuthRepo {
   final DataAgent _dataAgent = DataAgentImpl();
 
   @override
-  Future<RegisterResponse> registerUser(String name, String phone,
+  Future<LoginRegisterResponse> registerUser(String name, String phone,
       String password, String fcm, String confirmPassword) async {
     try {
       return await _dataAgent
@@ -45,6 +45,17 @@ class AuthModel implements AuthRepo {
   Future<LogoutResponse> logoutUser(String token) async {
     try {
       return await _dataAgent.logoutUser(token);
+    } on Exception catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  @override
+  Future<LoginRegisterResponse> loginUser(
+      String emailOrPhone, String password, String fcmToken) async {
+    try {
+      return await _dataAgent.loginUserAccount(
+          emailOrPhone, password, fcmToken);
     } on Exception catch (error) {
       return Future.error(error);
     }
