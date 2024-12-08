@@ -132,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const Gap(60),
               GestureDetector(
-                onTap: () => widget.toggleScreens,
+                onTap: widget.toggleScreens,
                 child: const Column(
                   children: [
                     Icon(

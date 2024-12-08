@@ -15,9 +15,13 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         title: Column(
           children: [
+            const Gap(10),
             Text("H O M E"),
-            const Gap(15),
-            Text(authCubit.currentUser?.name ?? "")
+            const Gap(4),
+            Text(
+              authCubit.currentUser?.name ?? "",
+              style: TextStyle(fontSize: 14),
+            )
           ],
         ),
         actions: [

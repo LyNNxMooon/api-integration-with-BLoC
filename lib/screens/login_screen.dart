@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const Gap(60),
             GestureDetector(
-              onTap: () => widget.toggleScreens,
+              onTap: widget.toggleScreens,
               child: const Column(
                 children: [
                   Icon(
