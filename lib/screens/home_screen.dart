@@ -1,6 +1,7 @@
 import 'package:bloc_api/BLoC/cubits/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,7 +13,13 @@ class HomeScreen extends StatelessWidget {
         child: Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("H O M E"),
+        title: Column(
+          children: [
+            Text("H O M E"),
+            const Gap(15),
+            Text(authCubit.currentUser?.name ?? "")
+          ],
+        ),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.person)),
           IconButton(

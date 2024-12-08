@@ -1,8 +1,8 @@
 import 'package:bloc_api/BLoC/cubits/auth/auth_cubit.dart';
 import 'package:bloc_api/BLoC/cubits/auth/auth_states.dart';
 import 'package:bloc_api/data/models/auth_model.dart';
+import 'package:bloc_api/screens/auth_screen.dart';
 import 'package:bloc_api/screens/home_screen.dart';
-import 'package:bloc_api/screens/login_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
 import 'package:bloc_api/widgets/loading_widget.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           home: BlocConsumer<AuthCubit, AuthStates>(
             builder: (context, authState) {
               return authState is Unauthenticated
-                  ? const LoginPage()
+                  ? const AuthScreen()
                   : authState is Authenticated
                       ? const HomeScreen()
                       : const CustomLoadingWidget();

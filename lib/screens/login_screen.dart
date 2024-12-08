@@ -1,8 +1,6 @@
 import 'package:bloc_api/BLoC/cubits/auth/auth_cubit.dart';
 import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/constants/texts.dart';
-import 'package:bloc_api/screens/register_screen.dart';
-import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/button_widget.dart';
 import 'package:bloc_api/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({super.key, required this.toggleScreens});
+
+  final void Function()? toggleScreens;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const Gap(60),
             GestureDetector(
-              onTap: () => context.navigateToNext(RegisterPage()),
+              onTap: () => widget.toggleScreens,
               child: const Column(
                 children: [
                   Icon(

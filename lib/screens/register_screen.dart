@@ -1,7 +1,6 @@
 import 'package:bloc_api/BLoC/cubits/auth/auth_cubit.dart';
 import 'package:bloc_api/constants/texts.dart';
 import 'package:bloc_api/utils/enums.dart';
-import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/button_widget.dart';
 import 'package:bloc_api/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,9 @@ import 'package:gap/gap.dart';
 import '../constants/colors.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  const RegisterPage({super.key, required this.toggleScreens});
+
+  final void Function()? toggleScreens;
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -131,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const Gap(60),
               GestureDetector(
-                onTap: () => context.navigateBack(),
+                onTap: () => widget.toggleScreens,
                 child: const Column(
                   children: [
                     Icon(
