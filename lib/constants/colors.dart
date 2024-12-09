@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-const kPrimaryColor = Colors.white;
-const kSecondaryColor = Color.fromARGB(255, 18, 43, 231);
-const kThirdColor = Colors.grey;
-const kFourthColor = Colors.black;
+const kPrimaryColor = Color(0xFFC7F9CC);
+const kSecondaryColor = Color(0xFF57CC99);
+const kThirdColor = Color(0xFF38A3A5);
+const kFourthColor = Color(0xFF22577A);
 const kErrorColor = Colors.red;
 const kSuccessColor = Colors.green;
