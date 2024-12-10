@@ -12,8 +12,10 @@ LoginRegisterErrorResponse _$LoginRegisterErrorResponseFromJson(
         Map<String, dynamic> json) =>
     LoginRegisterErrorResponse(
       message: json['message'] as String,
-      errors:
-          LoginRegisterErrorVO.fromJson(json['errors'] as Map<String, dynamic>),
+      errors: json['errors'] == null
+          ? null
+          : LoginRegisterErrorVO.fromJson(
+              json['errors'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LoginRegisterErrorResponseToJson(

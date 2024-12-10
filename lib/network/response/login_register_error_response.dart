@@ -5,7 +5,7 @@ part 'login_register_error_response.g.dart';
 @JsonSerializable()
 class LoginRegisterErrorResponse {
   final String message;
-  final LoginRegisterErrorVO errors;
+  final LoginRegisterErrorVO? errors;
 
   LoginRegisterErrorResponse({required this.message, required this.errors});
 

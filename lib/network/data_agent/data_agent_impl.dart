@@ -32,8 +32,7 @@ class DataAgentImpl extends DataAgent {
           .map((event) => event)
           .first;
     } on Exception catch (error) {
-      return Future.error(
-          apiErrorsConfig.throwExceptionForLoginRegister(error));
+      return Future.error(apiErrorsConfig.throwExceptionForRegister(error));
     }
   }
 
@@ -77,8 +76,7 @@ class DataAgentImpl extends DataAgent {
           .map((event) => event)
           .first;
     } on Exception catch (error) {
-      return Future.error(
-          apiErrorsConfig.throwExceptionForLoginRegister(error));
+      return Future.error(apiErrorsConfig.throwExceptionForLogin(error));
     }
   }
 

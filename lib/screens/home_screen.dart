@@ -5,10 +5,11 @@ import 'package:bloc_api/BLoC/cubits/products/product_cubit.dart';
 import 'package:bloc_api/BLoC/cubits/products/product_states.dart';
 import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
-import 'package:bloc_api/widgets/loading_widget.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -41,7 +42,7 @@ class HomeScreen extends StatelessWidget {
       body: BlocBuilder<ProductsCubit, ProductsStates>(
         builder: (context, state) {
           if (state is ProductsLoading) {
-            return const CustomLoadingWidget();
+            return shimmerLoading();
           } else if (state is ProductsError) {
             return Center(
               child: Padding(
@@ -68,6 +69,51 @@ class HomeScreen extends StatelessWidget {
         },
       ),
     ));
+  }
+
+  Widget shimmerLoading() {
+    return ListView.separated(
+        itemBuilder: (context, index) => Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Shimmer.fromColors(
+                baseColor: Colors.black54,
+                highlightColor: Colors.white,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 70,
+                      decoration: BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
+                    const Gap(15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          height: 15,
+                          decoration: BoxDecoration(
+                              color: Colors.black12,
+                              borderRadius: BorderRadius.circular(5)),
+                        ),
+                        const Gap(10),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: 15,
+                          decoration: BoxDecoration(
+                              color: Colors.black12,
+                              borderRadius: BorderRadius.circular(5)),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+        separatorBuilder: (context, index) => const Gap(15),
+        itemCount: 10);
   }
 
   Widget productList(List<ItemVO> products, BuildContext context) {
