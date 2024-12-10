@@ -1,6 +1,8 @@
 import 'package:bloc_api/BLoC/cubits/auth/auth_cubit.dart';
 import 'package:bloc_api/BLoC/cubits/auth/auth_states.dart';
+import 'package:bloc_api/BLoC/cubits/products/product_cubit.dart';
 import 'package:bloc_api/data/models/auth_model.dart';
+import 'package:bloc_api/data/models/product_model.dart';
 import 'package:bloc_api/screens/auth_screen.dart';
 import 'package:bloc_api/screens/home_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
@@ -13,6 +15,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final authRepo = AuthModel();
+  final productsRepo = ProductModel();
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthCubit>(
           create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
+        ),
+        BlocProvider<ProductsCubit>(
+          create: (context) => ProductsCubit(productRepo: productsRepo),
         ),
       ],
       child: MaterialApp(

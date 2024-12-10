@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     final authCubit = context.read<AuthCubit>();
     return SafeArea(
         child: Scaffold(
+      backgroundColor: kPrimaryColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: ListView(

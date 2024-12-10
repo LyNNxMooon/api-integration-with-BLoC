@@ -4,6 +4,7 @@ import 'package:bloc_api/config/api_errors_config.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/network/api/api.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
+import 'package:bloc_api/network/response/item_response.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 
 import 'package:bloc_api/network/response/login_register_response.dart';
@@ -78,6 +79,19 @@ class DataAgentImpl extends DataAgent {
     } on Exception catch (error) {
       return Future.error(
           apiErrorsConfig.throwExceptionForLoginRegister(error));
+    }
+  }
+
+  @override
+  Future<ItemResponse> getProducts(String token, int page, int limit) async {
+    try {
+      return await _api
+          .getProducts("Bearer $token", page, limit)
+          .asStream()
+          .map((event) => event)
+          .first;
+    } on Exception catch (error) {
+      return Future.error(apiErrorsConfig.throwExceptionForGetProducts(error));
     }
   }
 }

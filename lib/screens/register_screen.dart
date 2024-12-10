@@ -39,6 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final authCubit = context.read<AuthCubit>();
     return SafeArea(
       child: Scaffold(
+        backgroundColor: kPrimaryColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: ListView(

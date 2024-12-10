@@ -1,5 +1,5 @@
-import 'package:bloc_api/data/vos/item_vo.dart';
+import 'package:bloc_api/network/response/item_response.dart';
 
 abstract class ProductRepo {
-  Future<List<ItemVO>> getProducts(String token);
+  Future<ItemResponse> getProducts(String token, int page, int limit);
 }
