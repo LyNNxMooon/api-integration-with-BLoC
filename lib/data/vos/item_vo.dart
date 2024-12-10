@@ -15,7 +15,7 @@ class ItemVO {
   final int quantity;
   final String price;
   @JsonKey(name: "discounted_price")
-  final int discountedPrice;
+  int? discountedPrice;
   final String status;
   final bool wish;
   @JsonKey(name: "wish_id")

@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: unused_element
+
 part of 'item_vo.dart';
 
 // **************************************************************************
@@ -17,7 +19,7 @@ ItemVO _$ItemVOFromJson(Map<String, dynamic> json) => ItemVO(
       genres: json['genres'] as List<dynamic>,
       quantity: (json['quantity'] as num).toInt(),
       price: json['price'] as String,
-      discountedPrice: (json['discounted_price'] as num).toInt(),
+      discountedPrice: (json['discounted_price'] as num?)?.toInt(),
       status: json['status'] as String,
       wish: json['wish'] as bool,
       wishId: json['wish_id'] as bool,

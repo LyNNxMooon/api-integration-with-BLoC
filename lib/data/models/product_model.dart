@@ -23,6 +23,8 @@ class ProductModel implements ProductRepo {
               item.description = (item.description?.isEmpty ?? true)
                   ? " - "
                   : item.description;
+              item.discountedPrice =
+                  (item.discountedPrice == null) ? 0 : item.discountedPrice;
               return item;
             },
           ).toList();

@@ -25,7 +25,8 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
         ),
         BlocProvider<ProductsCubit>(
-          create: (context) => ProductsCubit(productRepo: productsRepo),
+          create: (context) =>
+              ProductsCubit(productRepo: productsRepo)..getAllProducts(),
         ),
       ],
       child: MaterialApp(
