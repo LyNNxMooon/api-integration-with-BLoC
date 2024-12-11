@@ -11,13 +11,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final authCubit = context.read<AuthCubit>();
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  late final productsCubit = context.read<ProductsCubit>();
+  late final authCubit = context.read<AuthCubit>();
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
       backgroundColor: kPrimaryColor,
@@ -47,10 +53,24 @@ class HomeScreen extends StatelessWidget {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  state.message,
-                  style: TextStyle(
-                      color: kErrorColor, fontWeight: FontWeight.bold),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      textAlign: TextAlign.center,
+                      state.message,
+                      style: TextStyle(
+                          color: kErrorColor, fontWeight: FontWeight.bold),
+                    ),
+                    const Gap(10),
+                    IconButton(
+                        onPressed: () => productsCubit.getAllProducts(),
+                        icon: Icon(
+                          Icons.replay_outlined,
+                          color: kFourthColor,
+                        ))
+                  ],
                 ),
               ),
             );
@@ -117,7 +137,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget productList(List<ItemVO> products, BuildContext context) {
-    final productsCubit = context.read<ProductsCubit>();
     return RefreshIndicator(
       onRefresh: () => productsCubit.getAllProducts(),
       backgroundColor: kPrimaryColor,

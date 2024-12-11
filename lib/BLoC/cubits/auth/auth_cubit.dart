@@ -86,6 +86,16 @@ class AuthCubit extends Cubit<AuthStates> {
       emit(Unauthenticated());
     } catch (error) {
       emit(AuthError(error.toString()));
+      emit(Authenticated(currentUser ??
+          UserVO(
+              id: 0,
+              name: "",
+              phone: "",
+              imgURL: "",
+              email: "",
+              fcm: "",
+              isBanned: "",
+              createdAt: "")));
     }
   }
 }
