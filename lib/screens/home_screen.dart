@@ -1,7 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:bloc_api/BLoC/auth/auth_cubit.dart';
-import 'package:bloc_api/BLoC/products/product_cubit.dart';
+import 'package:bloc_api/BLoC/auth/auth_bloc.dart';
+import 'package:bloc_api/BLoC/auth/auth_events.dart';
+import 'package:bloc_api/BLoC/products/product_bloc.dart';
 import 'package:bloc_api/BLoC/products/product_events.dart';
 import 'package:bloc_api/BLoC/products/product_states.dart';
 import 'package:bloc_api/constants/colors.dart';
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               color: kPrimaryColor,
-              onPressed: () => authCubit.logoutUser(context),
+              onPressed: () => authCubit.add(LogoutEvent()),
               icon: Icon(Icons.logout_rounded))
         ],
       ),

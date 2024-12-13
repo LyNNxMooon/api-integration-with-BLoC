@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:bloc_api/BLoC/auth/auth_events.dart';
 import 'package:bloc_api/BLoC/auth/auth_states.dart';
 import 'package:bloc_api/data/models/hive_model.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
@@ -7,19 +8,23 @@ import 'package:bloc_api/domain/auth_repository.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 import 'package:bloc_api/network/response/login_register_response.dart';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AuthCubit extends Cubit<AuthStates> {
+class AuthCubit extends Bloc<AuthEvents, AuthStates> {
   final AuthRepo authRepo;
 
   UserVO? _currentUser;
 
-  AuthCubit({required this.authRepo}) : super(AuthInitial());
+  AuthCubit({required this.authRepo}) : super(AuthInitial()) {
+    on<CheckUserAuth>(_checkAuth);
+    on<RegisterEvent>(_registerUser);
+    on<LoginEvent>(_loginUser);
+    on<LogoutEvent>(_logoutUser);
+  }
 
   final _hiveModel = HiveModel();
 
-  void checkAuth() async {
+  void _checkAuth(CheckUserAuth event, Emitter<AuthStates> emit) async {
     try {
       final UserVO user =
           await authRepo.getCurrentUser(_hiveModel.getUserToken());
@@ -38,13 +43,19 @@ class AuthCubit extends Cubit<AuthStates> {
 
   //Register user
 
-  Future<void> registerUser(String name, String phone, String password,
-      String confirmPassword) async {
+  Future<void> _registerUser(
+    RegisterEvent event,
+    Emitter<AuthStates> emit,
+  ) async {
     try {
       emit(AuthLoading());
 
       final LoginRegisterResponse response = await authRepo.registerUser(
-          name, phone, password, "fcm token", confirmPassword);
+          event.name,
+          event.phone,
+          event.password,
+          "fcm token",
+          event.confirmPassword);
 
       _currentUser = response.data;
       _hiveModel.saveUserToken(response.token);
@@ -57,12 +68,12 @@ class AuthCubit extends Cubit<AuthStates> {
 
   //login
 
-  Future<void> loginUser(String emailOrPhone, String password) async {
+  Future<void> _loginUser(LoginEvent event, Emitter<AuthStates> emit) async {
     try {
       emit(AuthLoading());
 
-      final LoginRegisterResponse response =
-          await authRepo.loginUser(emailOrPhone, password, "fcm token");
+      final LoginRegisterResponse response = await authRepo.loginUser(
+          event.emailOrPhone, event.password, "fcm token");
 
       _currentUser = response.data;
       _hiveModel.saveUserToken(response.token);
@@ -75,7 +86,7 @@ class AuthCubit extends Cubit<AuthStates> {
 
   //logout
 
-  Future<void> logoutUser(BuildContext context) async {
+  Future<void> _logoutUser(LogoutEvent event, Emitter<AuthStates> emit) async {
     try {
       emit(AuthLoading());
 

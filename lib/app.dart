@@ -1,6 +1,7 @@
-import 'package:bloc_api/BLoC/auth/auth_cubit.dart';
+import 'package:bloc_api/BLoC/auth/auth_bloc.dart';
+import 'package:bloc_api/BLoC/auth/auth_events.dart';
 import 'package:bloc_api/BLoC/auth/auth_states.dart';
-import 'package:bloc_api/BLoC/products/product_cubit.dart';
+import 'package:bloc_api/BLoC/products/product_bloc.dart';
 import 'package:bloc_api/BLoC/products/product_events.dart';
 import 'package:bloc_api/data/models/auth_model.dart';
 import 'package:bloc_api/data/models/product_model.dart';
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
-          create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
+          create: (context) =>
+              AuthCubit(authRepo: authRepo)..add(CheckUserAuth()),
         ),
         BlocProvider<ProductsCubit>(
           create: (context) =>

@@ -1,4 +1,5 @@
-import 'package:bloc_api/BLoC/auth/auth_cubit.dart';
+import 'package:bloc_api/BLoC/auth/auth_bloc.dart';
+import 'package:bloc_api/BLoC/auth/auth_events.dart';
 import 'package:bloc_api/constants/texts.dart';
 import 'package:bloc_api/utils/enums.dart';
 import 'package:bloc_api/widgets/button_widget.dart';
@@ -124,12 +125,11 @@ class _RegisterPageState extends State<RegisterPage> {
               const Gap(40),
               CustomButton(
                 name: "Register",
-                function: () => authCubit.registerUser(
-                  _nameController.text,
-                  _phoneController.text,
-                  _passwordController.text,
-                  _confirmPasswordController.text,
-                ),
+                function: () => authCubit.add(RegisterEvent(
+                    name: _nameController.text,
+                    phone: _phoneController.text,
+                    password: _passwordController.text,
+                    confirmPassword: _confirmPasswordController.text)),
               ),
               const Gap(60),
               GestureDetector(

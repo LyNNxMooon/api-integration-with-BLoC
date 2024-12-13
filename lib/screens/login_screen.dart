@@ -1,4 +1,5 @@
-import 'package:bloc_api/BLoC/auth/auth_cubit.dart';
+import 'package:bloc_api/BLoC/auth/auth_bloc.dart';
+import 'package:bloc_api/BLoC/auth/auth_events.dart';
 import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/constants/texts.dart';
 import 'package:bloc_api/widgets/button_widget.dart';
@@ -88,8 +89,9 @@ class _LoginPageState extends State<LoginPage> {
             const Gap(40),
             CustomButton(
               name: "Login",
-              function: () => authCubit.loginUser(
-                  _emailOrPhoneController.text, _passwordController.text),
+              function: () => authCubit.add(LoginEvent(
+                  emailOrPhone: _emailOrPhoneController.text,
+                  password: _passwordController.text)),
             ),
             const Gap(60),
             GestureDetector(
