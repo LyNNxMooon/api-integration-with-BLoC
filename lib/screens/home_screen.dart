@@ -1,8 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:bloc_api/BLoC/cubits/auth/auth_cubit.dart';
-import 'package:bloc_api/BLoC/cubits/products/product_cubit.dart';
-import 'package:bloc_api/BLoC/cubits/products/product_states.dart';
+import 'package:bloc_api/BLoC/auth/auth_cubit.dart';
+import 'package:bloc_api/BLoC/products/product_cubit.dart';
+import 'package:bloc_api/BLoC/products/product_events.dart';
+import 'package:bloc_api/BLoC/products/product_states.dart';
 import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
 
@@ -65,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const Gap(10),
                     IconButton(
-                        onPressed: () => productsCubit.getAllProducts(),
+                        onPressed: () => productsCubit.add(FetchProducts()),
                         icon: Icon(
                           Icons.replay_outlined,
                           color: kFourthColor,
@@ -138,7 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget productList(List<ItemVO> products, BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => productsCubit.getAllProducts(),
+      onRefresh: () async {
+        productsCubit.add(FetchProducts());
+      },
       backgroundColor: kPrimaryColor,
       color: kSecondaryColor,
       child: ListView.separated(

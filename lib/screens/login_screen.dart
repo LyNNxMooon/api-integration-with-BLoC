@@ -1,4 +1,4 @@
-import 'package:bloc_api/BLoC/cubits/auth/auth_cubit.dart';
+import 'package:bloc_api/BLoC/auth/auth_cubit.dart';
 import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/constants/texts.dart';
 import 'package:bloc_api/widgets/button_widget.dart';

@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:bloc_api/BLoC/cubits/auth/auth_states.dart';
+import 'package:bloc_api/BLoC/auth/auth_states.dart';
 import 'package:bloc_api/data/models/hive_model.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/domain/auth_repository.dart';

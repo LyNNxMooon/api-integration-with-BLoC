@@ -1,6 +1,7 @@
-import 'package:bloc_api/BLoC/cubits/auth/auth_cubit.dart';
-import 'package:bloc_api/BLoC/cubits/auth/auth_states.dart';
-import 'package:bloc_api/BLoC/cubits/products/product_cubit.dart';
+import 'package:bloc_api/BLoC/auth/auth_cubit.dart';
+import 'package:bloc_api/BLoC/auth/auth_states.dart';
+import 'package:bloc_api/BLoC/products/product_cubit.dart';
+import 'package:bloc_api/BLoC/products/product_events.dart';
 import 'package:bloc_api/data/models/auth_model.dart';
 import 'package:bloc_api/data/models/product_model.dart';
 import 'package:bloc_api/screens/auth_screen.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ProductsCubit>(
           create: (context) =>
-              ProductsCubit(productRepo: productsRepo)..getAllProducts(),
+              ProductsCubit(productRepo: productsRepo)..add(FetchProducts()),
         ),
       ],
       child: MaterialApp(
