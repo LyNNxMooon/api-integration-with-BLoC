@@ -4,10 +4,10 @@ import 'package:bloc_api/data/models/hive_model.dart';
 import 'package:bloc_api/domain/product_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductsCubit extends Bloc<ProductsEvent, ProductsStates> {
+class ProductsBloc extends Bloc<ProductsEvent, ProductsStates> {
   final ProductRepo productRepo;
 
-  ProductsCubit({required this.productRepo}) : super(ProductsInitial()) {
+  ProductsBloc({required this.productRepo}) : super(ProductsInitial()) {
     on<FetchProducts>(_onFetchProducts);
   }
 

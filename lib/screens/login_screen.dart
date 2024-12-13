@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authCubit = context.read<AuthCubit>();
+    final authBloc = context.read<AuthBloc>();
     return SafeArea(
         child: Scaffold(
       backgroundColor: kPrimaryColor,
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
             const Gap(40),
             CustomButton(
               name: "Login",
-              function: () => authCubit.add(LoginEvent(
+              function: () => authBloc.add(LoginEvent(
                   emailOrPhone: _emailOrPhoneController.text,
                   password: _passwordController.text)),
             ),

@@ -21,8 +21,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final productsCubit = context.read<ProductsCubit>();
-  late final authCubit = context.read<AuthCubit>();
+  late final productsBloc = context.read<ProductsBloc>();
+  late final authBloc = context.read<AuthBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Column(
           children: [
             Text(
-              authCubit.currentUser?.name ?? "",
+              authBloc.currentUser?.name ?? "",
               style: TextStyle(color: kPrimaryColor),
             )
           ],
@@ -43,11 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               color: kPrimaryColor,
-              onPressed: () => authCubit.add(LogoutEvent()),
+              onPressed: () => authBloc.add(LogoutEvent()),
               icon: Icon(Icons.logout_rounded))
         ],
       ),
-      body: BlocBuilder<ProductsCubit, ProductsStates>(
+      body: BlocBuilder<ProductsBloc, ProductsStates>(
         builder: (context, state) {
           if (state is ProductsLoading) {
             return shimmerLoading();
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const Gap(10),
                     IconButton(
-                        onPressed: () => productsCubit.add(FetchProducts()),
+                        onPressed: () => productsBloc.add(FetchProducts()),
                         icon: Icon(
                           Icons.replay_outlined,
                           color: kFourthColor,
@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget productList(List<ItemVO> products, BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        productsCubit.add(FetchProducts());
+        productsBloc.add(FetchProducts());
       },
       backgroundColor: kPrimaryColor,
       color: kSecondaryColor,

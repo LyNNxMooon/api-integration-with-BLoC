@@ -10,12 +10,12 @@ import 'package:bloc_api/network/response/login_register_response.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AuthCubit extends Bloc<AuthEvents, AuthStates> {
+class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   final AuthRepo authRepo;
 
   UserVO? _currentUser;
 
-  AuthCubit({required this.authRepo}) : super(AuthInitial()) {
+  AuthBloc({required this.authRepo}) : super(AuthInitial()) {
     on<CheckUserAuth>(_checkAuth);
     on<RegisterEvent>(_registerUser);
     on<LoginEvent>(_loginUser);

@@ -37,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authCubit = context.read<AuthCubit>();
+    final authBloc = context.read<AuthBloc>();
     return SafeArea(
       child: Scaffold(
         backgroundColor: kPrimaryColor,
@@ -125,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
               const Gap(40),
               CustomButton(
                 name: "Register",
-                function: () => authCubit.add(RegisterEvent(
+                function: () => authBloc.add(RegisterEvent(
                     name: _nameController.text,
                     phone: _phoneController.text,
                     password: _passwordController.text,

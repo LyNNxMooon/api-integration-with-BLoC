@@ -23,18 +23,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
+        BlocProvider<AuthBloc>(
           create: (context) =>
-              AuthCubit(authRepo: authRepo)..add(CheckUserAuth()),
+              AuthBloc(authRepo: authRepo)..add(CheckUserAuth()),
         ),
-        BlocProvider<ProductsCubit>(
+        BlocProvider<ProductsBloc>(
           create: (context) =>
-              ProductsCubit(productRepo: productsRepo)..add(FetchProducts()),
+              ProductsBloc(productRepo: productsRepo)..add(FetchProducts()),
         ),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: BlocConsumer<AuthCubit, AuthStates>(
+          home: BlocConsumer<AuthBloc, AuthStates>(
             builder: (context, authState) {
               return authState is Unauthenticated
                   ? const AuthScreen()
