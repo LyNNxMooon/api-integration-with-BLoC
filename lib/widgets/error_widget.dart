@@ -1,46 +1,37 @@
+import 'package:bloc_api/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:bloc_api/constants/colors.dart';
 
-class CustomErrorWidget extends StatelessWidget {
-  const CustomErrorWidget(
-      {super.key, required this.errorMessage, required this.function});
+class ErrorUIWidget extends StatelessWidget {
+  const ErrorUIWidget({super.key, this.function, required this.message});
 
-  final String errorMessage;
-  final VoidCallback function;
+  final void Function()? function;
+  final String message;
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-        actions: [
-          Center(
-            child: TextButton(
-              onPressed: function,
-              style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(kSecondaryColor)),
-              child: const Text(
-                "OK",
-                style: TextStyle(color: kPrimaryColor),
-              ),
-            ),
-          )
-        ],
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error_outline,
-              color: kErrorColor,
+            Text(
+              textAlign: TextAlign.center,
+              message,
+              style: TextStyle(color: kErrorColor, fontWeight: FontWeight.bold),
             ),
             const Gap(10),
-            Text(
-              errorMessage,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: kErrorColor),
-            ),
+            IconButton(
+                onPressed: function,
+                icon: Icon(
+                  Icons.replay_outlined,
+                  color: kFourthColor,
+                ))
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

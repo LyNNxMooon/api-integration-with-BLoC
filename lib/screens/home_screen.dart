@@ -9,6 +9,7 @@ import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/screens/cart_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
+import 'package:bloc_api/widgets/error_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,29 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is ProductsLoading) {
             return shimmerLoading();
           } else if (state is ProductsError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      textAlign: TextAlign.center,
-                      state.message,
-                      style: TextStyle(
-                          color: kErrorColor, fontWeight: FontWeight.bold),
-                    ),
-                    const Gap(10),
-                    IconButton(
-                        onPressed: () => productsBloc.add(FetchProducts()),
-                        icon: Icon(
-                          Icons.replay_outlined,
-                          color: kFourthColor,
-                        ))
-                  ],
-                ),
-              ),
+            return ErrorUIWidget(
+              function: () => productsBloc.add(FetchProducts()),
+              message: state.message,
             );
           } else if (state is ProductsLoaded) {
             return state.products.isEmpty
