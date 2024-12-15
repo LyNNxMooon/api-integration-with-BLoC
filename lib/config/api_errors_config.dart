@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:bloc_api/network/response/cart_error_response.dart';
 import 'package:bloc_api/network/response/login_register_error_response.dart';
 import 'package:bloc_api/network/response/user_and_logout_error_response.dart';
 import 'package:dio/dio.dart';
@@ -135,6 +136,29 @@ class ApiErrorsConfig {
       if (error.response?.data is Map<String, dynamic>) {
         try {
           return "Error fetching products";
+        } catch (error) {
+          return error.toString();
+        }
+      }
+      return error.response.toString();
+    }
+    return error.toString();
+  }
+
+  Object throwExceptionForGetCarts(dynamic error) {
+    if (error is DioException) {
+      if (error.type == DioExceptionType.connectionError ||
+          error.type == DioExceptionType.receiveTimeout ||
+          error.type == DioExceptionType.connectionTimeout ||
+          error.type == DioExceptionType.sendTimeout) {
+        return "Unable to connect to the server. Please check your internet connection and try again.";
+      }
+      if (error.response?.data is Map<String, dynamic>) {
+        try {
+          final errorResponse =
+              CartErrorResponse.fromJson(jsonDecode(error.response.toString()));
+
+          return errorResponse.message;
         } catch (error) {
           return error.toString();
         }

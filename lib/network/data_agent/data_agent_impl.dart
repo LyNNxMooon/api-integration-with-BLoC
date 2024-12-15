@@ -3,7 +3,9 @@
 import 'package:bloc_api/config/api_errors_config.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/network/api/api.dart';
+import 'package:bloc_api/network/api/api_v1.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
+import 'package:bloc_api/network/response/cart_response.dart';
 import 'package:bloc_api/network/response/item_response.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 
@@ -12,9 +14,11 @@ import 'package:dio/dio.dart';
 
 class DataAgentImpl extends DataAgent {
   late Api _api;
+  late ApiV1 _apiV1;
 
   DataAgentImpl._() {
     _api = Api(Dio());
+    _apiV1 = ApiV1(Dio());
   }
 
   static final DataAgentImpl _singleton = DataAgentImpl._();
@@ -90,6 +94,21 @@ class DataAgentImpl extends DataAgent {
           .first;
     } on Exception catch (error) {
       return Future.error(apiErrorsConfig.throwExceptionForGetProducts(error));
+    }
+  }
+
+  @override
+  Future<CartResponse> getUserCart(String token) async {
+    try {
+      return await _apiV1
+          .getCart("Bearer $token")
+          .asStream()
+          .map(
+            (event) => event,
+          )
+          .first;
+    } on Exception catch (error) {
+      return Future.error(apiErrorsConfig.throwExceptionForGetCarts(error));
     }
   }
 }

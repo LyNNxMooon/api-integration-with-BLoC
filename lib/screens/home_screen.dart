@@ -7,6 +7,8 @@ import 'package:bloc_api/BLoC/products/product_events.dart';
 import 'package:bloc_api/BLoC/products/product_states.dart';
 import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
+import 'package:bloc_api/screens/cart_screen.dart';
+import 'package:bloc_api/utils/navigation_extension.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,20 +33,22 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: kPrimaryColor,
       appBar: AppBar(
         backgroundColor: kThirdColor,
+        leading: IconButton(
+            color: kPrimaryColor,
+            onPressed: () => authBloc.add(LogoutEvent()),
+            icon: Icon(Icons.logout_rounded)),
         centerTitle: true,
-        title: Column(
-          children: [
-            Text(
-              authBloc.currentUser?.name ?? "",
-              style: TextStyle(color: kPrimaryColor),
-            )
-          ],
+        title: Text(
+          authBloc.currentUser?.name ?? "",
+          style: TextStyle(color: kPrimaryColor),
         ),
         actions: [
           IconButton(
-              color: kPrimaryColor,
-              onPressed: () => authBloc.add(LogoutEvent()),
-              icon: Icon(Icons.logout_rounded))
+              onPressed: () => context.navigateToNext(CartScreen()),
+              icon: Icon(
+                Icons.shopping_cart,
+                color: kPrimaryColor,
+              ))
         ],
       ),
       body: BlocBuilder<ProductsBloc, ProductsStates>(

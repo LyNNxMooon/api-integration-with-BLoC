@@ -1,5 +1,6 @@
 //Base URl
 const kBaseURL = "https://oneoneshop.hapeyeapp.com/api/v1";
+const kBaseURL1 = "https://easy-buy.ecommyanmar.com/api";
 
 //End Points
 const kEndPointForRegister = "/register";
@@ -7,6 +8,7 @@ const kEndPointForGetCurrentUser = "/customer";
 const kEndPointForLogout = "/logout";
 const kEndPointForLogin = "/login";
 const kEndPointForProducts = "/products";
+const kEndPointForGetCart = "/cart";
 
 //keys
 const kAuthorizationKey = "Authorization";
