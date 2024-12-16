@@ -47,7 +47,7 @@ class _CartScreenState extends State<CartScreen> {
         ),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () => cartBloc.add(ClearCart()),
               icon: Icon(
                 Icons.delete_outline,
                 color: kPrimaryColor,
@@ -98,6 +98,25 @@ class _CartScreenState extends State<CartScreen> {
               context: context,
               builder: (context) =>
                   SuccessWidget(message: state.updateResponse.data),
+            );
+          }
+
+          if (state is CartRemoved && state.removeResponse.status == "error") {
+            showDialog(
+              context: context,
+              builder: (context) => CustomErrorWidget(
+                errorMessage: state.removeResponse.data,
+                function: () => context.navigateBack(),
+              ),
+            );
+          }
+
+          if (state is CartRemoved &&
+              state.removeResponse.status == "success") {
+            showDialog(
+              context: context,
+              builder: (context) =>
+                  SuccessWidget(message: state.removeResponse.data),
             );
           }
         },
@@ -185,17 +204,21 @@ class _CartScreenState extends State<CartScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            decoration: BoxDecoration(
-                                color: kFourthColor,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Center(
-                              child: Icon(
-                                Icons.remove,
-                                size: 14,
-                                color: kSecondaryColor,
+                          GestureDetector(
+                            onTap: () => cartBloc
+                                .add(RemoveCart(cartID: cart.data[index].id)),
+                            child: Container(
+                              width: 18,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  color: kFourthColor,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Center(
+                                child: Icon(
+                                  Icons.remove,
+                                  size: 14,
+                                  color: kSecondaryColor,
+                                ),
                               ),
                             ),
                           ),
@@ -330,7 +353,7 @@ class _CartScreenState extends State<CartScreen> {
                         color: kPrimaryColor, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    cart.tax,
+                    cart.tax!,
                     style: TextStyle(
                         color: kPrimaryColor, fontWeight: FontWeight.bold),
                   )

@@ -7,11 +7,11 @@ class CartResponse {
   final String status;
   final List<CartItemVO> data;
   final int totalPrice;
-  final String tax;
+  String? tax;
   @JsonKey(name: 'tax_amount')
-  final int taxAmount;
+  int? taxAmount;
   @JsonKey(name: 'grand_total')
-  final int grandTotal;
+  int? grandTotal;
 
   CartResponse(
       {required this.status,

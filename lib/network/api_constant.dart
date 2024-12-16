@@ -10,6 +10,8 @@ const kEndPointForLogin = "/login";
 const kEndPointForProducts = "/products";
 const kEndPointForGetCart = "/cart";
 const kEndPointForUpdateCart = "/cart/{$kPathParamKeyForCartID}";
+const kEndPointForClearCart = "/cart/clear";
+const kEndPointForRemoveCart = "/cart/delete/{$kPathParamKeyForCartID}";
 
 //keys
 const kAuthorizationKey = "Authorization";

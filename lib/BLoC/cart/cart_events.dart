@@ -8,3 +8,11 @@ class UpdateCart extends CartEvents {
 
   UpdateCart({required this.cartID, required this.qty});
 }
+
+class RemoveCart extends CartEvents {
+  int cartID;
+
+  RemoveCart({required this.cartID});
+}
+
+class ClearCart extends CartEvents {}

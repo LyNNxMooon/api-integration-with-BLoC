@@ -26,4 +26,21 @@ abstract class ApiV1 {
       @Header(kAuthorizationKey) String token,
       @Path(kPathParamKeyForCartID) int cartID,
       @Field(kParamKeyForQuantity) int qty);
+
+  @DELETE(kEndPointForRemoveCart)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<CartUpdateAndRemoveResponse> removeCart(
+    @Header(kAuthorizationKey) String token,
+    @Path(kPathParamKeyForCartID) int cartID,
+  );
+
+  @DELETE(kEndPointForClearCart)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<CartUpdateAndRemoveResponse> clearCart(
+    @Header(kAuthorizationKey) String token,
+  );
 }

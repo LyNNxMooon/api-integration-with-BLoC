@@ -22,4 +22,8 @@ abstract class DataAgent {
 
   Future<CartUpdateAndRemoveResponse> updateCart(
       String token, int cartID, int qty);
+
+  Future<CartUpdateAndRemoveResponse> removeCart(String token, int cartID);
+
+  Future<CartUpdateAndRemoveResponse> clearCart(String token);
 }

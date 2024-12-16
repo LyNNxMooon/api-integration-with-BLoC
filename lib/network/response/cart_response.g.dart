@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: unused_element
-
 part of 'cart_response.dart';
 
 // **************************************************************************
@@ -14,9 +12,9 @@ CartResponse _$CartResponseFromJson(Map<String, dynamic> json) => CartResponse(
           .map((e) => CartItemVO.fromJson(e as Map<String, dynamic>))
           .toList(),
       totalPrice: (json['totalPrice'] as num).toInt(),
-      tax: json['tax'] as String,
-      taxAmount: (json['tax_amount'] as num).toInt(),
-      grandTotal: (json['grand_total'] as num).toInt(),
+      tax: json['tax'] as String?,
+      taxAmount: (json['tax_amount'] as num?)?.toInt(),
+      grandTotal: (json['grand_total'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CartResponseToJson(CartResponse instance) =>

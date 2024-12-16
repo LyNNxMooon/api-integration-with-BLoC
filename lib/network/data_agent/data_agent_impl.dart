@@ -128,4 +128,35 @@ class DataAgentImpl extends DataAgent {
       return Future.error(apiErrorsConfig.throwExceptionForGetCarts(error));
     }
   }
+
+  @override
+  Future<CartUpdateAndRemoveResponse> clearCart(String token) async {
+    try {
+      return await _apiV1
+          .clearCart("Bearer $token")
+          .asStream()
+          .map(
+            (event) => event,
+          )
+          .first;
+    } on Exception catch (error) {
+      return Future.error(apiErrorsConfig.throwExceptionForGetCarts(error));
+    }
+  }
+
+  @override
+  Future<CartUpdateAndRemoveResponse> removeCart(
+      String token, int cartID) async {
+    try {
+      return await _apiV1
+          .removeCart("Bearer $token", cartID)
+          .asStream()
+          .map(
+            (event) => event,
+          )
+          .first;
+    } on Exception catch (error) {
+      return Future.error(apiErrorsConfig.throwExceptionForGetCarts(error));
+    }
+  }
 }

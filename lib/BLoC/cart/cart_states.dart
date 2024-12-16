@@ -31,7 +31,7 @@ class CartUpdated extends CartStates {
 }
 
 class CartRemoved extends CartStates {
-  final String message;
+  final CartUpdateAndRemoveResponse removeResponse;
 
-  CartRemoved(this.message);
+  CartRemoved(this.removeResponse);
 }

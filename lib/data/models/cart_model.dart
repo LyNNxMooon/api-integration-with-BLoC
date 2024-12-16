@@ -13,7 +13,15 @@ class CartModel implements CartRepo {
   @override
   Future<CartResponse> getUserCart(String token) async {
     try {
-      return await _dataAgent.getUserCart(token);
+      return await _dataAgent.getUserCart(token).then(
+        (value) {
+          var temp = value;
+          temp.tax = (temp.tax?.isEmpty ?? true) ? " - " : temp.tax;
+          temp.taxAmount = temp.taxAmount ?? 0;
+          temp.grandTotal = temp.grandTotal ?? 0;
+          return temp;
+        },
+      );
     } on Exception catch (error) {
       return Future.error(error);
     }
@@ -24,6 +32,25 @@ class CartModel implements CartRepo {
       String token, int cartID, int qty) async {
     try {
       return await _dataAgent.updateCart(token, cartID, qty);
+    } on Exception catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  @override
+  Future<CartUpdateAndRemoveResponse> clearCart(String token) async {
+    try {
+      return await _dataAgent.clearCart(token);
+    } on Exception catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  @override
+  Future<CartUpdateAndRemoveResponse> removeCart(
+      String token, int cartID) async {
+    try {
+      return await _dataAgent.removeCart(token, cartID);
     } on Exception catch (error) {
       return Future.error(error);
     }
