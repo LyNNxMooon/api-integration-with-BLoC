@@ -13,6 +13,7 @@ import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/screens/cart_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   alignment: Alignment.topRight,
                   child: BlocBuilder<CartBloc, CartStates>(
                     builder: (context, state) {
-                      if (state is CartLoaded) {
+                      if (state is CartLoaded && state.cart.data.isNotEmpty) {
                         return Container(
                           decoration: BoxDecoration(
                               color: kFourthColor,
@@ -199,15 +200,18 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 width: 40,
                 height: 60,
-                child: Image.network(
-                  products[index].image,
+                child: CachedNetworkImage(
+                  imageUrl: products[index].image,
                   fit: BoxFit.cover,
-                  // loadingBuilder: (context, child, loadingProgress) => Center(
-                  //   child: CircularProgressIndicator(
-                  //     color: kSecondaryColor,
-                  //   ),
-                  // ),
-                  // errorBuilder: (context, error, stackTrace) => SizedBox(),
+                  errorWidget: (context, url, error) => Icon(
+                    Icons.error,
+                    color: kFourthColor,
+                  ),
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(
+                      color: kSecondaryColor,
+                    ),
+                  ),
                 ),
               ),
               const Gap(20),
