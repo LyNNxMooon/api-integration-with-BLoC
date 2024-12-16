@@ -1,7 +1,10 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, avoid_print
 
 import 'package:bloc_api/BLoC/auth/auth_bloc.dart';
 import 'package:bloc_api/BLoC/auth/auth_events.dart';
+import 'package:bloc_api/BLoC/cart/cart_bloc.dart';
+import 'package:bloc_api/BLoC/cart/cart_events.dart';
+import 'package:bloc_api/BLoC/cart/cart_states.dart';
 import 'package:bloc_api/BLoC/products/product_bloc.dart';
 import 'package:bloc_api/BLoC/products/product_events.dart';
 import 'package:bloc_api/BLoC/products/product_states.dart';
@@ -26,6 +29,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late final productsBloc = context.read<ProductsBloc>();
   late final authBloc = context.read<AuthBloc>();
+  late final cartBloc = context.read<CartBloc>();
+
+  @override
+  void initState() {
+    cartBloc.add(GetCart());
+    print("---Cart Loaded----");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +55,49 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(color: kPrimaryColor),
         ),
         actions: [
-          IconButton(
-              onPressed: () => context.navigateToNext(CartScreen()),
-              icon: Icon(
-                Icons.shopping_cart,
-                color: kPrimaryColor,
-              ))
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            width: 42,
+            height: 45,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                      onPressed: () => context.navigateToNext(CartScreen()),
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: kPrimaryColor,
+                      )),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: BlocBuilder<CartBloc, CartStates>(
+                    builder: (context, state) {
+                      if (state is CartLoaded) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              color: kFourthColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          width: 17,
+                          height: 17,
+                          child: Center(
+                            child: Text(
+                              state.cart.data.length.toString(),
+                              style:
+                                  TextStyle(color: kPrimaryColor, fontSize: 10),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
       body: BlocBuilder<ProductsBloc, ProductsStates>(
