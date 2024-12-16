@@ -6,6 +6,7 @@ import 'package:bloc_api/network/api/api.dart';
 import 'package:bloc_api/network/api/api_v1.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
 import 'package:bloc_api/network/response/cart_response.dart';
+import 'package:bloc_api/network/response/cart_update_and_remove_response.dart';
 import 'package:bloc_api/network/response/item_response.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 
@@ -102,6 +103,22 @@ class DataAgentImpl extends DataAgent {
     try {
       return await _apiV1
           .getCart("Bearer $token")
+          .asStream()
+          .map(
+            (event) => event,
+          )
+          .first;
+    } on Exception catch (error) {
+      return Future.error(apiErrorsConfig.throwExceptionForGetCarts(error));
+    }
+  }
+
+  @override
+  Future<CartUpdateAndRemoveResponse> updateCart(
+      String token, int cartID, int qty) async {
+    try {
+      return await _apiV1
+          .updateCart("Bearer $token", cartID, qty)
           .asStream()
           .map(
             (event) => event,

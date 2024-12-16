@@ -9,6 +9,7 @@ const kEndPointForLogout = "/logout";
 const kEndPointForLogin = "/login";
 const kEndPointForProducts = "/products";
 const kEndPointForGetCart = "/cart";
+const kEndPointForUpdateCart = "/cart/{$kPathParamKeyForCartID}";
 
 //keys
 const kAuthorizationKey = "Authorization";
@@ -20,3 +21,5 @@ const kParamKeyForPhone = "phone";
 const kParamKeyForFcm = "fcm_token_key";
 const kQueryParamKeyForPage = "page";
 const kQueryParamKeyForLimit = "limit";
+const kPathParamKeyForCartID = "CartID";
+const kParamKeyForQuantity = "quantity";

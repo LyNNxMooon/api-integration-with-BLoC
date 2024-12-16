@@ -8,7 +8,9 @@ import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/network/response/cart_response.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/button_widget.dart';
+import 'package:bloc_api/widgets/error_dialog.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
+import 'package:bloc_api/widgets/success_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
@@ -67,7 +69,38 @@ class _CartScreenState extends State<CartScreen> {
             return SizedBox();
           }
         },
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is CartErrors) {
+            showDialog(
+              context: context,
+              builder: (context) => CustomErrorWidget(
+                errorMessage: state.message,
+                function: () => context.navigateBack(),
+              ),
+            );
+          }
+
+          if (state is CartUpdated && state.updateResponse.status == "error") {
+            showDialog(
+              context: context,
+              builder: (context) => CustomErrorWidget(
+                errorMessage: state.updateResponse.data is Map
+                    ? state.updateResponse.data['quantity'][0]
+                    : state.updateResponse.data,
+                function: () => context.navigateBack(),
+              ),
+            );
+          }
+
+          if (state is CartUpdated &&
+              state.updateResponse.status == "success") {
+            showDialog(
+              context: context,
+              builder: (context) =>
+                  SuccessWidget(message: state.updateResponse.data),
+            );
+          }
+        },
       ),
     ));
   }
@@ -209,17 +242,22 @@ class _CartScreenState extends State<CartScreen> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                width: 18,
-                                height: 18,
-                                decoration: BoxDecoration(
-                                    color: kFourthColor,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 14,
-                                    color: kSecondaryColor,
+                              GestureDetector(
+                                onTap: () => cartBloc.add(UpdateCart(
+                                    cartID: cart.data[index].id,
+                                    qty: cart.data[index].quantity + 1)),
+                                child: Container(
+                                  width: 18,
+                                  height: 18,
+                                  decoration: BoxDecoration(
+                                      color: kFourthColor,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 14,
+                                      color: kSecondaryColor,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -229,17 +267,22 @@ class _CartScreenState extends State<CartScreen> {
                                 child:
                                     Text(cart.data[index].quantity.toString()),
                               ),
-                              Container(
-                                width: 18,
-                                height: 18,
-                                decoration: BoxDecoration(
-                                    color: kFourthColor,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.remove,
-                                    size: 14,
-                                    color: kSecondaryColor,
+                              GestureDetector(
+                                onTap: () => cartBloc.add(UpdateCart(
+                                    cartID: cart.data[index].id,
+                                    qty: cart.data[index].quantity - 1)),
+                                child: Container(
+                                  width: 18,
+                                  height: 18,
+                                  decoration: BoxDecoration(
+                                      color: kFourthColor,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.remove,
+                                      size: 14,
+                                      color: kSecondaryColor,
+                                    ),
                                   ),
                                 ),
                               ),
