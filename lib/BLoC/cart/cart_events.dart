@@ -16,3 +16,10 @@ class RemoveCart extends CartEvents {
 }
 
 class ClearCart extends CartEvents {}
+
+class AddToCart extends CartEvents {
+  int productID;
+  int qty;
+
+  AddToCart({required this.productID, required this.qty});
+}

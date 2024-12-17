@@ -121,6 +121,15 @@ class _CartScreenState extends State<CartScreen> {
           }
         },
       ),
+      bottomNavigationBar: BlocBuilder<CartBloc, CartStates>(
+        builder: (context, state) {
+          if (state is CartLoaded && state.cart.data.isNotEmpty) {
+            return bottomNaviUI(state.cart);
+          } else {
+            return SizedBox();
+          }
+        },
+      ),
     ));
   }
 
@@ -171,235 +180,225 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget cartUI(CartResponse cart) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
+    return RefreshIndicator(
+      backgroundColor: kPrimaryColor,
+      color: kSecondaryColor,
+      onRefresh: () async {
+        cartBloc.add(GetCart());
+      },
+      child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: RefreshIndicator(
-            backgroundColor: kPrimaryColor,
-            color: kSecondaryColor,
-            onRefresh: () async {
-              cartBloc.add(GetCart());
-            },
-            child: ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (context, index) => Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      width: double.infinity,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color:
-                                  Colors.black.withOpacity(0.1), // Shadow color
-                              spreadRadius: 3, // Spread radius
-                              blurRadius: 5, // Blur radius
-                              offset:
-                                  const Offset(0, 3), // Offset of the shadow
-                            ),
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          itemBuilder: (context, index) => Container(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                width: double.infinity,
+                height: 100,
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1), // Shadow color
+                        spreadRadius: 3, // Spread radius
+                        blurRadius: 5, // Blur radius
+                        offset: const Offset(0, 3), // Offset of the shadow
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () =>
+                          cartBloc.add(RemoveCart(cartID: cart.data[index].id)),
+                      child: Container(
+                        width: 18,
+                        height: 18,
+                        decoration: BoxDecoration(
+                            color: kFourthColor,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(
+                          child: Icon(
+                            Icons.remove,
+                            size: 14,
+                            color: kSecondaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 55,
+                      height: 75,
+                      child: CachedNetworkImage(
+                        imageUrl: cart.data[index].product.photos.isEmpty
+                            ? ""
+                            : cart.data[index].product.photos[0],
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.error,
+                          color: kFourthColor,
+                        ),
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(
+                            color: kSecondaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.42,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () => cartBloc
-                                .add(RemoveCart(cartID: cart.data[index].id)),
-                            child: Container(
-                              width: 18,
-                              height: 18,
-                              decoration: BoxDecoration(
-                                  color: kFourthColor,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Center(
-                                child: Icon(
-                                  Icons.remove,
-                                  size: 14,
-                                  color: kSecondaryColor,
-                                ),
-                              ),
-                            ),
+                          Text(
+                            cart.data[index].product.name,
+                            style: TextStyle(fontSize: 16, color: kFourthColor),
                           ),
-                          SizedBox(
-                            width: 55,
-                            height: 75,
-                            child: CachedNetworkImage(
-                              imageUrl: cart.data[index].product.photos.isEmpty
-                                  ? ""
-                                  : cart.data[index].product.photos[0],
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) => Icon(
-                                Icons.error,
-                                color: kFourthColor,
-                              ),
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(
-                                  color: kSecondaryColor,
-                                ),
-                              ),
-                            ),
+                          const Gap(5),
+                          Text(
+                            "${cart.data[index].totalPrice.toString()} Ks",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: kFourthColor),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.42,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  cart.data[index].product.name,
-                                  style: TextStyle(
-                                      fontSize: 16, color: kFourthColor),
-                                ),
-                                const Gap(5),
-                                Text(
-                                  "${cart.data[index].totalPrice.toString()} Ks",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: kFourthColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () => cartBloc.add(UpdateCart(
-                                    cartID: cart.data[index].id,
-                                    qty: cart.data[index].quantity + 1)),
-                                child: Container(
-                                  width: 18,
-                                  height: 18,
-                                  decoration: BoxDecoration(
-                                      color: kFourthColor,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.add,
-                                      size: 14,
-                                      color: kSecondaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child:
-                                    Text(cart.data[index].quantity.toString()),
-                              ),
-                              GestureDetector(
-                                onTap: () => cartBloc.add(UpdateCart(
-                                    cartID: cart.data[index].id,
-                                    qty: cart.data[index].quantity - 1)),
-                                child: Container(
-                                  width: 18,
-                                  height: 18,
-                                  decoration: BoxDecoration(
-                                      color: kFourthColor,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.remove,
-                                      size: 14,
-                                      color: kSecondaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
                         ],
                       ),
                     ),
-                separatorBuilder: (context, index) => const Gap(15),
-                itemCount: cart.data.length),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          height: 210,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: kThirdColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-          child: Column(
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () => cartBloc.add(UpdateCart(
+                              cartID: cart.data[index].id,
+                              qty: cart.data[index].quantity + 1)),
+                          child: Container(
+                            width: 18,
+                            height: 18,
+                            decoration: BoxDecoration(
+                                color: kFourthColor,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                size: 14,
+                                color: kSecondaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: Text(cart.data[index].quantity.toString()),
+                        ),
+                        GestureDetector(
+                          onTap: () => cartBloc.add(UpdateCart(
+                              cartID: cart.data[index].id,
+                              qty: cart.data[index].quantity - 1)),
+                          child: Container(
+                            width: 18,
+                            height: 18,
+                            decoration: BoxDecoration(
+                                color: kFourthColor,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Center(
+                              child: Icon(
+                                Icons.remove,
+                                size: 14,
+                                color: kSecondaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+          separatorBuilder: (context, index) => const Gap(15),
+          itemCount: cart.data.length),
+    );
+  }
+
+  Widget bottomNaviUI(CartResponse cart) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      height: 210,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: kThirdColor,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Total Amount",
-                    style: TextStyle(
-                        color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "${cart.totalPrice.toString()} Ks",
-                    style: TextStyle(
-                        color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  )
-                ],
+              Text(
+                "Total Amount",
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
               ),
-              const Gap(10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Tax",
-                    style: TextStyle(
-                        color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    cart.tax!,
-                    style: TextStyle(
-                        color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              const Gap(10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Tax Amount",
-                    style: TextStyle(
-                        color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "${cart.taxAmount.toString()} Ks",
-                    style: TextStyle(
-                        color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              const Gap(10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Grand Total",
-                    style: TextStyle(
-                        color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "${cart.grandTotal.toString()} Ks",
-                    style: TextStyle(
-                        color: kPrimaryColor, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              const Gap(15),
-              CustomButton(
-                name: "Order",
-                function: () {},
+              Text(
+                "${cart.totalPrice.toString()} Ks",
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
               )
             ],
           ),
-        )
-      ],
+          const Gap(10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Tax",
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                cart.tax!,
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+          const Gap(10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Tax Amount",
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "${cart.taxAmount.toString()} Ks",
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+          const Gap(10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Grand Total",
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "${cart.grandTotal.toString()} Ks",
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+          const Gap(15),
+          CustomButton(
+            name: "Order",
+            function: () {},
+          )
+        ],
+      ),
     );
   }
 }

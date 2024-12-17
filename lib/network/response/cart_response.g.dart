@@ -13,8 +13,8 @@ CartResponse _$CartResponseFromJson(Map<String, dynamic> json) => CartResponse(
           .toList(),
       totalPrice: (json['totalPrice'] as num).toInt(),
       tax: json['tax'] as String?,
-      taxAmount: (json['tax_amount'] as num?)?.toInt(),
-      grandTotal: (json['grand_total'] as num?)?.toInt(),
+      taxAmount: json['tax_amount'] as num?,
+      grandTotal: json['grand_total'] as num?,
     );
 
 Map<String, dynamic> _$CartResponseToJson(CartResponse instance) =>

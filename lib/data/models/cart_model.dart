@@ -2,7 +2,7 @@ import 'package:bloc_api/domain/cart_repository.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
 import 'package:bloc_api/network/data_agent/data_agent_impl.dart';
 import 'package:bloc_api/network/response/cart_response.dart';
-import 'package:bloc_api/network/response/cart_update_and_remove_response.dart';
+import 'package:bloc_api/network/response/cart_add_update_and_remove_response.dart';
 
 class CartModel implements CartRepo {
   CartModel._();
@@ -28,7 +28,7 @@ class CartModel implements CartRepo {
   }
 
   @override
-  Future<CartUpdateAndRemoveResponse> updateCart(
+  Future<CartAddUpdateAndRemoveResponse> updateCart(
       String token, int cartID, int qty) async {
     try {
       return await _dataAgent.updateCart(token, cartID, qty);
@@ -38,7 +38,7 @@ class CartModel implements CartRepo {
   }
 
   @override
-  Future<CartUpdateAndRemoveResponse> clearCart(String token) async {
+  Future<CartAddUpdateAndRemoveResponse> clearCart(String token) async {
     try {
       return await _dataAgent.clearCart(token);
     } on Exception catch (error) {
@@ -47,10 +47,20 @@ class CartModel implements CartRepo {
   }
 
   @override
-  Future<CartUpdateAndRemoveResponse> removeCart(
+  Future<CartAddUpdateAndRemoveResponse> removeCart(
       String token, int cartID) async {
     try {
       return await _dataAgent.removeCart(token, cartID);
+    } on Exception catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  @override
+  Future<CartAddUpdateAndRemoveResponse> addToCart(
+      String token, int productID, int qty) async {
+    try {
+      return await _dataAgent.addToCart(token, productID, qty);
     } on Exception catch (error) {
       return Future.error(error);
     }

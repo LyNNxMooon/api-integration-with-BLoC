@@ -6,7 +6,7 @@ import 'package:bloc_api/network/api/api.dart';
 import 'package:bloc_api/network/api/api_v1.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
 import 'package:bloc_api/network/response/cart_response.dart';
-import 'package:bloc_api/network/response/cart_update_and_remove_response.dart';
+import 'package:bloc_api/network/response/cart_add_update_and_remove_response.dart';
 import 'package:bloc_api/network/response/item_response.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 
@@ -109,12 +109,12 @@ class DataAgentImpl extends DataAgent {
           )
           .first;
     } on Exception catch (error) {
-      return Future.error(apiErrorsConfig.throwExceptionForGetCarts(error));
+      return Future.error(apiErrorsConfig.throwExceptionForCarts(error));
     }
   }
 
   @override
-  Future<CartUpdateAndRemoveResponse> updateCart(
+  Future<CartAddUpdateAndRemoveResponse> updateCart(
       String token, int cartID, int qty) async {
     try {
       return await _apiV1
@@ -125,12 +125,12 @@ class DataAgentImpl extends DataAgent {
           )
           .first;
     } on Exception catch (error) {
-      return Future.error(apiErrorsConfig.throwExceptionForGetCarts(error));
+      return Future.error(apiErrorsConfig.throwExceptionForCarts(error));
     }
   }
 
   @override
-  Future<CartUpdateAndRemoveResponse> clearCart(String token) async {
+  Future<CartAddUpdateAndRemoveResponse> clearCart(String token) async {
     try {
       return await _apiV1
           .clearCart("Bearer $token")
@@ -140,12 +140,12 @@ class DataAgentImpl extends DataAgent {
           )
           .first;
     } on Exception catch (error) {
-      return Future.error(apiErrorsConfig.throwExceptionForGetCarts(error));
+      return Future.error(apiErrorsConfig.throwExceptionForCarts(error));
     }
   }
 
   @override
-  Future<CartUpdateAndRemoveResponse> removeCart(
+  Future<CartAddUpdateAndRemoveResponse> removeCart(
       String token, int cartID) async {
     try {
       return await _apiV1
@@ -156,7 +156,23 @@ class DataAgentImpl extends DataAgent {
           )
           .first;
     } on Exception catch (error) {
-      return Future.error(apiErrorsConfig.throwExceptionForGetCarts(error));
+      return Future.error(apiErrorsConfig.throwExceptionForCarts(error));
+    }
+  }
+
+  @override
+  Future<CartAddUpdateAndRemoveResponse> addToCart(
+      String token, int productID, int qty) async {
+    try {
+      return await _apiV1
+          .addToCart("Bearer $token", productID, qty)
+          .asStream()
+          .map(
+            (event) => event,
+          )
+          .first;
+    } on Exception catch (error) {
+      return Future.error(apiErrorsConfig.throwExceptionForCarts(error));
     }
   }
 }

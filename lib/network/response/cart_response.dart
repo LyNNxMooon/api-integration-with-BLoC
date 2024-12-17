@@ -9,9 +9,9 @@ class CartResponse {
   final int totalPrice;
   String? tax;
   @JsonKey(name: 'tax_amount')
-  int? taxAmount;
+  num? taxAmount;
   @JsonKey(name: 'grand_total')
-  int? grandTotal;
+  num? grandTotal;
 
   CartResponse(
       {required this.status,

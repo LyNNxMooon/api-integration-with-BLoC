@@ -145,7 +145,7 @@ class ApiErrorsConfig {
     return error.toString();
   }
 
-  Object throwExceptionForGetCarts(dynamic error) {
+  Object throwExceptionForCarts(dynamic error) {
     if (error is DioException) {
       if (error.type == DioExceptionType.connectionError ||
           error.type == DioExceptionType.receiveTimeout ||

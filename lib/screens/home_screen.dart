@@ -12,7 +12,9 @@ import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/screens/cart_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
+import 'package:bloc_api/widgets/error_dialog.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
+import 'package:bloc_api/widgets/success_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
@@ -75,6 +77,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   alignment: Alignment.topRight,
                   child: BlocBuilder<CartBloc, CartStates>(
                     builder: (context, state) {
+                      if (state is CartLoading) {
+                        return Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              color: kFourthColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          width: 17,
+                          height: 17,
+                          child: Center(
+                              child: CircularProgressIndicator(
+                            strokeWidth: 0.8,
+                            color: kPrimaryColor,
+                          )),
+                        );
+                      }
+
                       if (state is CartLoaded && state.cart.data.isNotEmpty) {
                         return Container(
                           decoration: BoxDecoration(
@@ -118,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(color: kFourthColor),
                     ),
                   )
-                : productList(state.products, context);
+                : productList(state.products);
           } else {
             return SizedBox();
           }
@@ -172,62 +190,103 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: 10);
   }
 
-  Widget productList(List<ItemVO> products, BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        productsBloc.add(FetchProducts());
-      },
-      backgroundColor: kPrimaryColor,
-      color: kSecondaryColor,
-      child: ListView.separated(
-        itemBuilder: (context, index) => Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1), // Shadow color
-                spreadRadius: 3, // Spread radius
-                blurRadius: 5, // Blur radius
-                offset: const Offset(0, 3), // Offset of the shadow
-              ),
-            ], //border corner radius
-          ),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 40,
-                height: 60,
-                child: CachedNetworkImage(
-                  imageUrl: products[index].image,
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => Icon(
-                    Icons.error,
-                    color: kFourthColor,
+  Widget productList(
+    List<ItemVO> products,
+  ) {
+    return BlocConsumer<CartBloc, CartStates>(
+      builder: (context, state) => RefreshIndicator(
+        onRefresh: () async {
+          productsBloc.add(FetchProducts());
+        },
+        backgroundColor: kPrimaryColor,
+        color: kSecondaryColor,
+        child: ListView.separated(
+          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.symmetric(vertical: 10),
+          shrinkWrap: true,
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () {
+              cartBloc.add(AddToCart(productID: index + 1, qty: 1));
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1), // Shadow color
+                    spreadRadius: 3, // Spread radius
+                    blurRadius: 5, // Blur radius
+                    offset: const Offset(0, 3), // Offset of the shadow
                   ),
-                  placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(
-                      color: kSecondaryColor,
+                ], //border corner radius
+              ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 40,
+                    height: 60,
+                    child: CachedNetworkImage(
+                      imageUrl: products[index].image,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.error,
+                        color: kFourthColor,
+                      ),
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(
+                          color: kSecondaryColor,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  const Gap(20),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.65,
+                    child: Text(
+                      products[index].name,
+                      style: TextStyle(color: kFourthColor),
+                    ),
+                  ),
+                ],
               ),
-              const Gap(20),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.65,
-                child: Text(
-                  products[index].name,
-                  style: TextStyle(color: kFourthColor),
-                ),
-              ),
-            ],
+            ),
           ),
+          itemCount: products.length,
+          separatorBuilder: (context, index) => const Gap(15),
         ),
-        itemCount: products.length,
-        separatorBuilder: (context, index) => const Gap(15),
       ),
+      listener: (context, state) {
+        if (state is CartErrors) {
+          showDialog(
+            context: context,
+            builder: (context) => CustomErrorWidget(
+              errorMessage: state.message,
+              function: () => context.navigateBack(),
+            ),
+          );
+        }
+
+        if (state is CartAdded && state.addedResponse.status == "error") {
+          showDialog(
+            context: context,
+            builder: (context) => CustomErrorWidget(
+              errorMessage: state.addedResponse.data,
+              function: () => context.navigateBack(),
+            ),
+          );
+        }
+
+        if (state is CartAdded && state.addedResponse.status == "success") {
+          showDialog(
+            context: context,
+            builder: (context) =>
+                SuccessWidget(message: state.addedResponse.data),
+          );
+        }
+      },
     );
   }
 }

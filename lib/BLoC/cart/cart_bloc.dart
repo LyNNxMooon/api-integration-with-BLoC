@@ -11,6 +11,7 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
     on<UpdateCart>(_onUpdateCart);
     on<RemoveCart>(_onRemoveCart);
     on<ClearCart>(_onClearCart);
+    on<AddToCart>(_onAddToCart);
   }
 
   Future<void> _onGetCart(GetCart event, Emitter<CartStates> emit) async {
@@ -73,6 +74,24 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
       final cartFetchResponse = await cartRepo
           .getUserCart("164|uNpuRnfvFB2cBfrqAym3hJdbzoydjTa5ZeX50bhf");
       emit(CartRemoved(cartClearedResponse));
+      emit(CartLoaded(cartFetchResponse));
+    } catch (error) {
+      emit(CartErrors(error.toString()));
+    }
+  }
+
+  Future _onAddToCart(AddToCart event, Emitter<CartStates> emit) async {
+    emit(CartLoading());
+
+    try {
+      final cartAddedResponse = await cartRepo.addToCart(
+          "164|uNpuRnfvFB2cBfrqAym3hJdbzoydjTa5ZeX50bhf",
+          event.productID,
+          event.qty);
+
+      final cartFetchResponse = await cartRepo
+          .getUserCart("164|uNpuRnfvFB2cBfrqAym3hJdbzoydjTa5ZeX50bhf");
+      emit(CartAdded(cartAddedResponse));
       emit(CartLoaded(cartFetchResponse));
     } catch (error) {
       emit(CartErrors(error.toString()));

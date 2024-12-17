@@ -63,7 +63,51 @@ class _ApiV1 implements ApiV1 {
   }
 
   @override
-  Future<CartUpdateAndRemoveResponse> updateCart(
+  Future<CartAddUpdateAndRemoveResponse> addToCart(
+    String token,
+    int productID,
+    int qty,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Accept': 'application/json',
+      r'Authorization': token,
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = {
+      'product_id': productID,
+      'quantity': qty,
+    };
+    final _options = _setStreamType<CartAddUpdateAndRemoveResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/cart',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CartAddUpdateAndRemoveResponse _value;
+    try {
+      _value = CartAddUpdateAndRemoveResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<CartAddUpdateAndRemoveResponse> updateCart(
     String token,
     int cartID,
     int qty,
@@ -76,7 +120,7 @@ class _ApiV1 implements ApiV1 {
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = {'quantity': qty};
-    final _options = _setStreamType<CartUpdateAndRemoveResponse>(Options(
+    final _options = _setStreamType<CartAddUpdateAndRemoveResponse>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
@@ -94,9 +138,9 @@ class _ApiV1 implements ApiV1 {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late CartUpdateAndRemoveResponse _value;
+    late CartAddUpdateAndRemoveResponse _value;
     try {
-      _value = CartUpdateAndRemoveResponse.fromJson(_result.data!);
+      _value = CartAddUpdateAndRemoveResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -105,7 +149,7 @@ class _ApiV1 implements ApiV1 {
   }
 
   @override
-  Future<CartUpdateAndRemoveResponse> removeCart(
+  Future<CartAddUpdateAndRemoveResponse> removeCart(
     String token,
     int cartID,
   ) async {
@@ -117,7 +161,7 @@ class _ApiV1 implements ApiV1 {
     };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<CartUpdateAndRemoveResponse>(Options(
+    final _options = _setStreamType<CartAddUpdateAndRemoveResponse>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
@@ -134,9 +178,9 @@ class _ApiV1 implements ApiV1 {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late CartUpdateAndRemoveResponse _value;
+    late CartAddUpdateAndRemoveResponse _value;
     try {
-      _value = CartUpdateAndRemoveResponse.fromJson(_result.data!);
+      _value = CartAddUpdateAndRemoveResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -145,7 +189,7 @@ class _ApiV1 implements ApiV1 {
   }
 
   @override
-  Future<CartUpdateAndRemoveResponse> clearCart(String token) async {
+  Future<CartAddUpdateAndRemoveResponse> clearCart(String token) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
@@ -154,7 +198,7 @@ class _ApiV1 implements ApiV1 {
     };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<CartUpdateAndRemoveResponse>(Options(
+    final _options = _setStreamType<CartAddUpdateAndRemoveResponse>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
@@ -171,9 +215,9 @@ class _ApiV1 implements ApiV1 {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late CartUpdateAndRemoveResponse _value;
+    late CartAddUpdateAndRemoveResponse _value;
     try {
-      _value = CartUpdateAndRemoveResponse.fromJson(_result.data!);
+      _value = CartAddUpdateAndRemoveResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
