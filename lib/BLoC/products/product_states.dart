@@ -1,4 +1,4 @@
-import 'package:bloc_api/data/vos/item_vo.dart';
+import 'package:bloc_api/network/response/item_response.dart';
 
 abstract class ProductsStates {}
 
@@ -12,7 +12,7 @@ class ProductsError extends ProductsStates {
 }
 
 class ProductsLoaded extends ProductsStates {
-  final List<ItemVO> products;
+  final ItemResponse products;
 
   ProductsLoaded(this.products);
 }

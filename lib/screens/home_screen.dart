@@ -129,14 +129,14 @@ class _HomeScreenState extends State<HomeScreen> {
               message: state.message,
             );
           } else if (state is ProductsLoaded) {
-            return state.products.isEmpty
+            return state.products.data.isEmpty
                 ? const Center(
                     child: Text(
                       "No more products...",
                       style: TextStyle(color: kFourthColor),
                     ),
                   )
-                : productList(state.products);
+                : productList(state.products.data, state.products.total);
           } else {
             return SizedBox();
           }
@@ -190,9 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: 10);
   }
 
-  Widget productList(
-    List<ItemVO> products,
-  ) {
+  Widget productList(List<ItemVO> products, int totalProduct) {
     return BlocConsumer<CartBloc, CartStates>(
       builder: (context, state) => RefreshIndicator(
         onRefresh: () async {
@@ -200,62 +198,104 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         backgroundColor: kPrimaryColor,
         color: kSecondaryColor,
-        child: ListView.separated(
+        child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.symmetric(vertical: 10),
-          shrinkWrap: true,
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              cartBloc.add(AddToCart(productID: index + 1, qty: 1));
-            },
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1), // Shadow color
-                    spreadRadius: 3, // Spread radius
-                    blurRadius: 5, // Blur radius
-                    offset: const Offset(0, 3), // Offset of the shadow
-                  ),
-                ], //border corner radius
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 40,
-                    height: 60,
-                    child: CachedNetworkImage(
-                      imageUrl: products[index].image,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => Icon(
-                        Icons.error,
-                        color: kFourthColor,
-                      ),
-                      placeholder: (context, url) => Center(
-                        child: CircularProgressIndicator(
-                          color: kSecondaryColor,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 60,
+                child: ListView.separated(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(
+                        left: 30, right: 30, top: 22, bottom: 10),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            productsBloc.page = index + 1;
+                            productsBloc.add(FetchProducts());
+                          },
+                          child: Container(
+                            width: 25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: kFourthColor),
+                              color: productsBloc.page == index + 1
+                                  ? kFourthColor
+                                  : kPrimaryColor,
+                            ),
+                            child: Center(
+                              child: Text(
+                                (index + 1).toString(),
+                                style: TextStyle(
+                                    color: productsBloc.page == index + 1
+                                        ? kPrimaryColor
+                                        : kFourthColor),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  const Gap(20),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.65,
-                    child: Text(
-                      products[index].name,
-                      style: TextStyle(color: kFourthColor),
-                    ),
-                  ),
-                ],
+                    separatorBuilder: (context, index) => const Gap(25),
+                    itemCount: (totalProduct / 10).ceil()),
               ),
-            ),
+              ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(vertical: 10),
+                shrinkWrap: true,
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    cartBloc.add(AddToCart(productID: index + 1, qty: 1));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1), // Shadow color
+                          spreadRadius: 3, // Spread radius
+                          blurRadius: 5, // Blur radius
+                          offset: const Offset(0, 3), // Offset of the shadow
+                        ),
+                      ], //border corner radius
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 40,
+                          height: 60,
+                          child: CachedNetworkImage(
+                            imageUrl: products[index].image,
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.error,
+                              color: kFourthColor,
+                            ),
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(
+                                color: kSecondaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Gap(20),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          child: Text(
+                            products[index].name,
+                            style: TextStyle(color: kFourthColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                itemCount: products.length,
+                separatorBuilder: (context, index) => const Gap(15),
+              ),
+            ],
           ),
-          itemCount: products.length,
-          separatorBuilder: (context, index) => const Gap(15),
         ),
       ),
       listener: (context, state) {

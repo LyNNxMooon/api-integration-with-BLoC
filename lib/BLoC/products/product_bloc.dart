@@ -22,8 +22,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsStates> {
       final productsResponse =
           await productRepo.getProducts(_hiveModel.getUserToken(), page, limit);
 
-      productsResponse.loadMore ? ++page : page = 1;
-      emit(ProductsLoaded(productsResponse.data));
+      emit(ProductsLoaded(productsResponse));
     } catch (error) {
       emit(ProductsError("Error fetching products: $error"));
     }
