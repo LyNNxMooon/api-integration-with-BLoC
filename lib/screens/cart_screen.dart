@@ -157,26 +157,24 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget shimmerLoading() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: ListView.separated(
-          itemBuilder: (context, index) => Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Shimmer.fromColors(
-                  baseColor: Colors.black54,
-                  highlightColor: Colors.white,
-                  child: Container(
-                    width: double.infinity,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        color: Colors.black12,
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
+    return ListView.separated(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        itemBuilder: (context, index) => Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Shimmer.fromColors(
+                baseColor: Colors.black54,
+                highlightColor: Colors.white,
+                child: Container(
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.circular(10)),
                 ),
               ),
-          separatorBuilder: (context, index) => const Gap(15),
-          itemCount: 5),
-    );
+            ),
+        separatorBuilder: (context, index) => const Gap(15),
+        itemCount: 5);
   }
 
   Widget cartUI(CartResponse cart) {

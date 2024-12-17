@@ -147,6 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget shimmerLoading() {
     return ListView.separated(
+        padding: EdgeInsets.symmetric(vertical: 20),
         itemBuilder: (context, index) => Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Shimmer.fromColors(
