@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, avoid_print
+// ignore_for_file: deprecated_member_use, avoid_print, prefer_final_fields
 
 import 'package:bloc_api/BLoC/auth/auth_bloc.dart';
 import 'package:bloc_api/BLoC/auth/auth_events.dart';
@@ -16,7 +16,7 @@ import 'package:bloc_api/widgets/error_dialog.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
 import 'package:bloc_api/widgets/success_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     cartBloc.add(GetCart());
-    print("---Cart Loaded----");
     super.initState();
   }
 
@@ -55,7 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         title: Text(
           authBloc.currentUser?.name ?? "",
-          style: TextStyle(color: kPrimaryColor),
+          style: TextStyle(
+              color: kPrimaryColor, fontSize: 18, fontWeight: FontWeight.bold),
         ),
         actions: [
           Container(
@@ -103,8 +103,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Center(
                             child: Text(
                               state.cart.data.length.toString(),
-                              style:
-                                  TextStyle(color: kPrimaryColor, fontSize: 10),
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         );
@@ -193,10 +195,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget pageSelectionItemList(int totalProduct) {
     return SizedBox(
-      height: 60,
+      height: 45,
       child: ListView.separated(
           shrinkWrap: true,
-          padding: EdgeInsets.only(left: 30, right: 30, top: 22, bottom: 10),
+          padding: EdgeInsets.only(left: 30, right: 30, bottom: 15),
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
@@ -249,28 +251,46 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              width: 40,
-              height: 60,
-              child: CachedNetworkImage(
-                imageUrl: product.image,
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) => Icon(
-                  Icons.error,
-                  color: kFourthColor,
-                ),
-                placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                    color: kSecondaryColor,
+            Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+              width: 45,
+              height: 70,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: CachedNetworkImage(
+                  imageUrl: product.image,
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => Icon(
+                    Icons.error,
+                    color: kFourthColor,
+                  ),
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(
+                      color: kSecondaryColor,
+                    ),
                   ),
                 ),
               ),
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
-              child: Text(
-                product.name,
-                style: TextStyle(color: kFourthColor),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name,
+                    style: TextStyle(
+                        color: kFourthColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.5),
+                  ),
+                  const Gap(5),
+                  Text(
+                    "${product.price} Ks",
+                    style: TextStyle(
+                        color: kSecondaryColor, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
             IconButton(
@@ -310,6 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
+              slider(),
               pageSelectionItemList(totalProduct),
               productList(products)
             ],
@@ -345,6 +366,37 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
       },
+    );
+  }
+
+  Widget slider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      child: CarouselSlider.builder(
+          itemCount: 3,
+          itemBuilder: (context, index, realIndex) => Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    "assets/images/banner.jpg",
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+          options: CarouselOptions(
+            autoPlay: true,
+            aspectRatio: 2.5 / 1,
+            viewportFraction: 0.7,
+            initialPage: 0,
+            enableInfiniteScroll: true,
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enlargeCenterPage: true,
+            enlargeFactor: 0.3,
+            scrollDirection: Axis.horizontal,
+          )),
     );
   }
 }

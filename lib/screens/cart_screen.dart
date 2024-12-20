@@ -222,21 +222,26 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    Container(
+                      decoration:
+                          BoxDecoration(borderRadius: BorderRadius.circular(5)),
                       width: 55,
                       height: 75,
-                      child: CachedNetworkImage(
-                        imageUrl: cart.data[index].product.photos.isEmpty
-                            ? ""
-                            : cart.data[index].product.photos[0],
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) => Icon(
-                          Icons.error,
-                          color: kFourthColor,
-                        ),
-                        placeholder: (context, url) => Center(
-                          child: CircularProgressIndicator(
-                            color: kSecondaryColor,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: CachedNetworkImage(
+                          imageUrl: cart.data[index].product.photos.isEmpty
+                              ? ""
+                              : cart.data[index].product.photos[0],
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => Icon(
+                            Icons.error,
+                            color: kFourthColor,
+                          ),
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(
+                              color: kSecondaryColor,
+                            ),
                           ),
                         ),
                       ),
