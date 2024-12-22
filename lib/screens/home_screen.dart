@@ -2,6 +2,9 @@
 
 import 'package:bloc_api/BLoC/auth/auth_bloc.dart';
 import 'package:bloc_api/BLoC/auth/auth_events.dart';
+import 'package:bloc_api/BLoC/banner/banner_bloc.dart';
+import 'package:bloc_api/BLoC/banner/banner_events.dart';
+import 'package:bloc_api/BLoC/banner/banner_states.dart';
 import 'package:bloc_api/BLoC/cart/cart_bloc.dart';
 import 'package:bloc_api/BLoC/cart/cart_events.dart';
 import 'package:bloc_api/BLoC/cart/cart_states.dart';
@@ -9,14 +12,17 @@ import 'package:bloc_api/BLoC/products/product_bloc.dart';
 import 'package:bloc_api/BLoC/products/product_events.dart';
 import 'package:bloc_api/BLoC/products/product_states.dart';
 import 'package:bloc_api/constants/colors.dart';
+import 'package:bloc_api/data/vos/banner_vo.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/screens/cart_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/error_dialog.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
+import 'package:bloc_api/widgets/loading_widget.dart';
 import 'package:bloc_api/widgets/success_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -33,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final productsBloc = context.read<ProductsBloc>();
   late final authBloc = context.read<AuthBloc>();
   late final cartBloc = context.read<CartBloc>();
+  late final bannerBloc = context.read<BannerBloc>();
 
   @override
   void initState() {
@@ -44,112 +51,95 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: kPrimaryColor,
-      appBar: AppBar(
-        backgroundColor: kThirdColor,
-        leading: IconButton(
-            color: kPrimaryColor,
-            onPressed: () => authBloc.add(LogoutEvent()),
-            icon: Icon(Icons.logout_rounded)),
-        centerTitle: true,
-        title: Text(
-          authBloc.currentUser?.name ?? "",
-          style: TextStyle(
-              color: kPrimaryColor, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(right: 5),
-            width: 42,
-            height: 45,
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: IconButton(
-                      onPressed: () => context.navigateToNext(CartScreen()),
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        color: kPrimaryColor,
-                      )),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: BlocBuilder<CartBloc, CartStates>(
-                    builder: (context, state) {
-                      if (state is CartLoading) {
-                        return Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              color: kFourthColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          width: 17,
-                          height: 17,
-                          child: Center(
-                              child: CircularProgressIndicator(
-                            strokeWidth: 0.8,
-                            color: kPrimaryColor,
-                          )),
-                        );
-                      }
-
-                      if (state is CartLoaded && state.cart.data.isNotEmpty) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              color: kFourthColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          width: 17,
-                          height: 17,
-                          child: Center(
-                            child: Text(
-                              state.cart.data.length.toString(),
-                              style: TextStyle(
+            backgroundColor: kPrimaryColor,
+            appBar: AppBar(
+              backgroundColor: kThirdColor,
+              leading: IconButton(
+                  color: kPrimaryColor,
+                  onPressed: () => authBloc.add(LogoutEvent()),
+                  icon: Icon(Icons.logout_rounded)),
+              centerTitle: true,
+              title: Text(
+                authBloc.currentUser?.name ?? "",
+                style: TextStyle(
+                    color: kPrimaryColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+              actions: [
+                Container(
+                  margin: EdgeInsets.only(right: 5),
+                  width: 42,
+                  height: 45,
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: IconButton(
+                            onPressed: () =>
+                                context.navigateToNext(CartScreen()),
+                            icon: Icon(
+                              Icons.shopping_cart,
+                              color: kPrimaryColor,
+                            )),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: BlocBuilder<CartBloc, CartStates>(
+                          builder: (context, state) {
+                            if (state is CartLoading) {
+                              return Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                    color: kFourthColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                width: 17,
+                                height: 17,
+                                child: Center(
+                                    child: CircularProgressIndicator(
+                                  strokeWidth: 0.8,
                                   color: kPrimaryColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return SizedBox();
-                      }
-                    },
+                                )),
+                              );
+                            }
+
+                            if (state is CartLoaded &&
+                                state.cart.data.isNotEmpty) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                    color: kFourthColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                width: 17,
+                                height: 17,
+                                child: Center(
+                                  child: Text(
+                                    state.cart.data.length.toString(),
+                                    style: TextStyle(
+                                        color: kPrimaryColor,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return SizedBox();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                )
               ],
             ),
-          )
-        ],
-      ),
-      body: BlocBuilder<ProductsBloc, ProductsStates>(
-        builder: (context, state) {
-          if (state is ProductsLoading) {
-            return shimmerLoading();
-          } else if (state is ProductsError) {
-            return ErrorUIWidget(
-              function: () => productsBloc.add(FetchProducts()),
-              message: state.message,
-            );
-          } else if (state is ProductsLoaded) {
-            return state.products.data.isEmpty
-                ? const Center(
-                    child: Text(
-                      "No more products...",
-                      style: TextStyle(color: kFourthColor),
-                    ),
-                  )
-                : productsUI(state.products.data, state.products.total);
-          } else {
-            return SizedBox();
-          }
-        },
-      ),
-    ));
+            body: homeUI()));
   }
 
-  Widget shimmerLoading() {
+  Widget productsShimmerLoading() {
     return ListView.separated(
-        padding: EdgeInsets.symmetric(vertical: 20),
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        padding: EdgeInsets.symmetric(vertical: 10),
         itemBuilder: (context, index) => Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Shimmer.fromColors(
@@ -258,18 +248,13 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(5),
                 child: CachedNetworkImage(
-                  imageUrl: product.image,
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => Icon(
-                    Icons.error,
-                    color: kFourthColor,
-                  ),
-                  placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(
-                      color: kSecondaryColor,
-                    ),
-                  ),
-                ),
+                    imageUrl: product.image,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Icon(
+                          Icons.error,
+                          color: kFourthColor,
+                        ),
+                    placeholder: (context, url) => ImageLoadingWidget()),
               ),
             ),
             SizedBox(
@@ -318,11 +303,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget productsUI(List<ItemVO> products, int totalProduct) {
+  Widget homeUI() {
     return BlocConsumer<CartBloc, CartStates>(
       builder: (context, state) => RefreshIndicator(
         onRefresh: () async {
           productsBloc.add(FetchProducts());
+          bannerBloc.add(FetchBanners());
         },
         backgroundColor: kPrimaryColor,
         color: kSecondaryColor,
@@ -330,9 +316,78 @@ class _HomeScreenState extends State<HomeScreen> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              slider(),
-              pageSelectionItemList(totalProduct),
-              productList(products)
+              BlocBuilder<BannerBloc, BannerStates>(
+                builder: (context, state) {
+                  if (state is BannersLoading) {
+                    return bannerShimmerLoading();
+                  } else if (state is BannersError) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.1,
+                          bottom: MediaQuery.of(context).size.height * 0.03),
+                      child: ErrorUIWidget(
+                        function: () => bannerBloc.add(FetchBanners()),
+                        message: state.message,
+                      ),
+                    );
+                  } else if (state is BannersLoaded) {
+                    return state.banners.isEmpty
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical:
+                                    MediaQuery.of(context).size.height * 0.12),
+                            child: Text(
+                              "No banner available...",
+                              style: TextStyle(color: kFourthColor),
+                            ),
+                          )
+                        : slider(state.banners);
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              ),
+              BlocBuilder<ProductsBloc, ProductsStates>(
+                builder: (context, state) {
+                  if (state is ProductsLoaded &&
+                      state.products.data.isNotEmpty) {
+                    return pageSelectionItemList(state.products.total);
+                  } else {
+                    return SizedBox(
+                      height: 30,
+                    );
+                  }
+                },
+              ),
+              BlocBuilder<ProductsBloc, ProductsStates>(
+                builder: (context, state) {
+                  if (state is ProductsLoading) {
+                    return productsShimmerLoading();
+                  } else if (state is ProductsError) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.2),
+                      child: ErrorUIWidget(
+                        function: () => productsBloc.add(FetchProducts()),
+                        message: state.message,
+                      ),
+                    );
+                  } else if (state is ProductsLoaded) {
+                    return state.products.data.isEmpty
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * 0.22),
+                            child: Text(
+                              "No more products...",
+                              style: TextStyle(color: kFourthColor),
+                            ),
+                          )
+                        : productList(state.products.data);
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -369,22 +424,55 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget slider() {
+  Widget bannerShimmerLoading() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 30),
       child: CarouselSlider.builder(
           itemCount: 3,
+          itemBuilder: (context, index, realIndex) => Shimmer.fromColors(
+                baseColor: Colors.black54,
+                highlightColor: Colors.white,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+          options: CarouselOptions(
+            autoPlay: true,
+            aspectRatio: 2.5 / 1,
+            viewportFraction: 0.7,
+            initialPage: 0,
+            enableInfiniteScroll: true,
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enlargeCenterPage: true,
+            enlargeFactor: 0.3,
+            scrollDirection: Axis.horizontal,
+          )),
+    );
+  }
+
+  Widget slider(List<BannerVO> banners) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      child: CarouselSlider.builder(
+          itemCount: banners.length,
           itemBuilder: (context, index, realIndex) => Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    "assets/images/banner.jpg",
-                    fit: BoxFit.fill,
-                  ),
-                ),
+                    borderRadius: BorderRadius.circular(20),
+                    child: CachedNetworkImage(
+                      imageUrl: banners[index].image,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) => ImageLoadingWidget(),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.error,
+                        color: kFourthColor,
+                      ),
+                    )),
               ),
           options: CarouselOptions(
             autoPlay: true,

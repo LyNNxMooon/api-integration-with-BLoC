@@ -10,6 +10,7 @@ import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/button_widget.dart';
 import 'package:bloc_api/widgets/error_dialog.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
+import 'package:bloc_api/widgets/loading_widget.dart';
 import 'package:bloc_api/widgets/success_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -230,20 +231,16 @@ class _CartScreenState extends State<CartScreen> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: CachedNetworkImage(
-                          imageUrl: cart.data[index].product.photos.isEmpty
-                              ? ""
-                              : cart.data[index].product.photos[0],
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error) => Icon(
-                            Icons.error,
-                            color: kFourthColor,
-                          ),
-                          placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(
-                              color: kSecondaryColor,
-                            ),
-                          ),
-                        ),
+                            imageUrl: cart.data[index].product.photos.isEmpty
+                                ? ""
+                                : cart.data[index].product.photos[0],
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) => Icon(
+                                  Icons.error,
+                                  color: kFourthColor,
+                                ),
+                            placeholder: (context, url) =>
+                                ImageLoadingWidget()),
                       ),
                     ),
                     SizedBox(

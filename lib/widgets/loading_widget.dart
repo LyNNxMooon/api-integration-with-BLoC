@@ -1,4 +1,5 @@
 import 'package:bloc_api/constants/colors.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
@@ -10,11 +11,26 @@ class CustomLoadingWidget extends StatelessWidget {
     return const SafeArea(
         child: Scaffold(
       body: Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 1,
+        child: CupertinoActivityIndicator(
+          animating: true,
+          radius: 13,
           color: kSecondaryColor,
         ),
       ),
     ));
+  }
+}
+
+class ImageLoadingWidget extends StatelessWidget {
+  const ImageLoadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CupertinoActivityIndicator(
+        animating: true,
+        color: kSecondaryColor,
+      ),
+    );
   }
 }
