@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
             const Gap(20),
             const Center(
               child: Text(
-                "Modern Cashier POS",
+                "Bloc Products",
                 style: titleStyle,
               ),
             ),
