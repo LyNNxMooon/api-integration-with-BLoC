@@ -107,7 +107,10 @@ class _LoginPageState extends State<LoginPage> {
                   Center(
                       child: Text(
                     "Tap to create account",
-                    style: TextStyle(fontSize: 12),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: kFourthColor),
                   ))
                 ],
               ),

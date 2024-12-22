@@ -22,7 +22,7 @@ import 'package:bloc_api/widgets/loading_widget.dart';
 import 'package:bloc_api/widgets/success_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
