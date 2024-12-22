@@ -1,3 +1,4 @@
+import 'package:bloc_api/data/vos/banner_vo.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/network/response/cart_response.dart';
 import 'package:bloc_api/network/response/cart_add_update_and_remove_response.dart';
@@ -29,4 +30,6 @@ abstract class DataAgent {
 
   Future<CartAddUpdateAndRemoveResponse> addToCart(
       String token, int productID, int qty);
+
+  Future<List<BannerVO>> getBanners(String token);
 }

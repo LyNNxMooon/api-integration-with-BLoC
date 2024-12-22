@@ -13,6 +13,7 @@ const kEndPointForUpdateCart = "/cart/{$kPathParamKeyForCartID}";
 const kEndPointForClearCart = "/cart/clear";
 const kEndPointForRemoveCart = "/cart/delete/{$kPathParamKeyForCartID}";
 const kEndPointForAddToCart = "/cart";
+const kEndPointForBanners = "/banners";
 
 //keys
 const kAuthorizationKey = "Authorization";

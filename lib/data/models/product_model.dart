@@ -1,3 +1,4 @@
+import 'package:bloc_api/data/vos/banner_vo.dart';
 import 'package:bloc_api/domain/product_repository.dart';
 import 'package:bloc_api/network/data_agent/data_agent.dart';
 import 'package:bloc_api/network/data_agent/data_agent_impl.dart';
@@ -31,6 +32,15 @@ class ProductModel implements ProductRepo {
           return temp;
         },
       );
+    } on Exception catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  @override
+  Future<List<BannerVO>> getBanners(String token) async {
+    try {
+      return await _dataAgent.getBanners(token);
     } on Exception catch (error) {
       return Future.error(error);
     }

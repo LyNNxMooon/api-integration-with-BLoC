@@ -1,6 +1,8 @@
 import 'package:bloc_api/BLoC/auth/auth_bloc.dart';
 import 'package:bloc_api/BLoC/auth/auth_events.dart';
 import 'package:bloc_api/BLoC/auth/auth_states.dart';
+import 'package:bloc_api/BLoC/banner/banner_bloc.dart';
+import 'package:bloc_api/BLoC/banner/banner_events.dart';
 import 'package:bloc_api/BLoC/cart/cart_bloc.dart';
 import 'package:bloc_api/BLoC/cart/cart_events.dart';
 import 'package:bloc_api/BLoC/products/product_bloc.dart';
@@ -37,6 +39,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<CartBloc>(
           create: (context) => CartBloc(cartRepo: cartRepo)..add(GetCart()),
+        ),
+        BlocProvider<BannerBloc>(
+          create: (context) =>
+              BannerBloc(productRepo: productsRepo)..add(FetchBanners()),
         )
       ],
       child: MaterialApp(

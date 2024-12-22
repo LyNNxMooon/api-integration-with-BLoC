@@ -1,24 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'item_response.dart';
+// ignore_for_file: unused_element
+
+part of 'banner_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ItemResponse _$ItemResponseFromJson(Map<String, dynamic> json) => ItemResponse(
+BannerResponse _$BannerResponseFromJson(Map<String, dynamic> json) =>
+    BannerResponse(
       success: json['success'] as bool,
-      total: (json['total'] as num).toInt(),
-      loadMore: json['can_load_more'] as bool,
+      message: json['message'] as String,
       data: (json['data'] as List<dynamic>)
-          .map((e) => ItemVO.fromJson(e as Map<String, dynamic>))
+          .map((e) => BannerVO.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$ItemResponseToJson(ItemResponse instance) =>
+Map<String, dynamic> _$BannerResponseToJson(BannerResponse instance) =>
     <String, dynamic>{
       'success': instance.success,
-      'total': instance.total,
-      'can_load_more': instance.loadMore,
+      'message': instance.message,
       'data': instance.data,
     };

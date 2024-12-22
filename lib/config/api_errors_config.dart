@@ -145,6 +145,26 @@ class ApiErrorsConfig {
     return error.toString();
   }
 
+  Object throwExceptionForGetBanners(dynamic error) {
+    if (error is DioException) {
+      if (error.type == DioExceptionType.connectionError ||
+          error.type == DioExceptionType.receiveTimeout ||
+          error.type == DioExceptionType.connectionTimeout ||
+          error.type == DioExceptionType.sendTimeout) {
+        return "Unable to connect to the server. Please check your internet connection and try again.";
+      }
+      if (error.response?.data is Map<String, dynamic>) {
+        try {
+          return "Error fetching banners";
+        } catch (error) {
+          return error.toString();
+        }
+      }
+      return error.response.toString();
+    }
+    return error.toString();
+  }
+
   Object throwExceptionForCarts(dynamic error) {
     if (error is DioException) {
       if (error.type == DioExceptionType.connectionError ||

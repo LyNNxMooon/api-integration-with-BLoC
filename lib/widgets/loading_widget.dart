@@ -11,6 +11,7 @@ class CustomLoadingWidget extends StatelessWidget {
         child: Scaffold(
       body: Center(
         child: CircularProgressIndicator(
+          strokeWidth: 1,
           color: kSecondaryColor,
         ),
       ),

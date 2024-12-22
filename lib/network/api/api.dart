@@ -1,4 +1,5 @@
 import 'package:bloc_api/network/api_constant.dart';
+import 'package:bloc_api/network/response/banner_response.dart';
 import 'package:bloc_api/network/response/item_response.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 import 'package:bloc_api/network/response/login_register_response.dart';
@@ -54,4 +55,12 @@ abstract class Api {
       @Header(kAuthorizationKey) String token,
       @Query(kQueryParamKeyForPage) int page,
       @Query(kQueryParamKeyForLimit) int limit);
+
+  @GET(kEndPointForBanners)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<BannerResponse> getBanners(
+    @Header(kAuthorizationKey) String token,
+  );
 }
