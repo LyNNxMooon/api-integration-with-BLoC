@@ -22,7 +22,7 @@ class ErrorUIWidget extends StatelessWidget {
               message,
               style: TextStyle(color: kErrorColor, fontWeight: FontWeight.bold),
             ),
-            const Gap(10),
+            const Gap(5),
             IconButton(
                 onPressed: function,
                 icon: Icon(

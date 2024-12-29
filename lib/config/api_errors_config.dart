@@ -151,7 +151,7 @@ class ApiErrorsConfig {
           error.type == DioExceptionType.receiveTimeout ||
           error.type == DioExceptionType.connectionTimeout ||
           error.type == DioExceptionType.sendTimeout) {
-        return "Unable to connect to the server. Please check your internet connection and try again.";
+        return "No Internet";
       }
       if (error.response?.data is Map<String, dynamic>) {
         try {

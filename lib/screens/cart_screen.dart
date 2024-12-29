@@ -71,16 +71,6 @@ class _CartScreenState extends State<CartScreen> {
           }
         },
         listener: (context, state) {
-          if (state is CartErrors) {
-            showDialog(
-              context: context,
-              builder: (context) => CustomErrorWidget(
-                errorMessage: state.message,
-                function: () => context.navigateBack(),
-              ),
-            );
-          }
-
           if (state is CartUpdated && state.updateResponse.status == "error") {
             showDialog(
               context: context,

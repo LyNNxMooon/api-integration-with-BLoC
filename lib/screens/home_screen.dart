@@ -19,6 +19,7 @@ import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/error_dialog.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
 import 'package:bloc_api/widgets/loading_widget.dart';
+import 'package:bloc_api/widgets/no_internet_animation.dart';
 import 'package:bloc_api/widgets/success_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -320,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height * 0.1,
-                          bottom: MediaQuery.of(context).size.height * 0.03),
+                          bottom: MediaQuery.of(context).size.height * 0.075),
                       child: ErrorUIWidget(
                         function: () => bannerBloc.add(FetchBanners()),
                         message: state.message,
@@ -379,13 +380,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           return productsShimmerLoading();
                         } else if (state is ProductsError) {
                           return Padding(
-                            padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height * 0.2),
-                            child: ErrorUIWidget(
-                              function: () => productsBloc.add(FetchProducts()),
-                              message: state.message,
-                            ),
-                          );
+                              padding: EdgeInsets.only(
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.12,
+                                  bottom: MediaQuery.of(context).size.height *
+                                      0.24),
+                              child: NoInternetAnimationWidget(
+                                function: () {
+                                  productsBloc.add(FetchProducts());
+                                },
+                              ));
                         } else if (state is ProductsLoaded) {
                           return state.products.data.isEmpty
                               ? Padding(
