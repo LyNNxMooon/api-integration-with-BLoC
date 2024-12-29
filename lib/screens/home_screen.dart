@@ -8,6 +8,10 @@ import 'package:bloc_api/BLoC/banner/banner_states.dart';
 import 'package:bloc_api/BLoC/cart/cart_bloc.dart';
 import 'package:bloc_api/BLoC/cart/cart_events.dart';
 import 'package:bloc_api/BLoC/cart/cart_states.dart';
+import 'package:bloc_api/BLoC/product_details/product_detail_bloc.dart';
+import 'package:bloc_api/BLoC/product_details/product_detail_events.dart';
+import 'package:bloc_api/BLoC/product_images/product_images_bloc.dart';
+import 'package:bloc_api/BLoC/product_images/product_images_events.dart';
 import 'package:bloc_api/BLoC/products/product_bloc.dart';
 import 'package:bloc_api/BLoC/products/product_events.dart';
 import 'package:bloc_api/BLoC/products/product_states.dart';
@@ -15,6 +19,7 @@ import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/data/vos/banner_vo.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/screens/cart_screen.dart';
+import 'package:bloc_api/screens/product_detail_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/error_dialog.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
@@ -41,6 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late final authBloc = context.read<AuthBloc>();
   late final cartBloc = context.read<CartBloc>();
   late final bannerBloc = context.read<BannerBloc>();
+  late final productDetailBloc = context.read<ProductDetailBloc>();
+  late final productImagesBloc = context.read<ProductImagesBloc>();
 
   @override
   void initState() {
@@ -219,7 +226,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget productCard(ItemVO product, int index) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        productDetailBloc.add(FetchProductDetail(productID: product.id));
+        productImagesBloc.add(FetchProductImages(productID: product.id));
+        context.navigateToNext(ProductDetailScreen());
+      },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 20),
         padding: EdgeInsets.all(15),

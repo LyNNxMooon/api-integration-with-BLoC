@@ -13,7 +13,7 @@ class CustomLoadingWidget extends StatelessWidget {
       body: Center(
         child: CupertinoActivityIndicator(
           animating: true,
-          radius: 13,
+          radius: 10,
           color: kSecondaryColor,
         ),
       ),

@@ -44,7 +44,8 @@ class _CartScreenState extends State<CartScreen> {
             )),
         title: Text(
           "Your Cart",
-          style: TextStyle(color: kPrimaryColor),
+          style: TextStyle(
+              color: kPrimaryColor, fontSize: 18, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
