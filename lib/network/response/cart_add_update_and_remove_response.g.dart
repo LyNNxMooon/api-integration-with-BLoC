@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: unused_element
-
 part of 'cart_add_update_and_remove_response.dart';
 
 // **************************************************************************

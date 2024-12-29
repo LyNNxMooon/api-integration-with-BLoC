@@ -2,6 +2,8 @@
 
 import 'package:bloc_api/config/api_errors_config.dart';
 import 'package:bloc_api/data/vos/banner_vo.dart';
+import 'package:bloc_api/data/vos/item_image_vo.dart';
+import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/network/api/api.dart';
 import 'package:bloc_api/network/api/api_v1.dart';
@@ -187,6 +189,35 @@ class DataAgentImpl extends DataAgent {
           .first;
     } on Exception catch (error) {
       return Future.error(apiErrorsConfig.throwExceptionForGetBanners(error));
+    }
+  }
+
+  @override
+  Future<ItemVO> getProductDetails(String token, int productID) async {
+    try {
+      return await _api
+          .getProductDetails("Bearer $token", productID)
+          .asStream()
+          .map((event) => event.data)
+          .first;
+    } on Exception catch (error) {
+      return Future.error(
+          apiErrorsConfig.throwExceptionForGetProductAndImage(error));
+    }
+  }
+
+  @override
+  Future<List<ItemImageVO>> getProductImages(
+      String token, int productID) async {
+    try {
+      return await _api
+          .getProductImages("Bearer $token", productID)
+          .asStream()
+          .map((event) => event.data)
+          .first;
+    } on Exception catch (error) {
+      return Future.error(
+          apiErrorsConfig.throwExceptionForGetProductAndImage(error));
     }
   }
 }

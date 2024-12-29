@@ -1,7 +1,10 @@
 import 'package:bloc_api/data/vos/banner_vo.dart';
+import 'package:bloc_api/data/vos/item_image_vo.dart';
+import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
 import 'package:bloc_api/network/response/cart_response.dart';
 import 'package:bloc_api/network/response/cart_add_update_and_remove_response.dart';
+
 import 'package:bloc_api/network/response/item_response.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 import 'package:bloc_api/network/response/login_register_response.dart';
@@ -32,4 +35,8 @@ abstract class DataAgent {
       String token, int productID, int qty);
 
   Future<List<BannerVO>> getBanners(String token);
+
+  Future<ItemVO> getProductDetails(String token, int productID);
+
+  Future<List<ItemImageVO>> getProductImages(String token, int productID);
 }

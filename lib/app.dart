@@ -5,6 +5,9 @@ import 'package:bloc_api/BLoC/banner/banner_bloc.dart';
 import 'package:bloc_api/BLoC/banner/banner_events.dart';
 import 'package:bloc_api/BLoC/cart/cart_bloc.dart';
 import 'package:bloc_api/BLoC/cart/cart_events.dart';
+import 'package:bloc_api/BLoC/product_details/product_detail_bloc.dart';
+
+import 'package:bloc_api/BLoC/product_images/product_images_bloc.dart';
 import 'package:bloc_api/BLoC/products/product_bloc.dart';
 import 'package:bloc_api/BLoC/products/product_events.dart';
 import 'package:bloc_api/data/models/auth_model.dart';
@@ -43,6 +46,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<BannerBloc>(
           create: (context) =>
               BannerBloc(productRepo: productsRepo)..add(FetchBanners()),
+        ),
+        BlocProvider<ProductDetailBloc>(
+          create: (context) => ProductDetailBloc(productRepo: productsRepo),
+        ),
+        BlocProvider<ProductImagesBloc>(
+          create: (context) => ProductImagesBloc(productRepo: productsRepo),
         )
       ],
       child: MaterialApp(

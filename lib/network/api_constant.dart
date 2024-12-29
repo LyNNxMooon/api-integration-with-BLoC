@@ -14,6 +14,9 @@ const kEndPointForClearCart = "/cart/clear";
 const kEndPointForRemoveCart = "/cart/delete/{$kPathParamKeyForCartID}";
 const kEndPointForAddToCart = "/cart";
 const kEndPointForBanners = "/banners";
+const kEndPointForProductDetails = "/products/{$kPathParamKeyForProductID}";
+const kEndPointForGetProductImages =
+    "/products/{$kPathParamKeyForProductID}/images";
 
 //keys
 const kAuthorizationKey = "Authorization";
@@ -28,3 +31,4 @@ const kQueryParamKeyForLimit = "limit";
 const kPathParamKeyForCartID = "CartID";
 const kParamKeyForQuantity = "quantity";
 const kParamKeyForProductID = "product_id";
+const kPathParamKeyForProductID = "productID";

@@ -1,5 +1,7 @@
 import 'package:bloc_api/network/api_constant.dart';
 import 'package:bloc_api/network/response/banner_response.dart';
+import 'package:bloc_api/network/response/item_detail_response.dart';
+import 'package:bloc_api/network/response/item_image_response.dart';
 import 'package:bloc_api/network/response/item_response.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
 import 'package:bloc_api/network/response/login_register_response.dart';
@@ -63,4 +65,20 @@ abstract class Api {
   Future<BannerResponse> getBanners(
     @Header(kAuthorizationKey) String token,
   );
+
+  @GET(kEndPointForProductDetails)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<ItemDetailResponse> getProductDetails(
+      @Header(kAuthorizationKey) String token,
+      @Path(kPathParamKeyForProductID) int productID);
+
+  @GET(kEndPointForGetProductImages)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<ItemImageResponse> getProductImages(
+      @Header(kAuthorizationKey) String token,
+      @Path(kPathParamKeyForProductID) int productID);
 }
