@@ -112,6 +112,7 @@ class DataAgentImpl extends DataAgent {
           )
           .first;
     } on Exception catch (error) {
+      print(error);
       return Future.error(apiErrorsConfig.throwExceptionForCarts(error));
     }
   }

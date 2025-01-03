@@ -229,7 +229,9 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         productDetailBloc.add(FetchProductDetail(productID: product.id));
         productImagesBloc.add(FetchProductImages(productID: product.id));
-        context.navigateToNext(ProductDetailScreen());
+        context.navigateToNext(ProductDetailScreen(
+          productID: product.id,
+        ));
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 20),
@@ -427,13 +429,21 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       listener: (context, state) {
         if (state is CartErrors) {
-          showDialog(
-            context: context,
-            builder: (context) => CustomErrorWidget(
-              errorMessage: state.message,
-              function: () => context.navigateBack(),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: kErrorColor,
             ),
           );
+          // showDialog(
+          //   context: context,
+          //   builder: (context) => CustomErrorWidget(
+          //     errorMessage: state.message,
+          //     function: () {
+          //       context.navigateBack();
+          //     },
+          //   ),
+          // );
         }
 
         if (state is CartAdded && state.addedResponse.status == "error") {
