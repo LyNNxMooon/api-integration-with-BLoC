@@ -12,7 +12,7 @@ import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
 import 'package:bloc_api/widgets/loading_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_options.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -78,11 +78,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       child: Column(
         children: [
           Gap(20),
+          //Carousal Slider
           BlocBuilder<ProductImagesBloc, ProductImagesStates>(
             builder: (context, state) {
               if (state is ProductImagesLoaded) {
                 return Column(
                   children: [
+                    //Product Image Slider
                     CarouselSlider.builder(
                         itemCount: state.productImages.length,
                         itemBuilder: (context, index, realIndex) => Container(
@@ -93,7 +95,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   borderRadius: BorderRadius.circular(20),
                                   child: CachedNetworkImage(
                                     imageUrl: state.productImages[index].image,
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                     placeholder: (context, url) =>
                                         ImageLoadingWidget(),
                                     errorWidget: (context, url, error) => Icon(
@@ -103,38 +105,39 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   )),
                             ),
                         options: CarouselOptions(
-                          autoPlay: false,
+                          autoPlay: true,
                           aspectRatio: 1.5 / 1,
-                          viewportFraction: 0.8,
+                          viewportFraction: 0.75,
                           initialPage: 0,
                           enableInfiniteScroll: false,
                           autoPlayCurve: Curves.fastOutSlowIn,
                           enlargeCenterPage: true,
-                          enlargeFactor: 0,
+                          enlargeFactor: 0.5,
                           scrollDirection: Axis.horizontal,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _currentIndex = index;
+                            });
+                          },
                         )),
                     const Gap(10),
+                    //Slider Indicator
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:
                           state.productImages.asMap().entries.map((entry) {
-                        return GestureDetector(
-                          onTap: () => setState(() {
-                            _currentIndex = entry.key;
-                          }),
-                          child: Container(
-                            width: 8.0,
-                            height: 8.0,
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                              horizontal: 4.0,
-                            ),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: _currentIndex == entry.key
-                                  ? kThirdColor
-                                  : Colors.grey,
-                            ),
+                        return Container(
+                          width: 8.0,
+                          height: 8.0,
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 8.0,
+                            horizontal: 4.0,
+                          ),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _currentIndex == entry.key
+                                ? kThirdColor
+                                : Colors.grey,
                           ),
                         );
                       }).toList(),
@@ -147,17 +150,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             },
           ),
           Gap(30),
+          //Product Details Info
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      product.name,
-                      style: subtitleStyle,
+                    SizedBox(
+                      width: 220,
+                      child: Text(
+                        product.name,
+                        style: subtitleStyle,
+                      ),
                     ),
                     IconButton(
                         onPressed: () {},
