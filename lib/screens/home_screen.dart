@@ -502,6 +502,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: CarouselSlider.builder(
           itemCount: banners.length,
           itemBuilder: (context, index, realIndex) => Container(
+                width: MediaQuery.of(context).size.width / 0.6,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.black12),
@@ -520,12 +521,12 @@ class _HomeScreenState extends State<HomeScreen> {
           options: CarouselOptions(
             autoPlay: true,
             aspectRatio: 2.5 / 1,
-            viewportFraction: 0.7,
+            viewportFraction: 0.75,
             initialPage: 0,
             enableInfiniteScroll: true,
             autoPlayCurve: Curves.fastOutSlowIn,
             enlargeCenterPage: true,
-            enlargeFactor: 0.3,
+            enlargeFactor: 0.4,
             scrollDirection: Axis.horizontal,
           )),
     );

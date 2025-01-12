@@ -88,6 +88,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     CarouselSlider.builder(
                         itemCount: state.productImages.length,
                         itemBuilder: (context, index, realIndex) => Container(
+                              width: MediaQuery.of(context).size.width / 0.75,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.black12),
@@ -95,7 +96,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   borderRadius: BorderRadius.circular(20),
                                   child: CachedNetworkImage(
                                     imageUrl: state.productImages[index].image,
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.fill,
                                     placeholder: (context, url) =>
                                         ImageLoadingWidget(),
                                     errorWidget: (context, url, error) => Icon(
@@ -105,14 +106,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   )),
                             ),
                         options: CarouselOptions(
-                          autoPlay: true,
+                          autoPlay: false,
                           aspectRatio: 1.5 / 1,
                           viewportFraction: 0.75,
                           initialPage: 0,
                           enableInfiniteScroll: false,
                           autoPlayCurve: Curves.fastOutSlowIn,
                           enlargeCenterPage: true,
-                          enlargeFactor: 0.5,
+                          enlargeFactor: 0.55,
                           scrollDirection: Axis.horizontal,
                           onPageChanged: (index, reason) {
                             setState(() {
