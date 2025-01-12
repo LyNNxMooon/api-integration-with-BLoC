@@ -227,6 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget productCard(ItemVO product, int index) {
     return GestureDetector(
       onTap: () {
+        productDetailBloc.productQty = 1;
         productDetailBloc.add(FetchProductDetail(productID: product.id));
         productImagesBloc.add(FetchProductImages(productID: product.id));
         context.navigateToNext(ProductDetailScreen(

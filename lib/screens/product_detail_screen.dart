@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:bloc_api/BLoC/product_details/product_detail_bloc.dart';
 import 'package:bloc_api/BLoC/product_details/product_detail_events.dart';
 import 'package:bloc_api/BLoC/product_details/product_details_states.dart';
@@ -61,6 +63,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   .add(FetchProductDetail(productID: widget.productID)),
             );
           } else if (state is ProductLoaded) {
+            return productDetailUI(state.product);
+          } else if (state is UpdateQtyError) {
+            return productDetailUI(state.product);
+          } else if (state is UpdateQtySuccess) {
             return productDetailUI(state.product);
           } else {
             return SizedBox();
@@ -137,7 +143,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: _currentIndex == entry.key
-                                ? kThirdColor
+                                ? kFourthColor
                                 : Colors.grey,
                           ),
                         );
@@ -187,7 +193,138 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 const Gap(10),
                 Text(product.description!),
-                const Gap(20)
+                const Gap(30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      width: 120,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                Colors.black.withOpacity(0.1), // Shadow color
+                            spreadRadius: 3, // Spread radius
+                            blurRadius: 5, // Blur radius
+                            offset: const Offset(0, 3), // Offset of the shadow
+                          ),
+                        ], //bo
+                        color: kThirdColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () => productDetailBloc
+                                .add(DecreaseQty(product: product)),
+                            child: Container(
+                              width: 25,
+                              height: 25,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: kFourthColor),
+                              child: Icon(
+                                Icons.remove,
+                                size: 16,
+                                color: kPrimaryColor,
+                              ),
+                            ),
+                          ),
+                          BlocConsumer<ProductDetailBloc, ProductDetailStates>(
+                            builder: (context, state) {
+                              if (state is UpdateQtySuccess) {
+                                return Text(
+                                  state.updatedQty.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: kPrimaryColor),
+                                );
+                              } else if (state is UpdateQtyError) {
+                                return Text(
+                                  state.qty.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: kPrimaryColor),
+                                );
+                              } else {
+                                return Text(
+                                  productDetailBloc.productQty.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: kPrimaryColor),
+                                );
+                              }
+                            },
+                            listener: (context, state) {
+                              if (state is UpdateQtyError) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(state.message),
+                                    backgroundColor: kErrorColor,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                          InkWell(
+                            onTap: () => productDetailBloc
+                                .add(IncreaseQty(product: product)),
+                            child: Container(
+                              width: 25,
+                              height: 25,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: kFourthColor),
+                              child: Icon(
+                                Icons.add,
+                                size: 16,
+                                color: kPrimaryColor,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 120,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                Colors.black.withOpacity(0.1), // Shadow color
+                            spreadRadius: 3, // Spread radius
+                            blurRadius: 5, // Blur radius
+                            offset: const Offset(0, 3), // Offset of the shadow
+                          ),
+                        ], //bo
+                        color: kThirdColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Add",
+                            style: TextStyle(
+                                color: kPrimaryColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const Gap(10),
+                          Icon(
+                            Icons.add_shopping_cart_sharp,
+                            size: 18,
+                            color: kPrimaryColor,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                const Gap(40)
               ],
             ),
           )
