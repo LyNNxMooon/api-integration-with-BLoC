@@ -1,17 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'cart_error_response.dart';
+part of 'cart_removed_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CartErrorResponse _$CartErrorResponseFromJson(Map<String, dynamic> json) =>
-    CartErrorResponse(
+CartRemovedResponse _$CartRemovedResponseFromJson(Map<String, dynamic> json) =>
+    CartRemovedResponse(
       message: json['message'] as String,
     );
 
-Map<String, dynamic> _$CartErrorResponseToJson(CartErrorResponse instance) =>
+Map<String, dynamic> _$CartRemovedResponseToJson(
+        CartRemovedResponse instance) =>
     <String, dynamic>{
       'message': instance.message,
     };

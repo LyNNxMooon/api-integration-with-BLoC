@@ -1,8 +1,5 @@
 //Base URl
 const kBaseURL = "https://oneoneshop.hapeyeapp.com/api/v1";
-//const kBaseURL1 = "https://easy-buy.ecommyanmar.com/api";
-
-//https://easy-buy.ecommyanmar.com/api
 
 //End Points
 const kEndPointForRegister = "/register";
@@ -11,10 +8,9 @@ const kEndPointForLogout = "/logout";
 const kEndPointForLogin = "/login";
 const kEndPointForProducts = "/products";
 const kEndPointForGetCart = "/cart";
-// const kEndPointForUpdateCart = "/cart/{$kPathParamKeyForCartID}";
-// const kEndPointForClearCart = "/cart/clear";
-// const kEndPointForRemoveCart = "/cart/delete/{$kPathParamKeyForCartID}";
-//const kEndPointForAddToCart = "/cart";
+const kEndPointForUpdateCart = "/cart/update/{$kPathParamKeyForCartID}";
+const kEndPointForRemoveCart = "/cart/remove/{$kPathParamKeyForCartID}";
+const kEndPointForAddToCart = "/cart/add";
 const kEndPointForBanners = "/banners";
 const kEndPointForProductDetails = "/products/{$kPathParamKeyForProductID}";
 const kEndPointForGetProductImages =

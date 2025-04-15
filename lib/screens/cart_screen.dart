@@ -10,7 +10,6 @@ import 'package:bloc_api/data/vos/cart_item_vo.dart';
 import 'package:bloc_api/network/response/cart_response.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/button_widget.dart';
-import 'package:bloc_api/widgets/error_dialog.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
 import 'package:bloc_api/widgets/loading_widget.dart';
 import 'package:bloc_api/widgets/success_widget.dart';
@@ -74,43 +73,21 @@ class _CartScreenState extends State<CartScreen> {
           }
         },
         listener: (context, state) {
-          if (state is CartUpdated && state.updateResponse.status == "error") {
-            showDialog(
-              context: context,
-              builder: (context) => CustomErrorWidget(
-                errorMessage: state.updateResponse.data is Map
-                    ? state.updateResponse.data['quantity'][0]
-                    : state.updateResponse.data,
-                function: () => context.navigateBack(),
-              ),
-            );
-          }
-
-          if (state is CartUpdated &&
-              state.updateResponse.status == "success") {
+          if (state is CartUpdated) {
             showDialog(
               context: context,
               builder: (context) =>
-                  SuccessWidget(message: state.updateResponse.data),
+                  SuccessWidget(message: "Cart Updated Successfully!"),
             );
           }
 
-          if (state is CartRemoved && state.removeResponse.status == "error") {
-            showDialog(
-              context: context,
-              builder: (context) => CustomErrorWidget(
-                errorMessage: state.removeResponse.data,
-                function: () => context.navigateBack(),
-              ),
-            );
-          }
+      
 
-          if (state is CartRemoved &&
-              state.removeResponse.status == "success") {
+          if (state is CartRemoved) {
             showDialog(
               context: context,
               builder: (context) =>
-                  SuccessWidget(message: state.removeResponse.data),
+                  SuccessWidget(message: state.removeResponse.message),
             );
           }
         },

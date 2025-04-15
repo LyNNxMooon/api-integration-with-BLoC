@@ -11,7 +11,7 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
     on<GetCart>(_onGetCart);
     on<UpdateCart>(_onUpdateCart);
     on<RemoveCart>(_onRemoveCart);
-    on<ClearCart>(_onClearCart);
+
     on<AddToCart>(_onAddToCart);
   }
 
@@ -35,12 +35,12 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
 
     try {
       final cartUpdateResponse = await cartRepo.updateCart(
-          "231|UeGn1xTdTVm7CWFwgDj66Vb752L2f2SBCAoWlQyv",
+          _hiveModel.getUserToken(),
           event.cartID,
           event.qty);
 
       final cartFetchResponse = await cartRepo
-          .getUserCart("231|UeGn1xTdTVm7CWFwgDj66Vb752L2f2SBCAoWlQyv");
+          .getUserCart(_hiveModel.getUserToken());
       emit(CartUpdated(cartUpdateResponse));
       emit(CartLoaded(cartFetchResponse));
     } catch (error) {
@@ -53,12 +53,12 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
 
     try {
       final cartRemovedResponse = await cartRepo.removeCart(
-        "231|UeGn1xTdTVm7CWFwgDj66Vb752L2f2SBCAoWlQyv",
+        _hiveModel.getUserToken(),
         event.cartID,
       );
 
       final cartFetchResponse = await cartRepo
-          .getUserCart("231|UeGn1xTdTVm7CWFwgDj66Vb752L2f2SBCAoWlQyv");
+          .getUserCart(_hiveModel.getUserToken());
       emit(CartRemoved(cartRemovedResponse));
       emit(CartLoaded(cartFetchResponse));
     } catch (error) {
@@ -66,34 +66,19 @@ class CartBloc extends Bloc<CartEvents, CartStates> {
     }
   }
 
-  Future<void> _onClearCart(ClearCart event, Emitter<CartStates> emit) async {
-    emit(CartLoading());
 
-    try {
-      final cartClearedResponse = await cartRepo.clearCart(
-        "231|UeGn1xTdTVm7CWFwgDj66Vb752L2f2SBCAoWlQyv",
-      );
-
-      final cartFetchResponse = await cartRepo
-          .getUserCart("231|UeGn1xTdTVm7CWFwgDj66Vb752L2f2SBCAoWlQyv");
-      emit(CartRemoved(cartClearedResponse));
-      emit(CartLoaded(cartFetchResponse));
-    } catch (error) {
-      emit(CartErrors(error.toString()));
-    }
-  }
 
   Future _onAddToCart(AddToCart event, Emitter<CartStates> emit) async {
     emit(CartLoading());
 
     try {
       final cartAddedResponse = await cartRepo.addToCart(
-          "231|UeGn1xTdTVm7CWFwgDj66Vb752L2f2SBCAoWlQyv",
+          _hiveModel.getUserToken(),
           event.productID,
           event.qty);
 
       final cartFetchResponse = await cartRepo
-          .getUserCart("231|UeGn1xTdTVm7CWFwgDj66Vb752L2f2SBCAoWlQyv");
+          .getUserCart(_hiveModel.getUserToken());
       emit(CartAdded(cartAddedResponse));
       emit(CartLoaded(cartFetchResponse));
     } catch (error) {

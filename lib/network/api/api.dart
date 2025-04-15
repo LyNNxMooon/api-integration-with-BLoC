@@ -1,5 +1,7 @@
 import 'package:bloc_api/network/api_constant.dart';
 import 'package:bloc_api/network/response/banner_response.dart';
+import 'package:bloc_api/network/response/cart_add_and_update_response.dart';
+import 'package:bloc_api/network/response/cart_removed_response.dart';
 import 'package:bloc_api/network/response/cart_response.dart';
 import 'package:bloc_api/network/response/item_detail_response.dart';
 import 'package:bloc_api/network/response/item_image_response.dart';
@@ -89,5 +91,32 @@ abstract class Api {
   })
   Future<CartResponse> getUserCart(
     @Header(kAuthorizationKey) String token,
+  );
+
+  @POST(kEndPointForAddToCart)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<CartAddAndUpdateResponse> addToCart(
+      @Header(kAuthorizationKey) String token,
+      @Query(kParamKeyForProductID) int productID,
+      @Query(kParamKeyForQuantity) int qty);
+
+  @POST(kEndPointForUpdateCart)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<CartAddAndUpdateResponse> updateCart(
+      @Header(kAuthorizationKey) String token,
+      @Path(kPathParamKeyForCartID) int cartID,
+      @Query(kParamKeyForQuantity) int qty);
+
+  @DELETE(kEndPointForRemoveCart)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<CartRemovedResponse> removeCart(
+    @Header(kAuthorizationKey) String token,
+    @Path(kPathParamKeyForCartID) int cartID,
   );
 }

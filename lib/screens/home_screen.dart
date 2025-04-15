@@ -21,7 +21,7 @@ import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/screens/cart_screen.dart';
 import 'package:bloc_api/screens/product_detail_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
-import 'package:bloc_api/widgets/error_dialog.dart';
+
 import 'package:bloc_api/widgets/error_widget.dart';
 import 'package:bloc_api/widgets/loading_widget.dart';
 import 'package:bloc_api/widgets/no_internet_animation.dart';
@@ -447,21 +447,13 @@ class _HomeScreenState extends State<HomeScreen> {
           // );
         }
 
-        if (state is CartAdded && state.addedResponse.status == "error") {
-          showDialog(
-            context: context,
-            builder: (context) => CustomErrorWidget(
-              errorMessage: state.addedResponse.data,
-              function: () => context.navigateBack(),
-            ),
-          );
-        }
+ 
 
-        if (state is CartAdded && state.addedResponse.status == "success") {
+        if (state is CartAdded) {
           showDialog(
             context: context,
             builder: (context) =>
-                SuccessWidget(message: state.addedResponse.data),
+                SuccessWidget(message: "Added to Carts"),
           );
         }
       },

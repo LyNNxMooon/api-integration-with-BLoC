@@ -1,5 +1,6 @@
+import 'package:bloc_api/network/response/cart_removed_response.dart';
 import 'package:bloc_api/network/response/cart_response.dart';
-import 'package:bloc_api/network/response/cart_add_update_and_remove_response.dart';
+import 'package:bloc_api/network/response/cart_add_and_update_response.dart';
 
 abstract class CartStates {}
 
@@ -19,19 +20,19 @@ class CartLoaded extends CartStates {
 }
 
 class CartAdded extends CartStates {
-  final CartAddUpdateAndRemoveResponse addedResponse;
+  final CartAddAndUpdateResponse addedResponse;
 
   CartAdded(this.addedResponse);
 }
 
 class CartUpdated extends CartStates {
-  final CartAddUpdateAndRemoveResponse updateResponse;
+  final CartAddAndUpdateResponse updateResponse;
 
   CartUpdated(this.updateResponse);
 }
 
 class CartRemoved extends CartStates {
-  final CartAddUpdateAndRemoveResponse removeResponse;
+  final CartRemovedResponse removeResponse;
 
   CartRemoved(this.removeResponse);
 }
