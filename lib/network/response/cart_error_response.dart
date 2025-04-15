@@ -3,10 +3,9 @@ part 'cart_error_response.g.dart';
 
 @JsonSerializable()
 class CartErrorResponse {
-  final String status;
   final String message;
 
-  CartErrorResponse({required this.status, required this.message});
+  CartErrorResponse({ required this.message});
 
   factory CartErrorResponse.fromJson(Map<String, dynamic> json) =>
       _$CartErrorResponseFromJson(json);

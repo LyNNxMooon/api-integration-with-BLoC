@@ -1,0 +1,1 @@
+const productImagePlaceholder = "https://www.africancreative.co.za/assets/images/home_sections/box-icon_1797540397_24-03-17.png";

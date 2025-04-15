@@ -20,7 +20,7 @@ class ItemVO {
   final bool wish;
   @JsonKey(name: "wish_id")
   final bool wishId;
-  final String image;
+  final dynamic image;
   final String instock;
   @JsonKey(name: "created_at")
   final String createdAt;

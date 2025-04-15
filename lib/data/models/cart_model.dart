@@ -13,15 +13,7 @@ class CartModel implements CartRepo {
   @override
   Future<CartResponse> getUserCart(String token) async {
     try {
-      return await _dataAgent.getUserCart(token).then(
-        (value) {
-          var temp = value;
-          temp.tax = (temp.tax?.isEmpty ?? true) ? " - " : temp.tax;
-          temp.taxAmount = temp.taxAmount ?? 0;
-          temp.grandTotal = temp.grandTotal ?? 0;
-          return temp;
-        },
-      );
+      return await _dataAgent.getUserCart(token);
     } on Exception catch (error) {
       return Future.error(error);
     }

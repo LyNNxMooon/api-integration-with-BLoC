@@ -21,7 +21,7 @@ ItemVO _$ItemVOFromJson(Map<String, dynamic> json) => ItemVO(
       status: json['status'] as String,
       wish: json['wish'] as bool,
       wishId: json['wish_id'] as bool,
-      image: json['image'] as String,
+      image: json['image'],
       instock: json['instock'] as String,
       createdAt: json['created_at'] as String,
     );

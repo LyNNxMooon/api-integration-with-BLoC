@@ -4,6 +4,8 @@ import 'package:bloc_api/BLoC/cart/cart_bloc.dart';
 import 'package:bloc_api/BLoC/cart/cart_events.dart';
 import 'package:bloc_api/BLoC/cart/cart_states.dart';
 import 'package:bloc_api/constants/colors.dart';
+import 'package:bloc_api/constants/image.dart';
+import 'package:bloc_api/data/vos/cart_item_vo.dart';
 
 import 'package:bloc_api/network/response/cart_response.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
@@ -222,9 +224,10 @@ class _CartScreenState extends State<CartScreen> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: CachedNetworkImage(
-                            imageUrl: cart.data[index].product.photos.isEmpty
-                                ? ""
-                                : cart.data[index].product.photos[0],
+                            imageUrl:
+                                cart.data[index].product.image['path'].isEmpty
+                                    ? productImagePlaceholder
+                                    : cart.data[index].product.image['path'],
                             fit: BoxFit.cover,
                             errorWidget: (context, url, error) => Icon(
                                   Icons.error,
@@ -246,7 +249,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           const Gap(5),
                           Text(
-                            "${cart.data[index].totalPrice.toString()} Ks",
+                            "${cart.data[index].quantity * double.parse(cart.data[index].product.price)} Ks",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: kFourthColor),
@@ -310,6 +313,16 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget bottomNaviUI(CartResponse cart) {
+    String calculateTotal() {
+      double total = 0;
+
+      for (CartItemVO cartItem in cart.data) {
+        total += cartItem.quantity * double.parse(cartItem.product.price);
+      }
+
+      return total.toString();
+    }
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
       height: 210,
@@ -329,44 +342,44 @@ class _CartScreenState extends State<CartScreen> {
                     color: kPrimaryColor, fontWeight: FontWeight.bold),
               ),
               Text(
-                "${cart.totalPrice.toString()} Ks",
+                "${calculateTotal()} Ks",
                 style: TextStyle(
                     color: kPrimaryColor, fontWeight: FontWeight.bold),
               )
             ],
           ),
           const Gap(10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Tax",
-                style: TextStyle(
-                    color: kPrimaryColor, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                cart.tax!,
-                style: TextStyle(
-                    color: kPrimaryColor, fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-          const Gap(10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Tax Amount",
-                style: TextStyle(
-                    color: kPrimaryColor, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "${cart.taxAmount.toString()} Ks",
-                style: TextStyle(
-                    color: kPrimaryColor, fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       "Tax",
+          //       style: TextStyle(
+          //           color: kPrimaryColor, fontWeight: FontWeight.bold),
+          //     ),
+          //     Text(
+          //       cart.tax!,
+          //       style: TextStyle(
+          //           color: kPrimaryColor, fontWeight: FontWeight.bold),
+          //     )
+          //   ],
+          // ),
+          // const Gap(10),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       "Tax Amount",
+          //       style: TextStyle(
+          //           color: kPrimaryColor, fontWeight: FontWeight.bold),
+          //     ),
+          //     Text(
+          //       "${cart.taxAmount.toString()} Ks",
+          //       style: TextStyle(
+          //           color: kPrimaryColor, fontWeight: FontWeight.bold),
+          //     )
+          //   ],
+          // ),
           const Gap(10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -377,7 +390,7 @@ class _CartScreenState extends State<CartScreen> {
                     color: kPrimaryColor, fontWeight: FontWeight.bold),
               ),
               Text(
-                "${cart.grandTotal.toString()} Ks",
+                "${calculateTotal()} Ks",
                 style: TextStyle(
                     color: kPrimaryColor, fontWeight: FontWeight.bold),
               )
