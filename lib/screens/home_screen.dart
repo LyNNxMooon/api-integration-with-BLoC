@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       }
 
-                      if (state is CartLoaded && state.cart.data.isNotEmpty) {
+                      if (state is CartLoaded && state.cart.isNotEmpty) {
                         return Container(
                           decoration: BoxDecoration(
                               color: kFourthColor,
@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 17,
                           child: Center(
                             child: Text(
-                              state.cart.data.length.toString(),
+                              state.cart.length.toString(),
                               style: TextStyle(
                                   color: kPrimaryColor,
                                   fontSize: 10,
@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             IconButton(
                 onPressed: () {
-                  cartBloc.add(AddToCart(productID: index + 1, qty: 1));
+                  cartBloc.add(AddToCart(productID: product.id, qty: 1));
                 },
                 icon: Icon(
                   Icons.add_shopping_cart_sharp,

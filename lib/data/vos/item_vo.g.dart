@@ -14,7 +14,7 @@ ItemVO _$ItemVOFromJson(Map<String, dynamic> json) => ItemVO(
       description: json['description'] as String?,
       brand: json['brand'],
       category: json['category'],
-      genres: json['genres'] as List<dynamic>,
+      genres: json['genres'] as List<dynamic>?,
       quantity: (json['quantity'] as num).toInt(),
       price: json['price'] as String,
       discountedPrice: (json['discounted_price'] as num?)?.toInt(),

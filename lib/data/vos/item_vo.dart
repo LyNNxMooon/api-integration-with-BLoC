@@ -11,7 +11,7 @@ class ItemVO {
   String? description;
   dynamic brand;
   dynamic category;
-  final List genres;
+  final List? genres;
   final int quantity;
   final String price;
   @JsonKey(name: "discounted_price")

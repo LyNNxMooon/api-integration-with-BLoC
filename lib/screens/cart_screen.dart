@@ -6,8 +6,6 @@ import 'package:bloc_api/BLoC/cart/cart_states.dart';
 import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/constants/image.dart';
 import 'package:bloc_api/data/vos/cart_item_vo.dart';
-
-import 'package:bloc_api/network/response/cart_response.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
 import 'package:bloc_api/widgets/button_widget.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
@@ -50,7 +48,7 @@ class _CartScreenState extends State<CartScreen> {
         ),
         actions: [
           IconButton(
-              onPressed: () => cartBloc.add(ClearCart()),
+              onPressed: () {},
               icon: Icon(
                 Icons.delete_outline,
                 color: kPrimaryColor,
@@ -67,7 +65,7 @@ class _CartScreenState extends State<CartScreen> {
               function: () => cartBloc.add(GetCart()),
             );
           } else if (state is CartLoaded) {
-            return state.cart.data.isEmpty ? emptyCartUI() : cartUI(state.cart);
+            return state.cart.isEmpty ? emptyCartUI() : cartUI(state.cart);
           } else {
             return SizedBox();
           }
@@ -94,7 +92,7 @@ class _CartScreenState extends State<CartScreen> {
       ),
       bottomNavigationBar: BlocBuilder<CartBloc, CartStates>(
         builder: (context, state) {
-          if (state is CartLoaded && state.cart.data.isNotEmpty) {
+          if (state is CartLoaded && state.cart.isNotEmpty) {
             return bottomNaviUI(state.cart);
           } else {
             return SizedBox();
@@ -115,7 +113,7 @@ class _CartScreenState extends State<CartScreen> {
         children: [
           Padding(
             padding:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.36),
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.4),
             child: Icon(
               Icons.remove_shopping_cart_outlined,
               color: kFourthColor,
@@ -148,7 +146,7 @@ class _CartScreenState extends State<CartScreen> {
         itemCount: 5);
   }
 
-  Widget cartUI(CartResponse cart) {
+  Widget cartUI(List<CartItemVO> cart) {
     return RefreshIndicator(
       backgroundColor: kPrimaryColor,
       color: kSecondaryColor,
@@ -177,7 +175,7 @@ class _CartScreenState extends State<CartScreen> {
                   children: [
                     GestureDetector(
                       onTap: () =>
-                          cartBloc.add(RemoveCart(cartID: cart.data[index].id)),
+                          cartBloc.add(RemoveCart(cartID: cart[index].id)),
                       child: Container(
                         width: 18,
                         height: 18,
@@ -202,9 +200,9 @@ class _CartScreenState extends State<CartScreen> {
                         borderRadius: BorderRadius.circular(5),
                         child: CachedNetworkImage(
                             imageUrl:
-                                cart.data[index].product.image['path'].isEmpty
+                                cart[index].product.image['path'].isEmpty
                                     ? productImagePlaceholder
-                                    : cart.data[index].product.image['path'],
+                                    : cart[index].product.image['path'],
                             fit: BoxFit.cover,
                             errorWidget: (context, url, error) => Icon(
                                   Icons.error,
@@ -221,12 +219,12 @@ class _CartScreenState extends State<CartScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            cart.data[index].product.name,
+                            cart[index].product.name,
                             style: TextStyle(fontSize: 16, color: kFourthColor),
                           ),
                           const Gap(5),
                           Text(
-                            "${cart.data[index].quantity * double.parse(cart.data[index].product.price)} Ks",
+                            "${cart[index].quantity * double.parse(cart[index].product.price)} Ks",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: kFourthColor),
@@ -239,8 +237,8 @@ class _CartScreenState extends State<CartScreen> {
                       children: [
                         GestureDetector(
                           onTap: () => cartBloc.add(UpdateCart(
-                              cartID: cart.data[index].id,
-                              qty: cart.data[index].quantity + 1)),
+                              cartID: cart[index].id,
+                              qty: cart[index].quantity + 1)),
                           child: Container(
                             width: 18,
                             height: 18,
@@ -258,12 +256,12 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text(cart.data[index].quantity.toString()),
+                          child: Text(cart[index].quantity.toString()),
                         ),
                         GestureDetector(
                           onTap: () => cartBloc.add(UpdateCart(
-                              cartID: cart.data[index].id,
-                              qty: cart.data[index].quantity - 1)),
+                              cartID: cart[index].id,
+                              qty: cart[index].quantity - 1)),
                           child: Container(
                             width: 18,
                             height: 18,
@@ -285,15 +283,15 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
           separatorBuilder: (context, index) => const Gap(15),
-          itemCount: cart.data.length),
+          itemCount: cart.length),
     );
   }
 
-  Widget bottomNaviUI(CartResponse cart) {
+  Widget bottomNaviUI(List<CartItemVO> cart) {
     String calculateTotal() {
       double total = 0;
 
-      for (CartItemVO cartItem in cart.data) {
+      for (CartItemVO cartItem in cart) {
         total += cartItem.quantity * double.parse(cartItem.product.price);
       }
 
@@ -302,7 +300,7 @@ class _CartScreenState extends State<CartScreen> {
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-      height: 210,
+      height: 180,
       width: double.infinity,
       decoration: BoxDecoration(
           color: kThirdColor,
@@ -373,7 +371,7 @@ class _CartScreenState extends State<CartScreen> {
               )
             ],
           ),
-          const Gap(15),
+          const Gap(25),
           CustomButton(
             name: "Order",
             function: () {},

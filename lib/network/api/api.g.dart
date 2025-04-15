@@ -349,7 +349,7 @@ class _Api implements Api {
   }
 
   @override
-  Future<CartResponse> getUserCart(String token) async {
+  Future<List<CartItemVO>> getUserCart(String token) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
@@ -358,7 +358,7 @@ class _Api implements Api {
     };
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<CartResponse>(Options(
+    final _options = _setStreamType<List<CartItemVO>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -374,10 +374,12 @@ class _Api implements Api {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late CartResponse _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<CartItemVO> _value;
     try {
-      _value = CartResponse.fromJson(_result.data!);
+      _value = _result.data!
+          .map((dynamic i) => CartItemVO.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

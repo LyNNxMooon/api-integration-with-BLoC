@@ -2,6 +2,7 @@
 
 import 'package:bloc_api/config/api_errors_config.dart';
 import 'package:bloc_api/data/vos/banner_vo.dart';
+import 'package:bloc_api/data/vos/cart_item_vo.dart';
 import 'package:bloc_api/data/vos/item_image_vo.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
@@ -9,7 +10,7 @@ import 'package:bloc_api/network/api/api.dart';
 
 import 'package:bloc_api/network/data_agent/data_agent.dart';
 import 'package:bloc_api/network/response/cart_removed_response.dart';
-import 'package:bloc_api/network/response/cart_response.dart';
+
 import 'package:bloc_api/network/response/cart_add_and_update_response.dart';
 import 'package:bloc_api/network/response/item_response.dart';
 import 'package:bloc_api/network/response/logout_response.dart';
@@ -101,10 +102,10 @@ class DataAgentImpl extends DataAgent {
   }
 
   @override
-  Future<CartResponse> getUserCart(String token) async {
+  Future<List<CartItemVO>> getUserCart(String token) async {
     try {
       return await _api
-          .getUserCart(token)
+          .getUserCart("Bearer $token")
           .asStream()
           .map((event) => event)
           .first;
@@ -119,7 +120,7 @@ class DataAgentImpl extends DataAgent {
       String token, int cartID, int qty) async {
     try {
       return await _api
-          .updateCart(token, cartID, qty)
+          .updateCart("Bearer $token", cartID, qty)
           .asStream()
           .map(
             (event) => event,
@@ -134,7 +135,7 @@ class DataAgentImpl extends DataAgent {
   Future<CartRemovedResponse> removeCart(String token, int cartID) async {
     try {
        return await _api
-          .removeCart(token, cartID)
+          .removeCart("Bearer $token", cartID)
           .asStream()
           .map(
             (event) => event,
@@ -150,7 +151,7 @@ class DataAgentImpl extends DataAgent {
       String token, int productID, int qty) async {
     try {
       return await _api
-          .addToCart(token, productID, qty)
+          .addToCart("Bearer $token", productID, qty)
           .asStream()
           .map(
             (event) => event,

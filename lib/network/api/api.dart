@@ -1,8 +1,9 @@
+import 'package:bloc_api/data/vos/cart_item_vo.dart';
 import 'package:bloc_api/network/api_constant.dart';
 import 'package:bloc_api/network/response/banner_response.dart';
 import 'package:bloc_api/network/response/cart_add_and_update_response.dart';
 import 'package:bloc_api/network/response/cart_removed_response.dart';
-import 'package:bloc_api/network/response/cart_response.dart';
+
 import 'package:bloc_api/network/response/item_detail_response.dart';
 import 'package:bloc_api/network/response/item_image_response.dart';
 import 'package:bloc_api/network/response/item_response.dart';
@@ -89,7 +90,7 @@ abstract class Api {
   @Headers(<String, dynamic>{
     'Accept': 'application/json',
   })
-  Future<CartResponse> getUserCart(
+  Future<List<CartItemVO>> getUserCart(
     @Header(kAuthorizationKey) String token,
   );
 

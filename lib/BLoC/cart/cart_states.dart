@@ -1,5 +1,6 @@
+import 'package:bloc_api/data/vos/cart_item_vo.dart';
 import 'package:bloc_api/network/response/cart_removed_response.dart';
-import 'package:bloc_api/network/response/cart_response.dart';
+
 import 'package:bloc_api/network/response/cart_add_and_update_response.dart';
 
 abstract class CartStates {}
@@ -14,7 +15,7 @@ class CartErrors extends CartStates {
 }
 
 class CartLoaded extends CartStates {
-  final CartResponse cart;
+  final List<CartItemVO> cart;
 
   CartLoaded(this.cart);
 }

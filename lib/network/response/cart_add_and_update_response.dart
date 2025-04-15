@@ -5,14 +5,14 @@ part 'cart_add_and_update_response.g.dart';
 class CartAddAndUpdateResponse {
   final int id;
   @JsonKey(name: "customer_id")
-  final int customerID;
+  final dynamic customerID;
   @JsonKey(name: "product_id")
-  final String productID;
-  final String qauntity;
+  final dynamic productID;
+  final dynamic qauntity;
   @JsonKey(name: "updated_at")
-  final String updatedAt;
+  final dynamic updatedAt;
   @JsonKey(name: "created_at")
-  final String createdAt;
+  final dynamic createdAt;
 
   factory CartAddAndUpdateResponse.fromJson(Map<String, dynamic> json) =>
       _$CartAddAndUpdateResponseFromJson(json);
