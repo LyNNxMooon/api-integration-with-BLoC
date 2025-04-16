@@ -158,7 +158,7 @@ class _CartScreenState extends State<CartScreen> {
           itemBuilder: (context, index) => Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 width: double.infinity,
-                height: 100,
+                //height: 100,
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(

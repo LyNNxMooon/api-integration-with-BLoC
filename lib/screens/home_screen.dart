@@ -252,42 +252,52 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-              width: 45,
-              height: 70,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: CachedNetworkImage(
-                    imageUrl: product.image,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => Icon(
-                          Icons.error,
-                          color: kFourthColor,
-                        ),
-                    placeholder: (context, url) => ImageLoadingWidget()),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name,
-                    style: TextStyle(
-                        color: kFourthColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.5),
+            Row(
+              children: [
+                Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                  width: MediaQuery.of(context).size.width * 0.12,
+                  height: 70,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: CachedNetworkImage(
+                        imageUrl: product.image,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => Icon(
+                              Icons.error,
+                              color: kFourthColor,
+                            ),
+                        placeholder: (context, url) => ImageLoadingWidget()),
                   ),
-                  const Gap(5),
-                  Text(
-                    "${product.price} Ks",
-                    style: TextStyle(
-                        color: kSecondaryColor, fontWeight: FontWeight.bold),
+                ),
+      
+                Container(
+            
+                  margin: EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.48,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        softWrap: true,
+                        product.name,
+                        style: TextStyle(
+                            color: kFourthColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.5),
+                      ),
+                      const Gap(5),
+                      Text(
+                        "${product.price} Ks",
+                        style: TextStyle(
+                            color: kSecondaryColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             IconButton(
                 onPressed: () {
@@ -447,13 +457,10 @@ class _HomeScreenState extends State<HomeScreen> {
           // );
         }
 
- 
-
         if (state is CartAdded) {
           showDialog(
             context: context,
-            builder: (context) =>
-                SuccessWidget(message: "Added to Carts"),
+            builder: (context) => SuccessWidget(message: "Added to Carts"),
           );
         }
       },
