@@ -49,7 +49,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         title: Text(
           "Product Details",
           style: TextStyle(
-              color: kPrimaryColor, fontSize: 18, fontWeight: FontWeight.bold),
+              color: kPrimaryColor, fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
       body: BlocBuilder<ProductDetailBloc, ProductDetailStates>(

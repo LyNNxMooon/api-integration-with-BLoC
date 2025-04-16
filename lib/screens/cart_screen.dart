@@ -44,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
         title: Text(
           "Your Cart",
           style: TextStyle(
-              color: kPrimaryColor, fontSize: 18, fontWeight: FontWeight.bold),
+              color: kPrimaryColor, fontSize: 15, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -220,12 +220,13 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           Text(
                             cart[index].product.name,
-                            style: TextStyle(fontSize: 16, color: kFourthColor),
+                            style: TextStyle(fontSize: 13, color: kFourthColor),
                           ),
                           const Gap(5),
                           Text(
                             "${cart[index].quantity * double.parse(cart[index].product.price)} Ks",
                             style: TextStyle(
+                              fontSize: 11.5,
                                 fontWeight: FontWeight.bold,
                                 color: kFourthColor),
                           ),

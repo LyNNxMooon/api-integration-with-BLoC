@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+          theme: ThemeData(fontFamily: "Lexend"),
           debugShowCheckedModeBanner: false,
           home: BlocConsumer<AuthBloc, AuthStates>(
             builder: (context, authState) {

@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use, avoid_print, prefer_final_fields
 
 import 'package:bloc_api/BLoC/auth/auth_bloc.dart';
-import 'package:bloc_api/BLoC/auth/auth_events.dart';
+
 import 'package:bloc_api/BLoC/banner/banner_bloc.dart';
 import 'package:bloc_api/BLoC/banner/banner_events.dart';
 import 'package:bloc_api/BLoC/banner/banner_states.dart';
@@ -20,6 +20,7 @@ import 'package:bloc_api/data/vos/banner_vo.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/screens/cart_screen.dart';
 import 'package:bloc_api/screens/product_detail_screen.dart';
+import 'package:bloc_api/screens/profile_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
 
 import 'package:bloc_api/widgets/error_widget.dart';
@@ -62,77 +63,99 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: kPrimaryColor,
       appBar: AppBar(
         backgroundColor: kThirdColor,
-        leading: IconButton(
-            color: kPrimaryColor,
-            onPressed: () => authBloc.add(LogoutEvent()),
-            icon: Icon(Icons.logout_rounded)),
-        centerTitle: true,
         title: Text(
-          authBloc.currentUser?.name ?? "",
+          //authBloc.currentUser?.name ?? "",
+          "One One BookShop",
           style: TextStyle(
-              color: kPrimaryColor, fontSize: 18, fontWeight: FontWeight.bold),
+              color: kPrimaryColor, fontSize: 15, fontWeight: FontWeight.w500),
         ),
         actions: [
-          Container(
-            margin: EdgeInsets.only(right: 5),
-            width: 42,
-            height: 45,
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: IconButton(
-                      onPressed: () => context.navigateToNext(CartScreen()),
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        color: kPrimaryColor,
-                      )),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: BlocBuilder<CartBloc, CartStates>(
-                    builder: (context, state) {
-                      if (state is CartLoading) {
-                        return Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              color: kFourthColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          width: 17,
-                          height: 17,
-                          child: Center(
-                              child: CircularProgressIndicator(
-                            strokeWidth: 0.8,
+          Row(
+            children: [
+              IconButton(onPressed: () {
+                
+              }, icon: Icon(Icons.history, color: kPrimaryColor,)),    
+              const Gap(4),   
+              Container(
+                margin: EdgeInsets.only(right: 5),
+                width: 42,
+                height: 45,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: IconButton(
+                          onPressed: () => context.navigateToNext(CartScreen()),
+                          icon: Icon(
+                            Icons.shopping_cart,
                             color: kPrimaryColor,
                           )),
-                        );
-                      }
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: BlocBuilder<CartBloc, CartStates>(
+                        builder: (context, state) {
+                          if (state is CartLoading) {
+                            return Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                  color: kFourthColor,
+                                  borderRadius: BorderRadius.circular(10)),
+                              width: 17,
+                              height: 17,
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                strokeWidth: 0.8,
+                                color: kPrimaryColor,
+                              )),
+                            );
+                          }
 
-                      if (state is CartLoaded && state.cart.isNotEmpty) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              color: kFourthColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          width: 17,
-                          height: 17,
-                          child: Center(
-                            child: Text(
-                              state.cart.length.toString(),
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return SizedBox();
-                      }
-                    },
-                  ),
+                          if (state is CartLoaded && state.cart.isNotEmpty) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                  color: kFourthColor,
+                                  borderRadius: BorderRadius.circular(10)),
+                              width: 17,
+                              height: 17,
+                              child: Center(
+                                child: Text(
+                                  state.cart.length.toString(),
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+               GestureDetector(
+                onTap: () => context.navigateToNext(ProfileScreen()),
+                 child: Container(
+                  width: 30,
+                  margin: EdgeInsets.all(12.5),
+                  decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Center(
+                      child: Text(
+                    authBloc.currentUser?.name.substring(0, 1) ?? " - ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: kFourthColor,
+                        fontSize: 16.5),
+                  )),
+                               ),
+               ),    
+            ],
           )
         ],
       ),
@@ -240,6 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           color: kPrimaryColor,
           borderRadius: BorderRadius.circular(8),
+          border: Border.all(width: 0.15),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1), // Shadow color
@@ -271,9 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         placeholder: (context, url) => ImageLoadingWidget()),
                   ),
                 ),
-      
                 Container(
-            
                   margin: EdgeInsets.only(left: 10),
                   width: MediaQuery.of(context).size.width * 0.48,
                   child: Column(
@@ -285,12 +307,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                             color: kFourthColor,
                             fontWeight: FontWeight.bold,
-                            fontSize: 14.5),
+                            fontSize: 13),
                       ),
                       const Gap(5),
                       Text(
                         "${product.price} Ks",
                         style: TextStyle(
+                            fontSize: 12,
                             color: kSecondaryColor,
                             fontWeight: FontWeight.bold),
                       ),
