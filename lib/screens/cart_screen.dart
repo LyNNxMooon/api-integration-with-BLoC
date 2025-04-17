@@ -7,7 +7,7 @@ import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/constants/image.dart';
 import 'package:bloc_api/data/vos/cart_item_vo.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
-import 'package:bloc_api/widgets/button_widget.dart';
+//import 'package:bloc_api/widgets/button_widget.dart';
 import 'package:bloc_api/widgets/error_widget.dart';
 import 'package:bloc_api/widgets/loading_widget.dart';
 import 'package:bloc_api/widgets/success_widget.dart';
@@ -156,7 +156,7 @@ class _CartScreenState extends State<CartScreen> {
       child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           itemBuilder: (context, index) => Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 width: double.infinity,
                 //height: 100,
                 decoration: BoxDecoration(
@@ -180,13 +180,13 @@ class _CartScreenState extends State<CartScreen> {
                         width: 18,
                         height: 18,
                         decoration: BoxDecoration(
-                            color: kFourthColor,
+                            color: kSecondaryColor,
                             borderRadius: BorderRadius.circular(20)),
                         child: Center(
                           child: Icon(
                             Icons.remove,
                             size: 14,
-                            color: kSecondaryColor,
+                            color: kPrimaryColor,
                           ),
                         ),
                       ),
@@ -220,7 +220,7 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           Text(
                             cart[index].product.name,
-                            style: TextStyle(fontSize: 13, color: kFourthColor),
+                            style: TextStyle(fontSize: 13, color: kSecondaryColor),
                           ),
                           const Gap(5),
                           Text(
@@ -228,7 +228,7 @@ class _CartScreenState extends State<CartScreen> {
                             style: TextStyle(
                               fontSize: 11.5,
                                 fontWeight: FontWeight.bold,
-                                color: kFourthColor),
+                                color: kThirdColor),
                           ),
                         ],
                       ),
@@ -244,20 +244,20 @@ class _CartScreenState extends State<CartScreen> {
                             width: 18,
                             height: 18,
                             decoration: BoxDecoration(
-                                color: kFourthColor,
+                                color: kThirdColor,
                                 borderRadius: BorderRadius.circular(20)),
                             child: Center(
                               child: Icon(
                                 Icons.add,
                                 size: 14,
-                                color: kSecondaryColor,
+                                color: kPrimaryColor,
                               ),
                             ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text(cart[index].quantity.toString()),
+                          child: Text(cart[index].quantity.toString(), style: TextStyle(color: kSecondaryColor),),
                         ),
                         GestureDetector(
                           onTap: () => cartBloc.add(UpdateCart(
@@ -267,13 +267,13 @@ class _CartScreenState extends State<CartScreen> {
                             width: 18,
                             height: 18,
                             decoration: BoxDecoration(
-                                color: kFourthColor,
+                                color: kThirdColor,
                                 borderRadius: BorderRadius.circular(20)),
                             child: Center(
                               child: Icon(
                                 Icons.remove,
                                 size: 14,
-                                color: kSecondaryColor,
+                                color: kPrimaryColor,
                               ),
                             ),
                           ),
@@ -373,10 +373,36 @@ class _CartScreenState extends State<CartScreen> {
             ],
           ),
           const Gap(25),
-          CustomButton(
-            name: "Order",
-            function: () {},
-          )
+          GestureDetector(
+      onTap: () {
+        
+      },
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1), // Shadow color
+              spreadRadius: 3, // Spread radius
+              blurRadius: 5, // Blur radius
+              offset: const Offset(0, 3), // Offset of the shadow
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            "Order",
+            style: const TextStyle(
+              color: kThirdColor,
+              fontSize: 16,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
+      ),
+    )
         ],
       ),
     );

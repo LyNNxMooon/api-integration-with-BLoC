@@ -94,11 +94,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     icon: showPassword
                         ? const Icon(
                             Icons.visibility_outlined,
-                            color: kSecondaryColor,
+                            color: kThirdColor,
                           )
                         : const Icon(
                             Icons.visibility_off_outlined,
-                            color: kSecondaryColor,
+                            color: kThirdColor,
                           )),
               ),
               const Gap(20),
@@ -115,11 +115,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     icon: showPassword
                         ? const Icon(
                             Icons.visibility_outlined,
-                            color: kSecondaryColor,
+                            color: kThirdColor,
                           )
                         : const Icon(
                             Icons.visibility_off_outlined,
-                            color: kSecondaryColor,
+                            color: kThirdColor,
                           )),
               ),
               const Gap(40),
@@ -148,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: kFourthColor),
+                          color: kThirdColor),
                     ))
                   ],
                 ),

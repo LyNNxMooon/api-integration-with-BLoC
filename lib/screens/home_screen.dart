@@ -60,8 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: Color.fromARGB(255, 245, 248, 255),
       appBar: AppBar(
+        elevation: 5,
         backgroundColor: kThirdColor,
         title: Text(
           //authBloc.currentUser?.name ?? "",
@@ -99,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             return Container(
                               padding: EdgeInsets.all(2),
                               decoration: BoxDecoration(
-                                  color: kFourthColor,
+                                  color: kSecondaryColor,
                                   borderRadius: BorderRadius.circular(10)),
                               width: 17,
                               height: 17,
@@ -114,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (state is CartLoaded && state.cart.isNotEmpty) {
                             return Container(
                               decoration: BoxDecoration(
-                                  color: kFourthColor,
+                                  color: kSecondaryColor,
                                   borderRadius: BorderRadius.circular(10)),
                               width: 17,
                               height: 17,
@@ -150,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     authBloc.currentUser?.name.substring(0, 1) ?? " - ",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: kFourthColor,
+                        color: kThirdColor,
                         fontSize: 16.5),
                   )),
                                ),
@@ -226,9 +227,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 25,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: kFourthColor),
+                    border: Border.all(color: kThirdColor),
                     color: productsBloc.page == index + 1
-                        ? kFourthColor
+                        ? kThirdColor
                         : Colors.white,
                   ),
                   child: Center(
@@ -237,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                           color: productsBloc.page == index + 1
                               ? Colors.white
-                              : kFourthColor),
+                              : kThirdColor),
                     ),
                   ),
                 ),
@@ -305,7 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         softWrap: true,
                         product.name,
                         style: TextStyle(
-                            color: kFourthColor,
+                            color: kSecondaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 13),
                       ),
@@ -314,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         "${product.price} Ks",
                         style: TextStyle(
                             fontSize: 12,
-                            color: kSecondaryColor,
+                            color: kThirdColor,
                             fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -328,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 icon: Icon(
                   Icons.add_shopping_cart_sharp,
-                  color: kSecondaryColor,
+                  color: kThirdColor,
                 ))
           ],
         ),
@@ -403,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         offset: const Offset(0, 0), // Offset of the shadow
                       ),
                     ],
-                    color: Colors.white,
+                    color: kPrimaryColor,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
                         topRight: Radius.circular(40))),

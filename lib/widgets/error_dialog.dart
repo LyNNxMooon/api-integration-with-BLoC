@@ -17,7 +17,7 @@ class CustomErrorWidget extends StatelessWidget {
             child: TextButton(
               onPressed: function,
               style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(kSecondaryColor)),
+                  backgroundColor: WidgetStatePropertyAll(kThirdColor)),
               child: const Text(
                 "OK",
                 style: TextStyle(color: kPrimaryColor),

@@ -27,7 +27,7 @@ class ErrorUIWidget extends StatelessWidget {
                 onPressed: function,
                 icon: Icon(
                   Icons.replay_outlined,
-                  color: kFourthColor,
+                  color: kThirdColor,
                 ))
           ],
         ),

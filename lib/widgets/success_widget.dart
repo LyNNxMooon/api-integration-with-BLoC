@@ -18,7 +18,7 @@ class SuccessWidget extends StatelessWidget {
                 context.navigateBack();
               },
               style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(kSecondaryColor)),
+                  backgroundColor: WidgetStatePropertyAll(kThirdColor)),
               child: const Text(
                 "OK",
                 style: TextStyle(color: kPrimaryColor),

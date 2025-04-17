@@ -143,7 +143,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: _currentIndex == entry.key
-                                ? kFourthColor
+                                ? kThirdColor
                                 : Colors.grey,
                           ),
                         );
@@ -177,7 +177,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         onPressed: () {},
                         icon: Icon(
                           Icons.favorite_border_outlined,
-                          color: kFourthColor,
+                          color: kThirdColor,
                         ))
                   ],
                 ),
@@ -225,7 +225,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               height: 25,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
-                                  color: kFourthColor),
+                                  color: kSecondaryColor),
                               child: Icon(
                                 Icons.remove,
                                 size: 16,
@@ -277,7 +277,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               height: 25,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
-                                  color: kFourthColor),
+                                  color: kSecondaryColor),
                               child: Icon(
                                 Icons.add,
                                 size: 16,

@@ -78,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text(
                 authBloc.currentUser?.email ?? "exmaple@mail.com",
                 style:
-                    TextStyle(fontWeight: FontWeight.w500, color: kFourthColor),
+                    TextStyle(fontWeight: FontWeight.w500, color: kThirdColor),
               ),
             ),
             const Gap(5),
@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text(
                 authBloc.currentUser?.phone ?? "01-0000000",
                 style:
-                    TextStyle(fontWeight: FontWeight.w500, color: kFourthColor),
+                    TextStyle(fontWeight: FontWeight.w500, color: kThirdColor),
               ),
             ),
             const Gap(25),
@@ -117,6 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: EdgeInsets.all(15),
                     decoration: BoxDecoration(
                         color: kPrimaryColor,
+                        border: Border.all(width: 0.5),
                         boxShadow: [
                           BoxShadow(
                             color:
@@ -136,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: [
                             Icon(
                               Icons.person,
-                              color: kSecondaryColor,
+                              color: kThirdColor,
                             ),
                             const Gap(10),
                             Column(
@@ -145,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Text(
                                   "Edit Profile",
                                   style: TextStyle(
-                                      color: kFourthColor,
+                                      color: kThirdColor,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -207,6 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: kPrimaryColor,
+        border: Border.all(width: 0.5),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1), // Shadow color
@@ -224,7 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Icon(
                 icon,
-                color: kSecondaryColor,
+                color: kThirdColor,
               ),
               const Gap(10),
               Column(
@@ -233,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Text(
                     title,
                     style: TextStyle(
-                        color: kFourthColor,
+                        color: kThirdColor,
                         fontSize: 15,
                         fontWeight: FontWeight.w500),
                   ),

@@ -14,7 +14,7 @@ class CustomLoadingWidget extends StatelessWidget {
         child: CupertinoActivityIndicator(
           animating: true,
           radius: 10,
-          color: kSecondaryColor,
+          color: kThirdColor,
         ),
       ),
     ));
@@ -29,7 +29,7 @@ class ImageLoadingWidget extends StatelessWidget {
     return Center(
       child: CupertinoActivityIndicator(
         animating: true,
-        color: kSecondaryColor,
+        color: kThirdColor,
       ),
     );
   }

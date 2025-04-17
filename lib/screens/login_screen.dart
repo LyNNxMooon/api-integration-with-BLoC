@@ -50,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Text(
                 "Bloc Products",
                 style: titleStyle,
+
               ),
             ),
             const Gap(10),
@@ -79,11 +80,11 @@ class _LoginPageState extends State<LoginPage> {
                   icon: showPassword!
                       ? const Icon(
                           Icons.visibility_outlined,
-                          color: kSecondaryColor,
+                          color: kThirdColor,
                         )
                       : const Icon(
                           Icons.visibility_off_outlined,
-                          color: kSecondaryColor,
+                          color: kThirdColor,
                         )),
             ),
             const Gap(40),
@@ -110,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: kFourthColor),
+                        color: kThirdColor),
                   ))
                 ],
               ),
