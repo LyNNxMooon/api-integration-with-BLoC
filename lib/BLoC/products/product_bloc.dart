@@ -20,7 +20,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsStates> {
     emit(ProductsLoading());
     try {
       final productsResponse =
-          await productRepo.getProducts(_hiveModel.getUserToken(), page, limit);
+          await productRepo.getProducts(_hiveModel.getUserToken(), page, limit, event.status);
 
       emit(ProductsLoaded(productsResponse));
     } catch (error) {

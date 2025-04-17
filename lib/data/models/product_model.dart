@@ -14,9 +14,9 @@ class ProductModel implements ProductRepo {
   final DataAgent _dataAgent = DataAgentImpl();
 
   @override
-  Future<ItemResponse> getProducts(String token, int page, int limit) async {
+  Future<ItemResponse> getProducts(String token, int page, int limit, String status) async {
     try {
-      return await _dataAgent.getProducts(token, page, limit).then(
+      return await _dataAgent.getProducts(token, page, limit, status).then(
         (value) {
           var temp = value;
           temp.data = temp.data.map(

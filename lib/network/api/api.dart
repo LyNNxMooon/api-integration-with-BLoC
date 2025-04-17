@@ -60,7 +60,8 @@ abstract class Api {
   Future<ItemResponse> getProducts(
       @Header(kAuthorizationKey) String token,
       @Query(kQueryParamKeyForPage) int page,
-      @Query(kQueryParamKeyForLimit) int limit);
+      @Query(kQueryParamKeyForLimit) int limit,
+      @Query(kParamKeyForStatus) String status);
 
   @GET(kEndPointForBanners)
   @Headers(<String, dynamic>{

@@ -89,10 +89,10 @@ class DataAgentImpl extends DataAgent {
   }
 
   @override
-  Future<ItemResponse> getProducts(String token, int page, int limit) async {
+  Future<ItemResponse> getProducts(String token, int page, int limit, String status) async {
     try {
       return await _api
-          .getProducts("Bearer $token", page, limit)
+          .getProducts("Bearer $token", page, limit, status)
           .asStream()
           .map((event) => event)
           .first;

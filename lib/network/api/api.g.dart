@@ -192,11 +192,13 @@ class _Api implements Api {
     String token,
     int page,
     int limit,
+    String status,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'limit': limit,
+      r'status': status,
     };
     final _headers = <String, dynamic>{
       r'Accept': 'application/json',

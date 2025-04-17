@@ -56,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  int index = 0;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -73,10 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Row(
             children: [
-              IconButton(onPressed: () {
-                
-              }, icon: Icon(Icons.history, color: kPrimaryColor,)),    
-              const Gap(4),   
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.history,
+                    color: kPrimaryColor,
+                  )),
+              const Gap(4),
               Container(
                 margin: EdgeInsets.only(right: 5),
                 width: 42,
@@ -138,9 +143,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-               GestureDetector(
+              GestureDetector(
                 onTap: () => context.navigateToNext(ProfileScreen()),
-                 child: Container(
+                child: Container(
                   width: 30,
                   margin: EdgeInsets.all(12.5),
                   decoration: BoxDecoration(
@@ -154,8 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: kThirdColor,
                         fontSize: 16.5),
                   )),
-                               ),
-               ),    
+                ),
+              ),
             ],
           )
         ],
@@ -221,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
                   productsBloc.page = index + 1;
-                  productsBloc.add(FetchProducts());
+                  productsBloc.add(FetchProducts(status: index == 0 ? "" : "new"));
                 },
                 child: Container(
                   width: 25,
@@ -352,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocConsumer<CartBloc, CartStates>(
       builder: (context, state) => RefreshIndicator(
         onRefresh: () async {
-          productsBloc.add(FetchProducts());
+          productsBloc.add(FetchProducts(status: index == 0 ? "" : "new"));
           bannerBloc.add(FetchBanners());
         },
         backgroundColor: kPrimaryColor,
@@ -393,7 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               Container(
-                padding: EdgeInsets.only(top: 40, bottom: 20),
+                padding: EdgeInsets.only(bottom: 20),
                 decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.black12),
                     boxShadow: [
@@ -410,6 +415,71 @@ class _HomeScreenState extends State<HomeScreen> {
                         topRight: Radius.circular(40))),
                 child: Column(
                   children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            productsBloc.add(FetchProducts(status: ""));
+                            setState(() {
+                              index = 0;
+                            });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: index == 0 ? kThirdColor : kPrimaryColor,
+                                border: Border.all(
+                                  width: 1.5,
+                                  color: kThirdColor,
+                                ),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(40))),
+                            child: Center(
+                              child: Text(
+                                "All",
+                                style: TextStyle(
+                                    color: index == 0
+                                        ? kPrimaryColor
+                                        : kThirdColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            productsBloc.add(FetchProducts(status: "new"));
+                            setState(() {
+                              index = 1;
+                            });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.5 - 2,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: index == 1 ? kThirdColor : kPrimaryColor,
+                                border: Border.all(
+                                  width: 1.5,
+                                  color: kThirdColor,
+                                ),
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(40))),
+                            child: Center(
+                              child: Text(
+                                "New",
+                                style: TextStyle(
+                                    color: index == 0
+                                        ? kThirdColor
+                                        : kPrimaryColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const Gap(25),
                     BlocBuilder<ProductsBloc, ProductsStates>(
                       builder: (context, state) {
                         if (state is ProductsLoaded &&
@@ -435,7 +505,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       0.24),
                               child: NoInternetAnimationWidget(
                                 function: () {
-                                  productsBloc.add(FetchProducts());
+                                  productsBloc.add(FetchProducts(status: ""));
                                 },
                               ));
                         } else if (state is ProductsLoaded) {

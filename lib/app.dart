@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ProductsBloc>(
           create: (context) =>
-              ProductsBloc(productRepo: productsRepo)..add(FetchProducts()),
+              ProductsBloc(productRepo: productsRepo)..add(FetchProducts(status: "")),
         ),
         BlocProvider<CartBloc>(
           create: (context) => CartBloc(cartRepo: cartRepo)..add(GetCart()),

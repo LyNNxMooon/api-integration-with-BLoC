@@ -22,7 +22,7 @@ abstract class DataAgent {
   Future<LoginRegisterResponse> loginUserAccount(
       String emailOrPhone, String password, String fcm);
 
-  Future<ItemResponse> getProducts(String token, int page, int limit);
+  Future<ItemResponse> getProducts(String token, int page, int limit, String status);
 
   Future<List<CartItemVO>> getUserCart(String token);
 

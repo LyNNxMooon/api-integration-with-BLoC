@@ -30,3 +30,4 @@ const kPathParamKeyForCartID = "CartID";
 const kParamKeyForQuantity = "quantity";
 const kParamKeyForProductID = "product_id";
 const kPathParamKeyForProductID = "productID";
+const kParamKeyForStatus = "status";

@@ -10,11 +10,11 @@ CartAddAndUpdateResponse _$CartAddAndUpdateResponseFromJson(
         Map<String, dynamic> json) =>
     CartAddAndUpdateResponse(
       id: (json['id'] as num).toInt(),
-      customerID: json['customer_id'] as dynamic,
-      productID: json['product_id'] as dynamic,
-      qauntity: json['qauntity'] as dynamic,
-      updatedAt: json['updated_at'] as dynamic,
-      createdAt: json['created_at'] as dynamic,
+      customerID: json['customer_id'],
+      productID: json['product_id'],
+      qauntity: json['qauntity'],
+      updatedAt: json['updated_at'],
+      createdAt: json['created_at'],
     );
 
 Map<String, dynamic> _$CartAddAndUpdateResponseToJson(
