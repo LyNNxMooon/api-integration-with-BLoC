@@ -75,13 +75,22 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Row(
             children: [
+             
+              
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.category_outlined,
+                    color: kPrimaryColor,
+                  )),
+             
               IconButton(
                   onPressed: () {},
                   icon: Icon(
                     Icons.history,
                     color: kPrimaryColor,
                   )),
-              const Gap(4),
+             
               Container(
                 margin: EdgeInsets.only(right: 5),
                 width: 42,
@@ -226,7 +235,8 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
                   productsBloc.page = index + 1;
-                  productsBloc.add(FetchProducts(status: index == 0 ? "" : "new"));
+                  productsBloc
+                      .add(FetchProducts(status: index == 0 ? "" : "new"));
                 },
                 child: Container(
                   width: 25,
@@ -393,7 +403,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           )
                         : slider(state.banners);
                   } else {
-                    return SizedBox();
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.18,
+                    );
                   }
                 },
               ),
@@ -521,7 +533,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                               : productList(state.products.data);
                         } else {
-                          return SizedBox();
+                          return SizedBox(height: MediaQuery.of(context).size.height * 0.3,);
                         }
                       },
                     ),

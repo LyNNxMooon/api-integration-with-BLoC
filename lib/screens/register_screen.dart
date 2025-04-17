@@ -47,14 +47,14 @@ class _RegisterPageState extends State<RegisterPage> {
             children: [
               Gap(MediaQuery.of(context).size.height * 0.1),
               const Icon(
-                Icons.fastfood_outlined,
-                color: kFourthColor,
-                size: 50,
+                Icons.menu_book_rounded,
+                color: kSecondaryColor,
+                size: 55,
               ),
               const Gap(20),
               const Center(
                 child: Text(
-                  "Bloc Products",
+                  "One One Bookshop",
                   style: titleStyle,
                 ),
               ),

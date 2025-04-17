@@ -1,5 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:bloc_api/BLoC/cart/cart_bloc.dart';
+import 'package:bloc_api/BLoC/cart/cart_events.dart';
+import 'package:bloc_api/BLoC/cart/cart_states.dart';
 import 'package:bloc_api/BLoC/product_details/product_detail_bloc.dart';
 import 'package:bloc_api/BLoC/product_details/product_detail_events.dart';
 import 'package:bloc_api/BLoC/product_details/product_details_states.dart';
@@ -9,10 +12,12 @@ import 'package:bloc_api/BLoC/product_images/product_images_states.dart';
 import 'package:bloc_api/constants/colors.dart';
 import 'package:bloc_api/constants/texts.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
+import 'package:bloc_api/screens/cart_screen.dart';
 import 'package:bloc_api/utils/navigation_extension.dart';
 
 import 'package:bloc_api/widgets/error_widget.dart';
 import 'package:bloc_api/widgets/loading_widget.dart';
+//import 'package:bloc_api/widgets/success_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -32,6 +37,8 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   late final productDetailBloc = context.read<ProductDetailBloc>();
   late final productImageBloc = context.read<ProductImagesBloc>();
+
+  late final cartBloc = context.read<CartBloc>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,6 +58,69 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           style: TextStyle(
               color: kPrimaryColor, fontSize: 15, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            width: 42,
+            height: 45,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                      onPressed: () => context.navigateToNext(CartScreen()),
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: kPrimaryColor,
+                      )),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: BlocBuilder<CartBloc, CartStates>(
+                    builder: (context, state) {
+                      if (state is CartLoading) {
+                        return Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              color: kSecondaryColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          width: 17,
+                          height: 17,
+                          child: Center(
+                              child: CircularProgressIndicator(
+                            strokeWidth: 0.8,
+                            color: kPrimaryColor,
+                          )),
+                        );
+                      }
+
+                      if (state is CartLoaded && state.cart.isNotEmpty) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              color: kSecondaryColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          width: 17,
+                          height: 17,
+                          child: Center(
+                            child: Text(
+                              state.cart.length.toString(),
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: BlocBuilder<ProductDetailBloc, ProductDetailStates>(
         builder: (context, state) {
@@ -288,38 +358,46 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: 120,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color:
-                                Colors.black.withOpacity(0.1), // Shadow color
-                            spreadRadius: 3, // Spread radius
-                            blurRadius: 5, // Blur radius
-                            offset: const Offset(0, 3), // Offset of the shadow
-                          ),
-                        ], //bo
-                        color: kThirdColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Add",
-                            style: TextStyle(
-                                color: kPrimaryColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const Gap(10),
-                          Icon(
-                            Icons.add_shopping_cart_sharp,
-                            size: 18,
-                            color: kPrimaryColor,
-                          )
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        cartBloc.add(AddToCart(
+                            productID: product.id,
+                            qty: productDetailBloc.productQty));
+                      },
+                      child: Container(
+                        width: 120,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black
+                                  .withOpacity(0.1), // Shadow color
+                              spreadRadius: 3, // Spread radius
+                              blurRadius: 5, // Blur radius
+                              offset:
+                                  const Offset(0, 3), // Offset of the shadow
+                            ),
+                          ], //bo
+                          color: kThirdColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Add",
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const Gap(10),
+                            Icon(
+                              Icons.add_shopping_cart_sharp,
+                              size: 18,
+                              color: kPrimaryColor,
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],
