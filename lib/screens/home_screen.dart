@@ -75,22 +75,18 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Row(
             children: [
-             
-              
               IconButton(
                   onPressed: () {},
                   icon: Icon(
                     Icons.category_outlined,
                     color: kPrimaryColor,
                   )),
-             
               IconButton(
                   onPressed: () {},
                   icon: Icon(
                     Icons.history,
                     color: kPrimaryColor,
                   )),
-             
               Container(
                 margin: EdgeInsets.only(right: 5),
                 width: 42,
@@ -402,9 +398,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           )
                         : slider(state.banners);
+                  } else if (state is BannersInitial) {
+                    return bannerShimmerLoading();
                   } else {
                     return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.22,
                     );
                   }
                 },
@@ -532,8 +530,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 )
                               : productList(state.products.data);
+                        } else if (state is ProductsInitial) {
+                          return productsShimmerLoading();
                         } else {
-                          return SizedBox(height: MediaQuery.of(context).size.height * 0.3,);
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.6,
+                          );
                         }
                       },
                     ),

@@ -148,7 +148,7 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
         separatorBuilder: (context, index) => const Gap(15),
-        itemCount: 5);
+        itemCount: 8);
   }
 
   Widget cartUI(List<CartItemVO> cart) {

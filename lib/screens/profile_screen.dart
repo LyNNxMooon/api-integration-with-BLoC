@@ -217,7 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             offset: const Offset(0, 0), // Offset of the shadow
           ),
         ],
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
