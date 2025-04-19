@@ -275,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           color: kPrimaryColor,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(width: 0.15),
+         // border: Border.all(width: 0.15),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1), // Shadow color
@@ -421,8 +421,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                     color: kPrimaryColor,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40))),
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30))),
                 child: Column(
                   children: [
                     Row(
@@ -439,12 +439,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 40,
                             decoration: BoxDecoration(
                                 color: index == 0 ? kThirdColor : kPrimaryColor,
-                                border: Border.all(
+                                border: index == 0 ? Border.all(
                                   width: 1.5,
                                   color: kThirdColor,
-                                ),
+                                ) : Border(bottom: BorderSide(width: 1.5, color: kThirdColor), ),
                                 borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(40))),
+                                    topLeft: Radius.circular(29))),
                             child: Center(
                               child: Text(
                                 "All",
@@ -469,12 +469,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 40,
                             decoration: BoxDecoration(
                                 color: index == 1 ? kThirdColor : kPrimaryColor,
-                                border: Border.all(
+                                border: index ==1 ? Border.all(
                                   width: 1.5,
                                   color: kThirdColor,
-                                ),
+                                ) :  Border(bottom: BorderSide(width: 1.5, color: kThirdColor),),
                                 borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(40))),
+                                    topRight: Radius.circular(29))),
                             child: Center(
                               child: Text(
                                 "New",
