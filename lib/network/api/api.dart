@@ -3,6 +3,7 @@ import 'package:bloc_api/network/api_constant.dart';
 import 'package:bloc_api/network/response/banner_response.dart';
 import 'package:bloc_api/network/response/cart_add_and_update_response.dart';
 import 'package:bloc_api/network/response/cart_removed_response.dart';
+import 'package:bloc_api/network/response/genere_response.dart';
 
 import 'package:bloc_api/network/response/item_detail_response.dart';
 import 'package:bloc_api/network/response/item_image_response.dart';
@@ -68,6 +69,14 @@ abstract class Api {
     'Accept': 'application/json',
   })
   Future<BannerResponse> getBanners(
+    @Header(kAuthorizationKey) String token,
+  );
+
+  @GET(kEndPointForGenres)
+  @Headers(<String, dynamic>{
+    'Accept': 'application/json',
+  })
+  Future<GenereResponse> getGeneres(
     @Header(kAuthorizationKey) String token,
   );
 

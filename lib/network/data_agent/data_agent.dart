@@ -1,5 +1,6 @@
 import 'package:bloc_api/data/vos/banner_vo.dart';
 import 'package:bloc_api/data/vos/cart_item_vo.dart';
+import 'package:bloc_api/data/vos/genere_vo.dart';
 import 'package:bloc_api/data/vos/item_image_vo.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
@@ -41,4 +42,6 @@ abstract class DataAgent {
   Future<ItemVO> getProductDetails(String token, int productID);
 
   Future<List<ItemImageVO>> getProductImages(String token, int productID);
+
+  Future<List<GenereVo>> getAllGeneres(String token);
 }

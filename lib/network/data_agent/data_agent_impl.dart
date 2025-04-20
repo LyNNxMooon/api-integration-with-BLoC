@@ -3,6 +3,7 @@
 import 'package:bloc_api/config/api_errors_config.dart';
 import 'package:bloc_api/data/vos/banner_vo.dart';
 import 'package:bloc_api/data/vos/cart_item_vo.dart';
+import 'package:bloc_api/data/vos/genere_vo.dart';
 import 'package:bloc_api/data/vos/item_image_vo.dart';
 import 'package:bloc_api/data/vos/item_vo.dart';
 import 'package:bloc_api/data/vos/user_vo.dart';
@@ -201,6 +202,19 @@ class DataAgentImpl extends DataAgent {
     } on Exception catch (error) {
       return Future.error(
           apiErrorsConfig.throwExceptionForGetProductAndImage(error));
+    }
+  }
+
+  @override
+  Future<List<GenereVo>> getAllGeneres(String token) async {
+     try {
+      return await _api
+          .getGeneres("Bearer $token")
+          .asStream()
+          .map((event) => event.data)
+          .first;
+    } on Exception catch (error) {
+      return Future.error(apiErrorsConfig.throwExceptionForGetGeneres(error));
     }
   }
 }

@@ -8,6 +8,9 @@ import 'package:bloc_api/BLoC/banner/banner_states.dart';
 import 'package:bloc_api/BLoC/cart/cart_bloc.dart';
 import 'package:bloc_api/BLoC/cart/cart_events.dart';
 import 'package:bloc_api/BLoC/cart/cart_states.dart';
+import 'package:bloc_api/BLoC/general/general_bloc.dart';
+import 'package:bloc_api/BLoC/general/general_events.dart';
+import 'package:bloc_api/BLoC/general/general_states.dart';
 import 'package:bloc_api/BLoC/product_details/product_detail_bloc.dart';
 import 'package:bloc_api/BLoC/product_details/product_detail_events.dart';
 import 'package:bloc_api/BLoC/product_images/product_images_bloc.dart';
@@ -49,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final bannerBloc = context.read<BannerBloc>();
   late final productDetailBloc = context.read<ProductDetailBloc>();
   late final productImagesBloc = context.read<ProductImagesBloc>();
+  late final genereBloc = context.read<GenereBloc>();
 
   @override
   void initState() {
@@ -174,6 +178,49 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
   }
 
+  Widget generesShimmerLoading() {
+    return SizedBox(
+      height: 95,
+      child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) => Shimmer.fromColors(
+              baseColor: Colors.black54,
+                highlightColor: Colors.white,
+            child: SizedBox(
+              child: Column(
+                children: [
+                  Shimmer.fromColors(
+                      baseColor: Colors.black54,
+                    highlightColor: Colors.white,
+                    child: Container(
+                      width: 65,
+                      height: 65,
+                      decoration: BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                  const Gap(10),
+                  Shimmer.fromColors(
+                      baseColor: Colors.black54,
+                    highlightColor: Colors.white,
+                    child: Container(
+                      width: 65,
+                      height: 12,
+                      decoration: BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          separatorBuilder: (context, index) => const Gap(10),
+          itemCount: 10),
+    );
+  }
+
   Widget productsShimmerLoading() {
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
@@ -275,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           color: kPrimaryColor,
           borderRadius: BorderRadius.circular(8),
-         // border: Border.all(width: 0.15),
+          // border: Border.all(width: 0.15),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1), // Shadow color
@@ -372,6 +419,119 @@ class _HomeScreenState extends State<HomeScreen> {
           physics: RangeMaintainingScrollPhysics(),
           child: Column(
             children: [
+              const Gap(20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "Generes",
+                          style: TextStyle(
+                              color: kThirdColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const Gap(10),
+                        GestureDetector(
+                            onTap: () {
+                              genereBloc.add(FetchGeneresEvent());
+                            },
+                            child: Icon(
+                              Icons.refresh,
+                              size: 16,
+                              color: kSecondaryColor,
+                            ))
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        "View All",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(20),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: BlocBuilder<GenereBloc, GenereStates>(
+                    builder: (context, state) {
+                      if (state is GenereInit) {
+                        return generesShimmerLoading();
+                      } else if (state is GenereLoading) {
+                        return generesShimmerLoading();
+                      } else if (state is GenereError) {
+                        return SizedBox(
+                        height: 95,
+                          width: 200,
+                          child: Center(
+                            child: Text(
+                              state.message,
+                              style: TextStyle(
+                                  color: kErrorColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        );
+                      } else if (state is GenereLoaded) {
+                        return SizedBox(
+                          height: 95,
+                          child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) => Column(
+                                    children: [
+                                      Container(
+                                        width: 65,
+                                        height: 65,
+                                        decoration: BoxDecoration(
+                                            //color: Colors.black12,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: CachedNetworkImage(
+                                              imageUrl:
+                                                  state.generes[index].image,
+                                              fit: BoxFit.cover,
+                                              errorWidget:
+                                                  (context, url, error) => Icon(
+                                                        Icons.error,
+                                                        color: kFourthColor,
+                                                      ),
+                                              placeholder: (context, url) =>
+                                                  ImageLoadingWidget()),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 60,
+                                        child: Text(
+                                          state.generes[index].name.length > 14 ? "${state.generes[index].name.substring(0,14)}..." : state.generes[index].name,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 10),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                              separatorBuilder: (context, index) =>
+                                  const Gap(10),
+                              itemCount: state.generes.length),
+                        );
+                     
+                      } else {
+                        return SizedBox(
+                          height: 70,
+                        );
+                      }
+                    },
+                  )),
+                  const Gap(5),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Divider(thickness: 0.7,),),
               BlocBuilder<BannerBloc, BannerStates>(
                 builder: (context, state) {
                   if (state is BannersLoading) {
@@ -391,7 +551,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ? Padding(
                             padding: EdgeInsets.symmetric(
                                 vertical:
-                                    MediaQuery.of(context).size.height * 0.12),
+                                    MediaQuery.of(context).size.height * 0.121),
                             child: Text(
                               "No banner available...",
                               style: TextStyle(color: kFourthColor),
@@ -402,7 +562,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return bannerShimmerLoading();
                   } else {
                     return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.22,
+                      height: MediaQuery.of(context).size.height * 0.221,
                     );
                   }
                 },
@@ -439,10 +599,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 40,
                             decoration: BoxDecoration(
                                 color: index == 0 ? kThirdColor : kPrimaryColor,
-                                border: index == 0 ? Border.all(
-                                  width: 1.5,
-                                  color: kThirdColor,
-                                ) : Border(bottom: BorderSide(width: 1.5, color: kThirdColor), ),
+                                border: index == 0
+                                    ? Border.all(
+                                        width: 1.5,
+                                        color: kThirdColor,
+                                      )
+                                    : Border(
+                                        bottom: BorderSide(
+                                            width: 1.5, color: kThirdColor),
+                                      ),
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(29))),
                             child: Center(
@@ -469,10 +634,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 40,
                             decoration: BoxDecoration(
                                 color: index == 1 ? kThirdColor : kPrimaryColor,
-                                border: index ==1 ? Border.all(
-                                  width: 1.5,
-                                  color: kThirdColor,
-                                ) :  Border(bottom: BorderSide(width: 1.5, color: kThirdColor),),
+                                border: index == 1
+                                    ? Border.all(
+                                        width: 1.5,
+                                        color: kThirdColor,
+                                      )
+                                    : Border(
+                                        bottom: BorderSide(
+                                            width: 1.5, color: kThirdColor),
+                                      ),
                                 borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(29))),
                             child: Center(
@@ -577,7 +747,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget bannerShimmerLoading() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.only(bottom: 35, top: 22),
       child: CarouselSlider.builder(
           itemCount: 3,
           itemBuilder: (context, index, realIndex) => Shimmer.fromColors(
@@ -606,7 +776,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget slider(List<BannerVO> banners) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.only(top: 22, bottom: 35),
       child: CarouselSlider.builder(
           itemCount: banners.length,
           itemBuilder: (context, index, realIndex) => Container(

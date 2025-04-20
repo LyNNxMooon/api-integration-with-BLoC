@@ -5,6 +5,8 @@ import 'package:bloc_api/BLoC/banner/banner_bloc.dart';
 import 'package:bloc_api/BLoC/banner/banner_events.dart';
 import 'package:bloc_api/BLoC/cart/cart_bloc.dart';
 import 'package:bloc_api/BLoC/cart/cart_events.dart';
+import 'package:bloc_api/BLoC/general/general_bloc.dart';
+import 'package:bloc_api/BLoC/general/general_events.dart';
 import 'package:bloc_api/BLoC/product_details/product_detail_bloc.dart';
 
 import 'package:bloc_api/BLoC/product_images/product_images_bloc.dart';
@@ -12,6 +14,7 @@ import 'package:bloc_api/BLoC/products/product_bloc.dart';
 import 'package:bloc_api/BLoC/products/product_events.dart';
 import 'package:bloc_api/data/models/auth_model.dart';
 import 'package:bloc_api/data/models/cart_model.dart';
+import 'package:bloc_api/data/models/general_model.dart';
 import 'package:bloc_api/data/models/product_model.dart';
 import 'package:bloc_api/screens/auth_screen.dart';
 import 'package:bloc_api/screens/home_screen.dart';
@@ -27,6 +30,7 @@ class MyApp extends StatelessWidget {
   final authRepo = AuthModel();
   final productsRepo = ProductModel();
   final cartRepo = CartModel();
+  final generalRepo = GeneralModel();
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +50,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<BannerBloc>(
           create: (context) =>
               BannerBloc(productRepo: productsRepo)..add(FetchBanners()),
+        ),
+          BlocProvider<GenereBloc>(
+          create: (context) =>
+              GenereBloc(generalRepo: generalRepo)..add(FetchGeneresEvent()),
         ),
         BlocProvider<ProductDetailBloc>(
           create: (context) => ProductDetailBloc(productRepo: productsRepo),

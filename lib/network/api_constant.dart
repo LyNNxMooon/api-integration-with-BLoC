@@ -15,6 +15,7 @@ const kEndPointForBanners = "/banners";
 const kEndPointForProductDetails = "/products/{$kPathParamKeyForProductID}";
 const kEndPointForGetProductImages =
     "/products/{$kPathParamKeyForProductID}/images";
+const kEndPointForGenres = "/genres";
 
 //keys
 const kAuthorizationKey = "Authorization";

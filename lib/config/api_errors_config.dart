@@ -185,6 +185,26 @@ class ApiErrorsConfig {
     return error.toString();
   }
 
+    Object throwExceptionForGetGeneres(dynamic error) {
+    if (error is DioException) {
+      if (error.type == DioExceptionType.connectionError ||
+          error.type == DioExceptionType.receiveTimeout ||
+          error.type == DioExceptionType.connectionTimeout ||
+          error.type == DioExceptionType.sendTimeout) {
+        return "No Internet";
+      }
+      if (error.response?.data is Map<String, dynamic>) {
+        try {
+          return "Error fetching generes";
+        } catch (error) {
+          return error.toString();
+        }
+      }
+      return error.response.toString();
+    }
+    return error.toString();
+  }
+
   Object throwExceptionForCarts(dynamic error) {
     if (error is DioException) {
       if (error.type == DioExceptionType.connectionError ||
